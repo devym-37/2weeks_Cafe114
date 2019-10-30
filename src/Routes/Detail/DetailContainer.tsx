@@ -3,17 +3,17 @@ import DetailPresenter from "./DetailPresenter";
 import { mapApi } from "../../Components/API";
 
 interface IState {
-  map: object;
+  result: object;
   error: string;
   loading: boolean;
 }
 
 export default class extends Component<{}, IState> {
-  state = { map: {}, error: "", loading: false };
+  state = { result: { name: "" }, error: "", loading: false };
   async componentDidMount() {
     try {
-      const map = await mapApi.getMap();
-      this.setState({ map });
+      const result = await mapApi.getMap();
+      this.setState({ result });
     } catch {
       this.setState({ error: "Can't render kakao map" });
     } finally {
@@ -21,7 +21,7 @@ export default class extends Component<{}, IState> {
     }
   }
   render() {
-    const { map, error, loading } = this.state;
-    return <DetailPresenter map={map} error={error} loading={loading} />;
+    const { result, error, loading } = this.state;
+    return <DetailPresenter result={result} error={error} loading={loading} />;
   }
 }
