@@ -1,45 +1,81 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-안녕하세용
+# **Cafe114-client**
 
-## Available Scripts
+서울 지역의 24시 카페 (탐앤탐스, 할리스 등)의 실시간 현황 알림 서비스 Cafe114 Client Repository
 
-In the project directory, you can run:
+## Screens
 
-### `yarn start`
+- [ ] [Home](#home)
+- [ ] [CafeDetail](#cafe-detail)
+- [ ] [Messages](#messages)
+- [ ] [Mypage](#mypage)
+- [ ] [Login](#login)
+- [ ] [Signup](#signup)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+---
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## **Home**
 
-### `yarn test`
+### **1. UI**
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+24시간 운영하는 탐앤탐스 & 할리스 지도 구현 (지역은 서울로 한정)
 
-### `yarn build`
+![Home-Local](/assets/UI/01-Home.jpg)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+비회원 로그인시 24시 운영되는 카페 리스트 및 최신 정보의 간략한 정보만 열람 가능 (몇분 전 최신글이 올라왔는지)
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+![Home-Default](/assets/UI/02-Home-Default.jpg)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+흡연 가능 여부, 주차 가능 여부, 단체석 여부 및 이용 가능 좌석 확인 가능한 필터링 기능 제공
 
-### `yarn eject`
+![Home-Filter](/assets/UI/03-Home-filter.jpg)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### **2. Components**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- [ ] Search
+- [ ] Toggle Group
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+  - [ ] mypage-btn
+  - [ ] zoom-in-btn
+  - [ ] zoom-out-btn
+  - [ ] sync-btn
+  - [ ] current-location-btn
+  - [ ] filter-btn
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+---
 
-## Learn More
+## **Cafe Detail**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### **1. UI**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+카페 클릭시 카페 정보 열람 가능 ( DB에 저장해둔 자료 기반으로 제공)
+
+![Cafe-Detail](/assets/UI/04-Home-CafeDetail.jpg)
+
+### **2. Components**
+
+- [ ] Search Select Group
+  - [ ] phone-call-btn
+  - [ ] messages-btn
+  - [ ] options-btn
+- [ ] Image Slide
+- [ ] Text Content
+
+---
+
+## **Messages**
+
+### **1. UI**
+
+실시간 카페 현황, 자리 현황에 대해 간단한 코멘트 남길 수 있는 채팅 기능 추가
+
+![Messages](/assets/UI/05-Home-Messages.jpg)
+
+### **2. Components**
+
+---
+
+## **Mypage**
+
+## **Login**
+
+## **Signup**
