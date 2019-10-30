@@ -1,15 +1,4 @@
-import axios from "axios";
+const api: string =
+  "//dapi.kakao.com/v2/maps/sdk.js?appkey=ed4146d0b6d02f539c5cdeda2a953edbcallback=initMap";
 
-const api = axios.create({
-  baseURL: "",
-  params: {
-    api_key: ""
-  }
-});
-
-export const mapApi = {
-  getMap: () => api.get(""),
-  zoomIn: () => api.get(""),
-  zoomOut: () => api.get(""),
-  currentLocation: () => api.get("")
-};
+export default api;
