@@ -7,7 +7,6 @@ interface IState {
   error: string;
   loading: boolean;
 }
-
 export default class extends Component<{}, IState> {
   state = { map: {}, error: "", loading: false };
   async componentDidMount() {

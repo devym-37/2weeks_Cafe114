@@ -27,7 +27,7 @@
 
 흡연 가능 여부, 주차 가능 여부, 단체석 여부 및 이용 가능 좌석 확인 가능한 필터링 기능 제공
 
-![Home-Filter](/assets/UI/03-Home-filter.jpg)
+![Home-Filter](/assets/UI/03-Home-Filter.jpg)
 
 ### **2. Components**
 
