@@ -1,6 +1,7 @@
 import React from "react";
 import Router from "../router";
 import GlobalStyles from "../GlobalStyles";
+import PropTypes from "prop-types";
 
 interface IProps {
   isLoggedIn: boolean;
@@ -16,4 +17,7 @@ const AppPresenter: React.SFC<IProps> = ({ isLoggedIn }) =>
     </>
   );
 
+AppPresenter.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired
+};
 export default AppPresenter;
