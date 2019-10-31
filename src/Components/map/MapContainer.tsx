@@ -1,58 +1,106 @@
-import React, { Component } from "react";
-import MapPresenter from "./MapPresenter";
+/*global kakao*/
+import * as React from "react";
 import API from "../API";
+import { Map } from "react-kakao-maps";
+import { render } from "react-dom";
 
 declare global {
   interface Window {
     initMap: any;
     kakao: any;
-    parentNode: Node;
+    daum: any;
   }
 }
 interface Props {
   url: string;
 }
-
-export default class extends Component<{}, Props> {
-  componentDidMount() {
-    this.renderMap();
-  }
-  renderMap = () => {
-    this.loadScript(API);
-    window.initMap = this.initMap;
-  };
-
-  loadScript(url: string) {
-    var index = window.document.getElementsByTagName("script")[0];
-    var script = window.document.createElement("script");
-    script.src = url;
-    script.async = true; // map api를 가져오기 때문에 async 사용
-    script.defer = true;
-    index: HTMLScriptElement.parentNode.insertBefore(script, index); // script : newNode, index : referenceNode
-  } // 아래 주석과 같은 형태 함수 만들기
-
-  initMap = () => {
-    var mapContainer = document.getElementById("map"), // 지도를 표시할 div
-      mapOption = {
-        center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-      };
-
-    // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-    var map = new window.kakao.maps.Map(mapContainer, mapOption);
-  };
-  render() {
-    return (
-      <main>
-        <div id="map"></div>
-        <MapPresenter />
-      </main>
-    );
-  }
+interface State {
+  map: any;
 }
 
-/*
-<script type="text/javascript" 
-src="//dapi.kakao.com/v2/maps/sdk.js?appkey=발급받은 APP KEY를 사용하세요" async defer>
-</script>
- */
+declare var daum: any;
+
+const MapContainer = () => {
+  return (
+    <React.Fragment>
+      <Map options={{}} />
+    </React.Fragment>
+  );
+};
+
+export default MapContainer;
+
+// class MapContainer extends React.Component {
+//   componentDidMount() {
+//     const script = document.createElement("script");
+//     script.type = "text/javascript";
+//     script.src =
+//       "//dapi.kakao.com/v2/maps/sdk.js?appkey=4eafa52b2516f97b290cee98e3591fc3?autoload=false";
+//     script.async = true;
+//     script.defer = true;
+//     document.head.appendChild(script);
+
+//     script.onload = () => {
+//       window.kakao.maps.load(() => {
+//         let el = document.getElementById("maps");
+//         let map = new window.kakao.maps.Map(el, {
+//           center: new window.kakao.maps.Coords(523951.25, 1085073.75)
+//         });
+//       });
+//     };
+//   }
+
+//   render() {
+//     return (
+//       <React.Fragment>
+//         <div
+//           className="Map"
+//           id="maps"
+//           style={{ width: "400px", height: "400px" }}
+//         />
+//       </React.Fragment>
+//     );
+//   }
+// }
+
+// export default MapContainer;
+
+// class MapContainer extends React.Component<{}, Props, State> {
+//   componentDidMount() {
+//     this.renderMap();
+//   }
+//   renderMap = () => {
+//     loadScript(API);
+//     window.initMap = this.initMap;
+//   };
+
+//   initMap = () => {
+//     // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+//     var map = new window.kakao.maps.Map(document.getElementById("map"), {
+//       center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+//       level: 3 // 지도의 확대 레벨
+//     });
+//   };
+
+//   render() {
+//     return <div id="map" style={{ width: "400px", height: "400px" }}></div>;
+//   }
+// }
+
+// function loadScript(url: string) {
+//   var app = document.getElementById("map");
+//   var script = document.createElement("script");
+//   script.type = "text/javascript";
+//   script.src = url;
+//   script.async = true; // map api를 가져오기 때문에 async 사용
+//   script.defer = true;
+//   document.body.prepend(script);
+// } // 아래 주석과 같은 형태 함수 만들기
+
+// /*
+// <script type="text/javascript"
+// src="//dapi.kakao.com/v2/maps/sdk.js?appkey=발급받은 APP KEY를 사용하세요" async defer>
+// </script>
+//  */
+
+// export default MapContainer;
