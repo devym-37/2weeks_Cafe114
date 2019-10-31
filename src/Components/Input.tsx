@@ -12,28 +12,118 @@ const SearchGroup = styled.fieldset`
   padding-block-end: 0.625em;
   min-inline-size: min-content;
 `;
+const InputContainer = styled.div`
+  /* border-bottom: 1px solid #c0c0c0; */
+`;
+const Divider = styled.span`
+  width: 100%;
+  height: 1px;
+  background-color: #c0c0c0;
+`;
+const KewordGroup = styled.div`
+  margin: 0;
+  padding: 0;
+  display: block;
+`;
+
+const Legend = styled.legend`
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  font-size: 0;
+  line-height: 0;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+  display: block;
+  padding-inline-start: 2px;
+  padding-inline-end: 2px;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+`;
 
 const TextInput = styled.input`
   all: unset;
-  /* font-size: 16px; */
   box-sizing: border-box;
-  padding: 10px 70px 10px 48px;
-  margin: 0;
   width: 100%;
+  padding: 10px 70px 10px 48px;
   height: 51px;
-  text-shadow: "#000000";
-  /* border: solid 1px black; */
+  font-size: 16px;
   background-color: "#ffffff";
+  margin: 0;
+  -webkit-appearance: none;
+  -webkit-rtl-ordering: logical;
+  text-rendering: auto;
+  text-align: start;
+  text-shadow: "#000000";
   word-spacing: normal;
   text-transform: none;
   text-indent: 0px;
   display: inline-block;
+  line-height: 1.3;
+  font-weight: normal;
+  letter-spacing: 0;
   cursor: text;
-  font: 400 16px system-ui;
-  border-radius: ${props => props.theme.borderRadius};
 `;
 
-const FormPresenter = styled.form``;
+const Button = styled.button`
+  border: 0 none;
+  font-size: 100%;
+  cursor: pointer;
+  background: transparent;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+  text-rendering: auto;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  text-align: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+  position: absolute;
+  top: 21px;
+  left: 267px;
+  display: inline-block;
+`;
+
+const RealtimeContainer = styled.div`
+  position: relative;
+  height: 52px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  display: block;
+`;
+
+const SingleMode = styled.div`
+  position: relative;
+  height: 52px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  display: block;
+  font-size: 16px;
+`;
+
+const RollingContainer = styled.div`
+  transform: translate(0px, 0px);
+  position: absolute;
+  top: 0;
+  left: 100px;
+  right: 45px;
+  height: 52px;
+  margin: 0;
+  padding: 0;
+`;
+
+const FormPresenter = styled.form`
+  all: unset;
+`;
 
 interface IInputProps {
   value: string;
@@ -46,16 +136,29 @@ interface IFormProps {
 
 export const Input: React.FC<IInputProps> = ({ value, onChange }) => {
   return (
-    <>
-      <BtnHome />
-      <TextInput
-        type="text"
-        value={value}
-        onChange={onChange}
-        placeholder="장소, 지하철, 주소 검색"
-        // data-ga-event="search,input"
-      />
-    </>
+    <SearchGroup>
+      <Legend>검색</Legend>
+      <KewordGroup>
+        <InputContainer>
+          <BtnHome />
+          <TextInput
+            type="text"
+            value={value}
+            onChange={onChange}
+            placeholder="장소, 지하철, 주소 검색"
+            // data-ga-event="search,input"
+          />
+          <Button type="submit">검색하기</Button>
+        </InputContainer>
+        <Divider />
+        <RealtimeContainer>
+          <SingleMode>
+            실시간 제보
+            <RollingContainer>하이</RollingContainer>
+          </SingleMode>
+        </RealtimeContainer>
+      </KewordGroup>
+    </SearchGroup>
   );
 };
 
