@@ -3,25 +3,56 @@ import SearchPresenter from "./SearchPresenter";
 import { mapApi } from "../../Components/API";
 
 interface IState {
-  map: object;
+  term: string;
+  result: object;
   error: string;
   loading: boolean;
 }
 
 export default class extends Component<{}, IState> {
-  state = { map: {}, error: "", loading: false };
-  async componentDidMount() {
+  state = { term: "", result: {}, error: "", loading: false };
+
+  updateTerm = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(`target: `, event.target.value);
+    // const {
+    //   target: { value }
+    // } = event;
+    // this.setState({ term: value });
+  };
+
+  handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    const { term } = this.state;
+
+    if (term !== "") {
+      this.searchByTerm();
+    }
+  };
+
+  searchByTerm = async () => {
+    const { term } = this.state;
     try {
-      const map = await mapApi.getMap();
-      this.setState({ map });
+      this.setState({ loading: true });
+      const result = await mapApi.search(term);
+      this.setState({ result });
     } catch {
-      this.setState({ error: "Can't render kakao map" });
+      this.setState({ error: `can't find search location by ${term}` });
     } finally {
       this.setState({ loading: false });
     }
-  }
+  };
+
   render() {
-    const { map, error, loading } = this.state;
-    return <SearchPresenter map={map} error={error} loading={loading} />;
+    const { term, result, error, loading } = this.state;
+    return (
+      <SearchPresenter
+        term={term}
+        result={result}
+        error={error}
+        loading={loading}
+        updateTerm={this.updateTerm}
+        handleSubmit={this.handleSubmit}
+      />
+    );
   }
 }
