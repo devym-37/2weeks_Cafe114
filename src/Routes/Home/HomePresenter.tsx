@@ -12,7 +12,9 @@ interface IProps {
 }
 const HomePresenter: React.FC<IProps> = ({ map, error, loading }) => {
   return loading ? (
-    <Loader />
+    <Container>
+      <Loader />
+    </Container>
   ) : (
     map && (
       <Container>
