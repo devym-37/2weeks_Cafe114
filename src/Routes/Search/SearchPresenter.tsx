@@ -9,7 +9,7 @@ const Container = styled.div`
   top: 12px;
   left: 11px;
   width: 354px;
-  height: 152px;
+  height: 117px;
   border-radius: 3px;
   border: 1px solid #cecece;
   border-bottom: 1px solid #c0c0c0;
@@ -37,25 +37,17 @@ const SearchPresenter: React.FC<IProps> = ({
   error,
   loading
 }) => (
-  <Container>
-    <Form onSubmit={handleSubmit}>
-      <Input value={term} onChange={updateTerm} />
-    </Form>{" "}
-    {loading ? (
-      <Loader />
-    ) : (
-      <>
-        {result && (
-          <div>
-            <Helmet>
-              <title>카페114 | 검색결과</title>
-            </Helmet>
-            Search
-          </div>
-        )}
-      </>
-    )}
-  </Container>
+  <>
+    <Container>
+      <Helmet>
+        <title>카페114 | 검색결과</title>
+      </Helmet>
+      <Form onSubmit={handleSubmit}>
+        <Input value={term} onChange={updateTerm} />
+      </Form>
+    </Container>
+    {loading ? <Loader /> : <>{result && <div></div>}</>}
+  </>
 );
 
 export default SearchPresenter;
