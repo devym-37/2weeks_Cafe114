@@ -20,4 +20,5 @@ const AppPresenter: React.SFC<IProps> = ({ isLoggedIn }) =>
 AppPresenter.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired
 };
+
 export default AppPresenter;

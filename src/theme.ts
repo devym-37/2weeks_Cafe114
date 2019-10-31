@@ -7,4 +7,5 @@ const myTheme: DefaultTheme = {
     secondary: "#efebff"
   }
 };
-export { myTheme };
+
+export default myTheme;
