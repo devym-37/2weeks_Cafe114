@@ -8,17 +8,17 @@ interface IState {
   loading: boolean;
 }
 export default class extends Component<{}, IState> {
-  state = { map: {}, error: "", loading: false };
-  async componentDidMount() {
-    try {
-      const map = await mapApi.getMap();
-      this.setState({ map });
-    } catch {
-      this.setState({ error: "Can't render kakao map" });
-    } finally {
-      this.setState({ loading: false });
-    }
-  }
+  state = { map: {}, error: "", loading: true };
+  //   async componentDidMount() {
+  //     try {
+  //       const map = await mapApi.getMap();
+  //       this.setState({ map });
+  //     } catch {
+  //       this.setState({ error: "Can't render kakao map" });
+  //     } finally {
+  //       this.setState({ loading: false });
+  //     }
+  //   }
   render() {
     const { map, error, loading } = this.state;
     return <HomePresenter map={map} error={error} loading={loading} />;
