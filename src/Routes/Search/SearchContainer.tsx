@@ -13,11 +13,10 @@ export default class extends Component<{}, IState> {
   state = { term: "", result: {}, error: "", loading: false };
 
   updateTerm = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(`target: `, event.target.value);
-    // const {
-    //   target: { value }
-    // } = event;
-    // this.setState({ term: value });
+    const {
+      target: { value }
+    } = event;
+    this.setState({ term: value });
   };
 
   handleSubmit = (event: React.FormEvent) => {
@@ -36,7 +35,7 @@ export default class extends Component<{}, IState> {
       const result = await mapApi.search(term);
       this.setState({ result });
     } catch {
-      this.setState({ error: `can't find search location by ${term}` });
+      this.setState({ error: `can't find location by ${term}` });
     } finally {
       this.setState({ loading: false });
     }
@@ -44,6 +43,7 @@ export default class extends Component<{}, IState> {
 
   render() {
     const { term, result, error, loading } = this.state;
+    console.log(`term: `, term);
     return (
       <SearchPresenter
         term={term}
