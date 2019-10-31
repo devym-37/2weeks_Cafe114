@@ -4,12 +4,24 @@
 
 ## Screens
 
-- [ ] [Home](#home)
-- [ ] [CafeDetail](#cafe-detail)
-- [ ] [Messages](#messages)
-- [ ] [Mypage](#mypage)
-- [ ] [Login](#login)
-- [ ] [Signup](#signup)
+### Logged Out:
+
+    - [ ] [Home](#home)
+    - [ ] [CafeDetail](#cafe-detail)
+    - [ ] [Messages](#messages)
+    - [ ] [Phone Login](#login)
+    - [ ] Verify Phone Number
+    - [ ] Social Login
+    - [ ] [Signup](#signup)
+
+### Logged In:
+
+    - [ ] [Home](#home)
+    - [ ] [Edit Account](#mypage)
+    - [ ] Settings
+    - [ ] Saved Places
+    - [ ] Send messages
+    - [ ] Search, Messages History
 
 ---
 

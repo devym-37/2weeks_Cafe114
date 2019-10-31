@@ -11,5 +11,6 @@ export const mapApi = {
   getMap: () => api.get(""),
   zoomIn: () => api.get(""),
   zoomOut: () => api.get(""),
-  currentLocation: () => api.get("")
+  currentLocation: () => api.get(""),
+  search: (term: string) => api.get("")
 };
