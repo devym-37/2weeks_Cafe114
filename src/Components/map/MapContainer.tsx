@@ -1,34 +1,31 @@
 /*global kakao*/
 import * as React from "react";
-import API from "../API";
-import { Map } from "react-kakao-maps";
-import { render } from "react-dom";
 
-declare global {
-  interface Window {
-    initMap: any;
-    kakao: any;
-    daum: any;
+declare var kakao: any;
+
+const mystyles = {
+  width: "100%",
+  height: "100vh"
+} as React.CSSProperties;
+
+class Map extends React.Component {
+  componentDidMount() {
+    const el = document.getElementById("map");
+    let daumMap = new kakao.maps.Map(el, {
+      center: new kakao.maps.LatLng(33.450701, 126.570667)
+    });
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <div className="Map" id="map" style={mystyles} />
+      </React.Fragment>
+    );
   }
 }
-interface Props {
-  url: string;
-}
-interface State {
-  map: any;
-}
 
-declare var daum: any;
-
-const MapContainer = () => {
-  return (
-    <React.Fragment>
-      <Map options={{}} />
-    </React.Fragment>
-  );
-};
-
-export default MapContainer;
+export default Map;
 
 // class MapContainer extends React.Component {
 //   componentDidMount() {
