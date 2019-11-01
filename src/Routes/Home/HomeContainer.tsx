@@ -10,6 +10,7 @@ interface IState {
   result: object;
 }
 export default class extends Component<{}, IState> {
+
   state = { term: "", result: {}, map: {}, error: "", loading: false };
 
   updateTerm = (event: React.ChangeEvent<HTMLInputElement>) => {
