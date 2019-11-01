@@ -7,7 +7,7 @@ const Container = styled.div``;
 
 const HomeLink = styled(Link)``;
 
-const LogoContainer = styled.div`
+const Logo = styled.div`
   background-image: url(${logo});
   background-size: cover;
   background-repeat: no-repeat;
@@ -36,7 +36,10 @@ const HomeNew = styled.span`
 
 const BtnHome: React.SFC = () => (
   <Container>
-    <LogoContainer />
+    <Link to="/">
+      <Logo />
+    </Link>
+
     <HomeNew />
   </Container>
 );
