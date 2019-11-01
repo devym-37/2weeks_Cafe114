@@ -70,10 +70,11 @@ const Text = styled.span`
   }
 `;
 interface IconButtonProps {
-  linkTo: string;
+  linkTo?: string;
   viewBox: string;
   className?: string;
   path: string;
+  click?: any;
 }
 
 interface TextButtonProps {
@@ -86,14 +87,17 @@ export const IconButton: React.SFC<IconButtonProps> = ({
   linkTo,
   path,
   viewBox,
-  className
+  className,
+  click
 }) => (
   <Container className={className}>
-    <Link href={linkTo}>
-      <Icon viewBox={viewBox}>
-        <path d={path} />
-      </Icon>
-    </Link>
+    <span onClick={click}>
+      <Link href={linkTo}>
+        <Icon viewBox={viewBox}>
+          <path d={path} />
+        </Icon>
+      </Link>
+    </span>
   </Container>
 );
 
