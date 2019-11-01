@@ -13,7 +13,6 @@ const AppPresenter: React.SFC<IProps> = ({ isLoggedIn }) =>
     <span>you are in</span>
   ) : (
     <>
-      <Map />
       <Router />
       <GlobalStyles />
     </>
