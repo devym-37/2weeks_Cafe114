@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import BtnHome from "../Components/btn-home";
 
-const SearchGroup = styled.fieldset`
-  display: block;
-  margin-inline-start: 2px;
-  margin-inline-end: 2px;
-  min-inline-size: min-content;
-`;
+// const SearchGroup = styled.fieldset`
+//   display: block;
+//   margin-inline-start: 2px;
+//   margin-inline-end: 2px;
+//   min-inline-size: min-content;
+// `;
 const InputContainer = styled.div`
   display: block;
   margin-inline-start: 2px;
@@ -29,7 +29,7 @@ const InputContainer = styled.div`
   background-color: #fff;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.075), -1px 1px 1px rgba(0, 0, 0, 0.03),
     1px 1px 1px rgba(0, 0, 0, 0.03);
-  z-index: 2;
+  z-index: 3;
 `;
 const Divider = styled.span`
   width: 100%;
@@ -152,29 +152,26 @@ interface IFormProps {
 
 export const Input: React.FC<IInputProps> = ({ value, onChange }) => {
   return (
-    <SearchGroup>
-      <Legend>검색</Legend>
-      <KewordGroup>
-        <InputContainer>
-          <BtnHome />
-          <TextInput
-            type="text"
-            value={value}
-            onChange={onChange}
-            placeholder="장소, 지하철, 주소 검색"
-            // data-ga-event="search,input"
-          />
-          <Button type="submit">검색하기</Button>
-        </InputContainer>
-        {/* <Divider />
+    <KewordGroup>
+      <InputContainer>
+        <BtnHome />
+        <TextInput
+          type="text"
+          value={value}
+          onChange={onChange}
+          placeholder="장소, 지하철, 주소 검색"
+          // data-ga-event="search,input"
+        />
+        <Button type="submit">검색하기</Button>
+      </InputContainer>
+      {/* <Divider />
         <RealtimeContainer>
           <SingleMode>
             실시간 제보
             <RollingContainer>하이</RollingContainer>
           </SingleMode>
         </RealtimeContainer> */}
-      </KewordGroup>
-    </SearchGroup>
+    </KewordGroup>
   );
 };
 
