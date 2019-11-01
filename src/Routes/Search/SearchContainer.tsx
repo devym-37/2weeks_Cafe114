@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import SearchPresenter from "./SearchPresenter";
-import { mapApi } from "../../Components/API";
 
 interface IState {
   term: string;
@@ -23,23 +22,23 @@ export default class extends Component<{}, IState> {
     event.preventDefault();
     const { term } = this.state;
 
-    if (term !== "") {
-      this.searchByTerm();
-    }
+    // if (term !== "") {
+    //   this.searchByTerm();
+    // }
   };
 
-  searchByTerm = async () => {
-    const { term } = this.state;
-    try {
-      this.setState({ loading: true });
-      const result = await mapApi.search(term);
-      this.setState({ result });
-    } catch {
-      this.setState({ error: `can't find location by ${term}` });
-    } finally {
-      this.setState({ loading: false });
-    }
-  };
+  // searchByTerm = async () => {
+  //   const { term } = this.state;
+  //   try {
+  //     this.setState({ loading: true });
+  //     const result = await mapApi.search(term);
+  //     this.setState({ result });
+  //   } catch {
+  //     this.setState({ error: `can't find location by ${term}` });
+  //   } finally {
+  //     this.setState({ loading: false });
+  //   }
+  // };
 
   render() {
     const { term, result, error, loading } = this.state;
