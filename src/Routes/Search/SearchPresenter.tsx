@@ -5,7 +5,7 @@ import { Input, Form } from "../../Components/Input";
 import Helmet from "react-helmet";
 
 const Container = styled.div`
-  position: absolute;
+  /* position: absolute;
   top: 12px;
   left: 11px;
   width: 354px;
@@ -17,7 +17,7 @@ const Container = styled.div`
   background-color: #fff;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.075), -1px 1px 1px rgba(0, 0, 0, 0.03),
     1px 1px 1px rgba(0, 0, 0, 0.03);
-  z-index: 2;
+  z-index: 2; */
 `;
 
 interface IProps {

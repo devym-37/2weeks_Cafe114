@@ -8,7 +8,7 @@ const Container = styled.div``;
 const HomeLink = styled(Link)``;
 
 const LogoContainer = styled.div`
-  background-image: "../assets/logo.png";
+  background-image: ${logo};
   background-size: contain;
   position: absolute;
   top: 15px;
