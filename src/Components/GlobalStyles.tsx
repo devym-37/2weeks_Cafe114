@@ -17,6 +17,9 @@ const GlobalStyle = createGlobalStyle`
         background-color: white;
         color: "#000000";
     }
+    h1, div{
+      font-family: 'Noto Sans KR', sans-serif;
+    }
     input,
     button {
         &:focus, &:active{outline:none}

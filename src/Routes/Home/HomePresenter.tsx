@@ -5,6 +5,7 @@ import Loader from "../../Components/Loader";
 import Error from "../../Components/Error";
 import { Input, Form } from "../../Components/Input";
 import ToolGroup from "../../Components/ToolGroup";
+import Map from "../../Components/Map";
 const Container = styled.div``;
 
 interface IProps {
@@ -43,6 +44,7 @@ const HomePresenter: React.FC<IProps> = ({
           <Helmet>
             <title>Home | 카페114</title>
           </Helmet>
+          <Map />
           <Form onSubmit={handleSubmit}>
             <Input value={term} onChange={updateTerm} />
           </Form>

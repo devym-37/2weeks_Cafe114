@@ -3,7 +3,9 @@ import styled from "styled-components";
 import Loader from "../../Components/Loader";
 import { Input, Form } from "../../Components/Input";
 import Helmet from "react-helmet";
-
+import Map from "../../Components/Map";
+import ToolGroup from "../../Components/ToolGroup";
+import Error from "../../Components/Error";
 const Container = styled.div`
   /* position: absolute;
   top: 12px;
@@ -36,18 +38,35 @@ const SearchPresenter: React.FC<IProps> = ({
   handleSubmit,
   error,
   loading
-}) => (
-  <>
+}) => {
+  return loading ? (
     <Container>
-      <Helmet>
-        <title>카페114 | 검색결과</title>
-      </Helmet>
-      <Form onSubmit={handleSubmit}>
-        <Input value={term} onChange={updateTerm} />
-      </Form>
+      <Loader />
     </Container>
-    {loading ? <Loader /> : <>{result && <div></div>}</>}
-  </>
-);
+  ) : (
+    <>
+      {error && (
+        <Container>
+          <Helmet>
+            <title>Error | 카페114</title>
+          </Helmet>
+          <Error />
+        </Container>
+      )}
+      {!error && (
+        <Container>
+          <Helmet>
+            <title>Home | 카페114</title>
+          </Helmet>
+          <Map />
+          <Form onSubmit={handleSubmit}>
+            <Input value={term} onChange={updateTerm} />
+          </Form>
+          <ToolGroup />
+        </Container>
+      )}
+    </>
+  );
+};
 
 export default SearchPresenter;
