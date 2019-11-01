@@ -3,6 +3,14 @@ import styled from "styled-components";
 import Helmet from "react-helmet";
 import Loader from "../../Components/Loader";
 import BackArrow from "../../Components/BackArrow";
+import {
+  ZoomIn,
+  ZoomOut,
+  Update,
+  CurrentLocation,
+  Filter
+} from "../../Components/ToolGroup/MapControl";
+import { Mypage } from "../../Components/ToolGroup/Mypage";
 
 const Container = styled.div``;
 
@@ -15,10 +23,16 @@ interface IProps {
   error: string;
   loading: boolean;
 }
+
 const HomePresenter: React.FC<IProps> = ({ map, error, loading }) => {
   return loading ? (
     <Container>
-      {/* 테스트용 <BackArrowExtended backTo={"/search"} /> */}
+      <Mypage />
+      <ZoomIn />
+      <ZoomOut />
+      <CurrentLocation />
+      <Update />
+      <Filter />
       <Loader />
     </Container>
   ) : (
