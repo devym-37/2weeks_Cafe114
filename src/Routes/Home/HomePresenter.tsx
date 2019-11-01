@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Helmet from "react-helmet";
 import Loader from "../../Components/Loader";
 import BackArrow from "../../Components/BackArrow";
+import ToolGroup from "../../Components/ToolGroup";
+import { Form, Input } from "../../Components/Input";
 
 const Container = styled.div``;
 
@@ -11,14 +13,24 @@ const BackArrowExtended = styled(BackArrow)`
   padding: 50px 20px;
 `;
 interface IProps {
+  term: string;
   map: object;
   error: string;
   loading: boolean;
+  updateTerm: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: (event: React.FormEvent) => void;
 }
-const HomePresenter: React.FC<IProps> = ({ map, error, loading }) => {
+
+const HomePresenter: React.FC<IProps> = ({
+  term,
+  map,
+  error,
+  handleSubmit,
+  updateTerm,
+  loading
+}) => {
   return loading ? (
     <Container>
-      {/* 테스트용 <BackArrowExtended backTo={"/search"} /> */}
       <Loader />
     </Container>
   ) : (
@@ -27,7 +39,10 @@ const HomePresenter: React.FC<IProps> = ({ map, error, loading }) => {
         <Helmet>
           <title>카페114 | Home</title>
         </Helmet>
-        Home
+        <Form onSubmit={handleSubmit}>
+          <Input value={term} onChange={updateTerm} />
+        </Form>
+        <ToolGroup />
       </Container>
     )
   );
