@@ -2,31 +2,26 @@ import React from "react";
 import styled from "styled-components";
 import Helmet from "react-helmet";
 import Loader from "../../Components/Loader";
-import BackArrow from "../../Components/BackArrow";
+import Error from "../../Components/Error";
+import { Input, Form } from "../../Components/Input";
 import ToolGroup from "../../Components/ToolGroup";
-import { Form, Input } from "../../Components/Input";
-
 const Container = styled.div``;
 
-const BackArrowExtended = styled(BackArrow)`
-  margin-top: 30px;
-  padding: 50px 20px;
-`;
 interface IProps {
-  term: string;
   map: object;
   error: string;
   loading: boolean;
+  term: string;
   updateTerm: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event: React.FormEvent) => void;
 }
 
 const HomePresenter: React.FC<IProps> = ({
+  handleSubmit,
+  updateTerm,
   term,
   map,
   error,
-  handleSubmit,
-  updateTerm,
   loading
 }) => {
   return loading ? (
@@ -34,17 +29,27 @@ const HomePresenter: React.FC<IProps> = ({
       <Loader />
     </Container>
   ) : (
-    map && (
-      <Container>
-        <Helmet>
-          <title>카페114 | Home</title>
-        </Helmet>
-        <Form onSubmit={handleSubmit}>
-          <Input value={term} onChange={updateTerm} />
-        </Form>
-        <ToolGroup />
-      </Container>
-    )
+    <>
+      {error && (
+        <Container>
+          <Helmet>
+            <title>Error | 카페114</title>
+          </Helmet>
+          <Error />
+        </Container>
+      )}
+      {!error && map && (
+        <Container>
+          <Helmet>
+            <title>Home | 카페114</title>
+          </Helmet>
+          <Form onSubmit={handleSubmit}>
+            <Input value={term} onChange={updateTerm} />
+          </Form>
+          <ToolGroup />
+        </Container>
+      )}
+    </>
   );
 };
 

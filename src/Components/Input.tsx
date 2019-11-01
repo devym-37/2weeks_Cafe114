@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import BtnHome from "../Components/btn-home";
+import BtnHome from "./HomeButton";
 
 // const SearchGroup = styled.fieldset`
 //   display: block;
@@ -65,7 +65,7 @@ const TextInput = styled.input`
   all: unset;
   box-sizing: border-box;
   width: 100%;
-  padding: 5px 70px 10px 48px;
+  padding: 5px 40px 10px 110px;
   height: 48px;
   font-size: 16px;
   background-color: #ffffff;
@@ -98,12 +98,12 @@ const Button = styled.button`
   text-transform: none;
   text-indent: 0px;
   text-shadow: none;
-  text-align: center;
+  text-align: right;
   align-items: flex-start;
   box-sizing: border-box;
   position: absolute;
-  top: 18px;
-  left: 267px;
+  top: 19px;
+  left: 320px;
   display: inline-block;
 `;
 
@@ -162,7 +162,17 @@ export const Input: React.FC<IInputProps> = ({ value, onChange }) => {
           placeholder="장소, 지하철, 주소 검색"
           // data-ga-event="search,input"
         />
-        <Button type="submit">검색하기</Button>
+        <Button type="submit">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="#666666"
+          >
+            <path d="M23.822 20.88l-6.353-6.354c.93-1.465 1.467-3.2 1.467-5.059.001-5.219-4.247-9.467-9.468-9.467s-9.468 4.248-9.468 9.468c0 5.221 4.247 9.469 9.468 9.469 1.768 0 3.421-.487 4.839-1.333l6.396 6.396 3.119-3.12zm-20.294-11.412c0-3.273 2.665-5.938 5.939-5.938 3.275 0 5.94 2.664 5.94 5.938 0 3.275-2.665 5.939-5.94 5.939-3.274 0-5.939-2.664-5.939-5.939z" />
+          </svg>
+        </Button>
       </InputContainer>
       {/* <Divider />
         <RealtimeContainer>
