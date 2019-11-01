@@ -6,14 +6,30 @@ const SearchGroup = styled.fieldset`
   display: block;
   margin-inline-start: 2px;
   margin-inline-end: 2px;
+  min-inline-size: min-content;
+`;
+const InputContainer = styled.div`
+  display: block;
+  margin-inline-start: 2px;
+  margin-inline-end: 2px;
   padding-block-start: 0.35em;
   padding-inline-start: 0.75em;
   padding-inline-end: 0.75em;
   padding-block-end: 0.625em;
   min-inline-size: min-content;
-`;
-const InputContainer = styled.div`
-  /* border-bottom: 1px solid #c0c0c0; */
+  position: absolute;
+  top: 12px;
+  left: 11px;
+  width: 354px;
+  height: 56px;
+  border-radius: 3px;
+  border: 1px solid #cecece;
+  border-bottom: 1px solid #c0c0c0;
+  border-top: 1px solid #e9e9e9;
+  background-color: #fff;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.075), -1px 1px 1px rgba(0, 0, 0, 0.03),
+    1px 1px 1px rgba(0, 0, 0, 0.03);
+  z-index: 2;
 `;
 const Divider = styled.span`
   width: 100%;
@@ -49,16 +65,16 @@ const TextInput = styled.input`
   all: unset;
   box-sizing: border-box;
   width: 100%;
-  padding: 10px 70px 10px 48px;
-  height: 51px;
+  padding: 5px 70px 10px 48px;
+  height: 48px;
   font-size: 16px;
-  background-color: "#ffffff";
+  background-color: #ffffff;
   margin: 0;
   -webkit-appearance: none;
   -webkit-rtl-ordering: logical;
   text-rendering: auto;
   text-align: start;
-  text-shadow: "#000000";
+  text-shadow: #000000;
   word-spacing: normal;
   text-transform: none;
   text-indent: 0px;
@@ -86,7 +102,7 @@ const Button = styled.button`
   align-items: flex-start;
   box-sizing: border-box;
   position: absolute;
-  top: 21px;
+  top: 18px;
   left: 267px;
   display: inline-block;
 `;
@@ -150,13 +166,13 @@ export const Input: React.FC<IInputProps> = ({ value, onChange }) => {
           />
           <Button type="submit">검색하기</Button>
         </InputContainer>
-        <Divider />
+        {/* <Divider />
         <RealtimeContainer>
           <SingleMode>
             실시간 제보
             <RollingContainer>하이</RollingContainer>
           </SingleMode>
-        </RealtimeContainer>
+        </RealtimeContainer> */}
       </KewordGroup>
     </SearchGroup>
   );

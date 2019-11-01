@@ -6,7 +6,7 @@ const Link = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px 10px;
+  padding: 0;
   background: white;
   width: 36px;
   height: 36px;
@@ -38,15 +38,14 @@ const Link = styled.a`
 `;
 
 const Container = styled.div`
-  width: 36px;
+  width: 100px;
   display: flex;
-  position: relative;
-  left: 300px;
+  /* position: relative; */
   top: 0px;
-  width: 100%;
-  height: 100%;
+  /* width: 100%;
+  height: 100%; */
   flex-direction: column;
-  justify-content: right;
+  align-items: center;
 `;
 
 const Icon = styled.svg`
