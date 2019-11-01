@@ -75,6 +75,7 @@ interface IconButtonProps {
   className?: string;
   path: string;
   click?: any;
+  id?: string;
 }
 
 interface TextButtonProps {
@@ -88,16 +89,15 @@ export const IconButton: React.SFC<IconButtonProps> = ({
   path,
   viewBox,
   className,
-  click
+  click,
+  id
 }) => (
   <Container className={className}>
-    <span onClick={click}>
-      <Link href={linkTo}>
-        <Icon viewBox={viewBox}>
-          <path d={path} />
-        </Icon>
-      </Link>
-    </span>
+    <Link onClick={click} href={linkTo} id={id}>
+      <Icon viewBox={viewBox}>
+        <path d={path} />
+      </Icon>
+    </Link>
   </Container>
 );
 
