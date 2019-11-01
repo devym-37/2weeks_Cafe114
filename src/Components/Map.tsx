@@ -79,7 +79,7 @@ class Map extends Component {
         position: new kakao.maps.LatLng(place.y, place.x),
         image: hollysMarkerImage
       });
-      console.log("place.place_name : ", place.place_name);
+      console.log("place.place_name : ", place);
       // 마커에 클릭이벤트를 등록합니다
       kakao.maps.event.addListener(marker, "mouseover", function() {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
@@ -94,6 +94,7 @@ class Map extends Component {
         infowindow.close();
       });
     }
+
     // 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
     function zoomIn() {
       kakaoMap.setLevel(kakaoMap.getLevel() - 1);
@@ -103,6 +104,10 @@ class Map extends Component {
     function zoomOut() {
       kakaoMap.setLevel(kakaoMap.getLevel() + 1);
     }
+    // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+    var zoomControl = new kakao.maps.ZoomControl();
+    kakaoMap.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+    kakao.maps.event.addListener(kakaoMap, "zoom_changed");
   }
 
   marker(map: any) {
