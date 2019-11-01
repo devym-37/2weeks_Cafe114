@@ -8,7 +8,7 @@ interface IState {
   loading: boolean;
 }
 export default class extends Component<{}, IState> {
-  state = { map: {}, error: "", loading: true };
+  state = { map: {}, error: "", loading: false };
   //   async componentDidMount() {
   //     try {
   //       const map = await mapApi.getMap();

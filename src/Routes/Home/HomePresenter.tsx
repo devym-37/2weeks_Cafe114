@@ -21,7 +21,6 @@ const HomePresenter: React.FC<IProps> = ({ map, error, loading }) => {
         <Helmet>
           <title>카페114 | Home</title>
         </Helmet>
-        Home
       </Container>
     )
   );
