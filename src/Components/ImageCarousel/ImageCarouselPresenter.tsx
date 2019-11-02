@@ -9,8 +9,8 @@ interface IContainer {
   url: string;
 }
 const ImageContainer = styled.div<IContainer>`
-  width: 230px;
-  height: 153px;
+  width: 180px;
+  height: 140px;
   background-image: url(${props => props.url});
   background-position: center;
   background-repeat: no-repeat;
@@ -22,14 +22,14 @@ const ImageContainer = styled.div<IContainer>`
 export default class Resizable extends Component<IProps> {
   state = {
     display: true,
-    width: 700
+    width: 400
   };
   render() {
     const settings = {
-      dots: false,
+      dots: true,
       infinite: true,
       speed: 500,
-      slidesToShow: 3,
+      slidesToShow: 2,
       slidesToScroll: 1
     };
     const { urls } = this.props;
@@ -43,8 +43,8 @@ export default class Resizable extends Component<IProps> {
           }}
         >
           <Slider {...settings}>
-            {urls.map(url => (
-              <ImageContainer url={url} />
+            {urls.map((url, i) => (
+              <ImageContainer key={i} url={url} />
             ))}
           </Slider>
         </div>
