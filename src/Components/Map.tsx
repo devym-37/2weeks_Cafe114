@@ -64,40 +64,78 @@ class Map extends Component<{}, Istate> {
     // 주소-좌표 변환 객체를 생성합니다
     var geocoder = new kakao.maps.services.Geocoder();
 
-    for (var i = 0; i < this.state.result.length; i++) {
-      geocoder.addressSearch(this.state.result[i].address, placesSearchCB);
-    }
-    // 주소로 좌표를 검색합니다
-    function placesSearchCB(data: any, status: any, pagination: any) {
-      if (status === kakao.maps.services.Status.OK) {
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-        // LatLngBounds 객체에 좌표를 추가합니다
-        var bounds = new kakao.maps.LatLngBounds();
-        displayMarker(data[0]);
-        bounds.extend(new kakao.maps.LatLng(data[0].y, data[0].x));
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-        kakaoMap.setBounds(bounds);
+    // for (var i = 0; i < this.state.result.length; i++) {
+    //   geocoder.addressSearch(this.state.result[i], placesSearchCB);
+    // }
+    // // 주소로 좌표를 검색합니다
+    // function placesSearchCB(data: any, status: any, pagination: any) {
+    //   if (status === kakao.maps.services.Status.OK) {
+    //     // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+    //     // LatLngBounds 객체에 좌표를 추가합니다
+    //     var bounds = new kakao.maps.LatLngBounds();
+    //     displayMarker(data[0]);
+    //     bounds.extend(new kakao.maps.LatLng(data[0].y, data[0].x));
+    //     // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+    //     kakaoMap.setBounds(bounds);
+    //   }
+    // }
+    // function displayMarker(place: any) {
+    //   var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+    //   // 마커를 생성하고 지도에 표시합니다
+    //   var marker = new kakao.maps.Marker({
+    //     map: kakaoMap,
+    //     position: new kakao.maps.LatLng(place.y, place.x),
+    //     image: hollysMarkerImage
+    //   });
+    //   console.log("place.place_name : ", place.place_name);
+    //   // 마커에 클릭이벤트를 등록합니다
+    //   kakao.maps.event.addListener(marker, "mouseover", function() {
+    //     // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+    //     infowindow.setContent(
+    //       '<div style="padding:5px;font-size:12px;">' + `cafe114` + "</div>"
+    //     );
+    //     infowindow.open(kakaoMap, marker);
+    //   });
+    //   kakao.maps.event.addListener(marker, "mouseout", function() {
+    //     infowindow.close();
+    //   });
+    // }
+    var positions = [
+      {
+        title: "카카오",
+        latlng: new kakao.maps.LatLng(33.450705, 126.570677)
+      },
+      {
+        title: "생태연못",
+        latlng: new kakao.maps.LatLng(33.450936, 126.569477)
+      },
+      {
+        title: "텃밭",
+        latlng: new kakao.maps.LatLng(33.450879, 126.56994)
+      },
+      {
+        title: "근린공원",
+        latlng: new kakao.maps.LatLng(33.451393, 126.570738)
       }
-    }
-    function displayMarker(place: any) {
-      var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-      // 마커를 생성하고 지도에 표시합니다
+    ];
+
+    // 마커 이미지의 이미지 주소입니다
+    var imageSrc =
+      "http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+    for (var i = 0; i < positions.length; i++) {
+      // 마커 이미지의 이미지 크기 입니다
+      var imageSizes = new kakao.maps.Size(24, 35);
+
+      // 마커 이미지를 생성합니다
+      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSizes);
+
+      // 마커를 생성합니다
       var marker = new kakao.maps.Marker({
-        map: kakaoMap,
-        position: new kakao.maps.LatLng(place.y, place.x),
-        image: hollysMarkerImage
-      });
-      console.log("place.place_name : ", place.place_name);
-      // 마커에 클릭이벤트를 등록합니다
-      kakao.maps.event.addListener(marker, "mouseover", function() {
-        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-        infowindow.setContent(
-          '<div style="padding:5px;font-size:12px;">' + `cafe114` + "</div>"
-        );
-        infowindow.open(kakaoMap, marker);
-      });
-      kakao.maps.event.addListener(marker, "mouseout", function() {
-        infowindow.close();
+        map: kakaoMap, // 마커를 표시할 지도
+        position: positions[i].latlng, // 마커를 표시할 위치
+        title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        image: markerImage // 마커 이미지
       });
     }
   }
