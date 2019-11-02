@@ -21,7 +21,7 @@ const api = axios.create({
 
 export const serverApi = {
   getAllCafes: () => api.get("cafe"),
-  getMap: () => api.get(""),
+  getCafeInfobyId: (id: number) => api.get(`cafe/${id}`),
   zoomIn: () => api.get(""),
   zoomOut: () => api.get(""),
   currentLocation: () => api.get(""),

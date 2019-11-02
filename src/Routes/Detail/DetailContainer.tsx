@@ -1,26 +1,63 @@
-import React, { Component } from "react";
+import React, { Component, ChangeEvent } from "react";
 import DetailPresenter from "./DetailPresenter";
-import { updateExpression } from "@babel/types";
-
-interface IState {
-  term: string;
-  result: object;
-  error: string;
-  loading: boolean;
+import { serverApi } from "../../Components/API";
+import { RouteComponentProps } from "react-router";
+interface IInfo {
+  name: string;
+  address: string;
+  parkingLot: number;
+  smokingRoom: number;
+  telephone: string;
+  images: Array<string>;
 }
 
-export default class extends Component<{}, IState> {
-  state = { term: "", result: { name: "" }, error: "", loading: false };
-  // async componentDidMount() {
-  //   try {
-  //     const result = await mapApi.getMap();
-  //     this.setState({ result });
-  //   } catch {
-  //     this.setState({ error: "Can't render kakao map" });
-  //   } finally {
-  //     this.setState({ loading: false });
-  //   }
-  // }
+interface IState {
+  id: number;
+  result: IInfo;
+  error: string;
+  loading: boolean;
+  term: string;
+}
+interface IProps extends RouteComponentProps<any> {
+  updateTerm: (event: ChangeEvent<HTMLInputElement>) => void;
+}
+
+export default class extends Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    const {
+      match: {
+        params: { id }
+      }
+    } = props;
+    this.state = {
+      id: props.match.params.id,
+      result: {
+        images: [],
+        name: "",
+        address: "",
+        parkingLot: 0,
+        smokingRoom: 0,
+        telephone: ""
+      },
+      term: "",
+      error: "",
+      loading: false
+    };
+  }
+
+  async componentDidMount() {
+    try {
+      const { id } = this.state;
+      const { data: result } = await serverApi.getCafeInfobyId(id);
+
+      this.setState({ result });
+    } catch {
+      this.setState({ error: "Can't render kakao map" });
+    } finally {
+      this.setState({ loading: false });
+    }
+  }
   updateTerm = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value }
@@ -29,12 +66,13 @@ export default class extends Component<{}, IState> {
   };
 
   render() {
-    const { term, result, error, loading } = this.state;
+    const { result, term, error, loading } = this.state;
+    // console.log("result: ", result);
     return (
       <DetailPresenter
+        result={result}
         term={term}
         updateTerm={this.updateTerm}
-        result={result}
         error={error}
         loading={loading}
       />

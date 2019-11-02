@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-
+import { ToastContainer } from "react-toastify";
 import AppPresenter from "./AppPresenter";
-
+import "react-toastify/dist/ReactToastify.css";
 interface Istate {
   isLoggedIn: boolean;
 }
@@ -15,6 +15,7 @@ class AppContainer extends Component<{}, Istate> {
     return (
       <div className="App">
         <AppPresenter isLoggedIn={isLoggedIn} />
+        <ToastContainer draggable={true} position={"top-center"} />
       </div>
     );
   }
