@@ -2,27 +2,27 @@ import React, { Component } from "react";
 import { serverApi } from "../../Components/API";
 
 interface Istate {
-  adress: Array<string>;
+  result: Array<string>;
   loading: boolean;
   error: string;
 }
 class MapContainer extends Component<{}, Istate> {
-  state = { adress: [], loading: true, error: "" };
+  state = { result: [], loading: true, error: "" };
 
   async componentDidMount() {
-    const { adress } = this.state;
-
     try {
-      const adress = await serverApi.getAdress();
-
-      console.log(`adress: `, adress);
+      const { data: result } = await serverApi.getAllCafes();
+      this.setState({ result });
     } catch {
+      this.setState({ error: "Can't load kakaoMap" });
     } finally {
       this.setState({ loading: false });
     }
   }
 
   render() {
+    const { result, loading, error } = this.state;
+    console.log(`result: `, result);
     return <div></div>;
   }
 }
