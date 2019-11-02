@@ -1,7 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-
 const Link = styled.a`
+  vertical-align: top;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  width: 12px;
+  height: 46px;
+`;
+const BoxLink = styled.a`
   vertical-align: top;
   display: flex;
   align-items: center;
@@ -54,12 +63,19 @@ const Icon = styled.svg`
   transition: fill 0.25s;
   width: 20px;
   height: 20px;
-
-  ${Link}:hover & {
+  ${BoxLink}:hover & {
     fill: ${props => props.theme.colors.main};
   }
 `;
 
+const CustomColorIcon = styled.svg`
+  flex: none;
+  fill: ${props => props.fill};
+  transition: fill 0.25s;
+  ${Link}:hover & {
+    fill: rgba(255, 255, 255, 0.6);
+  }
+`;
 const Text = styled.span`
   flex: none;
   color: #666666;
@@ -74,6 +90,8 @@ interface IconButtonProps {
   viewBox: string;
   className?: string;
   path: string;
+  fill?: string;
+  size?: string;
 }
 
 interface TextButtonProps {
@@ -82,6 +100,23 @@ interface TextButtonProps {
   className?: string;
 }
 
+export const SvgIcon: React.SFC<IconButtonProps> = ({
+  linkTo,
+  path,
+  viewBox,
+  className,
+  fill,
+  size
+}) => (
+  <span className={className}>
+    <Link href={linkTo}>
+      <CustomColorIcon fill={fill} width={size} height={size} viewBox={viewBox}>
+        <path d={path} />
+      </CustomColorIcon>
+    </Link>
+  </span>
+);
+
 export const IconButton: React.SFC<IconButtonProps> = ({
   linkTo,
   path,
@@ -89,11 +124,11 @@ export const IconButton: React.SFC<IconButtonProps> = ({
   className
 }) => (
   <Container className={className}>
-    <Link href={linkTo}>
+    <BoxLink href={linkTo}>
       <Icon viewBox={viewBox}>
         <path d={path} />
       </Icon>
-    </Link>
+    </BoxLink>
   </Container>
 );
 
@@ -103,8 +138,8 @@ export const TextButton: React.SFC<TextButtonProps> = ({
   text
 }) => (
   <Container className={className}>
-    <Link href={linkTo}>
+    <BoxLink href={linkTo}>
       <Text>{text}</Text>
-    </Link>
+    </BoxLink>
   </Container>
 );

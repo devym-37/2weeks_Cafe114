@@ -17,8 +17,12 @@ const GlobalStyle = createGlobalStyle`
         background-color: white;
         color: "#000000";
     }
+   
+    h2,h3{
+      font-family: 'Noto Sans KR thin', sans-serif;
+    }
     h1, div{
-      font-family: 'Noto Sans KR', sans-serif;
+      font-family: 'Noto Sans KR regular', sans-serif;
     }
     input,
     button {
