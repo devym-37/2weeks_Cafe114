@@ -66,6 +66,7 @@ const Icon = styled.svg`
   ${BoxLink}:hover & {
     fill: ${props => props.theme.colors.main};
   }
+  cursor: pointer;
 `;
 
 const CustomColorIcon = styled.svg`
@@ -86,12 +87,13 @@ const Text = styled.span`
   }
 `;
 interface IconButtonProps {
-  linkTo: string;
+  linkTo?: string;
   viewBox: string;
   className?: string;
   path: string;
   fill?: string;
   size?: string;
+  onClick?: (event: React.MouseEvent) => void;
 }
 
 interface TextButtonProps {
@@ -106,11 +108,18 @@ export const SvgIcon: React.SFC<IconButtonProps> = ({
   viewBox,
   className,
   fill,
-  size
+  size,
+  onClick
 }) => (
   <span className={className}>
     <Link href={linkTo}>
-      <CustomColorIcon fill={fill} width={size} height={size} viewBox={viewBox}>
+      <CustomColorIcon
+        fill={fill}
+        width={size}
+        height={size}
+        viewBox={viewBox}
+        onClick={onClick}
+      >
         <path d={path} />
       </CustomColorIcon>
     </Link>

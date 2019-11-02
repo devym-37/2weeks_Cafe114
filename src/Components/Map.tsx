@@ -1,9 +1,18 @@
-import React, { Component } from "react";
+import React, { Component, ButtonHTMLAttributes } from "react";
 import hollys from "../assets/marker/hollys-brandcolor.png";
 import tomtom from "../assets/marker/tomtom-brandcolor.png";
 import { serverApi } from "../Components/API";
+import {
+  ZoomIn,
+  ZoomOut,
+  Update,
+  CurrentLocation,
+  Filter
+} from "../Components/ToolGroup/MapControl";
 
 declare var kakao: any;
+declare const zoomIn: (event: MouseEvent) => any;
+declare const zoomOut: (event: MouseEvent) => any;
 
 const mystyles = {
   width: "100%",
@@ -14,12 +23,15 @@ interface Iinfo {
   id: number;
   name: string;
   address: string;
+  subAddress: string;
+  x: string;
+  y: string;
   telephone: string;
   category: string;
-  createdAt: string;
   detailCategory: string;
   parkingLot: number;
   smokingRoom: number;
+  createdAt: string;
   updatedAt: string;
 }
 
@@ -27,16 +39,37 @@ interface Istate {
   result: Array<Iinfo>;
   loading: boolean;
   error: string;
-  address: Array<string>;
+  subAddress: Array<string>;
+  x: Array<Iinfo>;
+  y: Array<Iinfo>;
+  category: Array<Iinfo>;
+  name: Array<Iinfo>;
 }
 
-class Map extends Component<{}, Istate> {
-  state = { result: [], address: [], loading: true, error: "" };
+interface Iprops {
+  onClick: (event: MouseEvent) => any;
+}
+
+class Map extends Component<{}, Istate, Iprops> {
+  state = {
+    result: [],
+    subAddress: [],
+    loading: true,
+    error: "",
+    x: [],
+    y: [],
+    category: [],
+    name: []
+  };
   async componentDidMount() {
     try {
       const { data: result } = await serverApi.getAllCafes();
-      const address = result.map((cafe: Iinfo) => cafe.address);
-      this.setState({ result, address });
+      const subAddress = result.map((cafe: Iinfo) => cafe.subAddress);
+      const x = result.map((cafe: Iinfo) => cafe.x);
+      const y = result.map((cafe: Iinfo) => cafe.y);
+      const category = result.map((cafe: Iinfo) => cafe.category);
+      const name = result.map((cafe: Iinfo) => cafe.name);
+      this.setState({ result, subAddress, x, y, category, name });
     } catch {
       this.setState({ error: "Can't load kakaoMap" });
     } finally {
@@ -62,49 +95,75 @@ class Map extends Component<{}, Istate> {
     }); // 지도 생성
 
     this.marker(kakaoMap); // 위워크 marker
-    console.log("result ------", this.state.result);
+    // console.log("result ------", this.state.result.length);
     // 주소-좌표 변환 객체를 생성합니다
-    var geocoder = new kakao.maps.services.Geocoder();
 
-    for (let i = 0; i < this.state.address.length; i++) {
-      geocoder.addressSearch(this.state.address[i], placesSearchCB);
-    }
-    // 주소로 좌표를 검색합니다
-    function placesSearchCB(data: any, status: any, pagination: any) {
-      if (status === kakao.maps.services.Status.OK) {
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-        // LatLngBounds 객체에 좌표를 추가합니다
-        var bounds = new kakao.maps.LatLngBounds();
-        displayMarker(data[0]);
-        bounds.extend(new kakao.maps.LatLng(data[0].y, data[0].x));
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-        kakaoMap.setBounds(bounds);
+    for (var i = 0; i < this.state.category.length; i++) {
+      console.log("name :", this.state.name[i]);
+      if (this.state.category[i] === "hollys") {
+        const spot = new kakao.maps.LatLng(this.state.y[i], this.state.x[i]);
+        const hollysMarker = new kakao.maps.Marker({
+          map: kakaoMap, // 마커를 표시할 지도
+          position: spot,
+          title: "hollys", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          image: hollysMarkerImage
+        });
+        hollysMarker.setMap(kakaoMap);
+        // 마커에 클릭이벤트를 등록합니다
+        var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+        const hollysName = this.state.name[i];
+        kakao.maps.event.addListener(hollysMarker, "mouseover", function() {
+          // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+          infowindow.setContent(
+            '<div style="padding:5px;font-size:12px;">' +
+              `${hollysName}` +
+              "</div>"
+          );
+          infowindow.open(kakaoMap, hollysMarker);
+        });
+        kakao.maps.event.addListener(hollysMarker, "mouseout", function() {
+          infowindow.close();
+        });
+      } else {
+        const spot = new kakao.maps.LatLng(this.state.y[i], this.state.x[i]);
+        const tomtomMarker = new kakao.maps.Marker({
+          map: kakaoMap, // 마커를 표시할 지도
+          position: spot,
+          title: "TOMTOM", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          image: tomtomMarkerImage
+        });
+        tomtomMarker.setMap(kakaoMap);
+        var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+        const tomtomName = this.state.name[i];
+        kakao.maps.event.addListener(tomtomMarker, "mouseover", function() {
+          // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+          infowindow.setContent(
+            '<div style="padding:5px;font-size:12px;">' +
+              `${tomtomName}` +
+              "</div>"
+          );
+          infowindow.open(kakaoMap, tomtomMarker);
+        });
+        kakao.maps.event.addListener(tomtomMarker, "mouseout", function() {
+          infowindow.close();
+        });
       }
     }
-    function displayMarker(place: any) {
-      var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-      // 마커를 생성하고 지도에 표시합니다
-      var marker = new kakao.maps.Marker({
-        map: kakaoMap,
-        position: new kakao.maps.LatLng(place.y, place.x),
-        image: hollysMarkerImage
-      });
-      console.log("place.place_name : ", place.place_name);
-      // 마커에 클릭이벤트를 등록합니다
-      kakao.maps.event.addListener(marker, "mouseover", function() {
-        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-        infowindow.setContent(
-          '<div style="padding:5px;font-size:12px;">' + `cafe114` + "</div>"
-        );
-        infowindow.open(kakaoMap, marker);
-      });
-      kakao.maps.event.addListener(marker, "mouseout", function() {
-        infowindow.close();
-      });
-    }
-  }
 
-  marker(map: any) {
+    this.zoomIn(kakaoMap);
+    this.zoomOut(kakaoMap);
+  }
+  // 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
+  zoomIn = (map: any) => {
+    map.setLevel(map.getLevel() - 1);
+  };
+
+  // 지도 확대, 축소 컨트롤에서 축소 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
+  zoomOut = (map: any) => {
+    map.setLevel(map.getLevel() + 1);
+  };
+
+  marker = (map: any) => {
     var markerPosition = new kakao.maps.LatLng(37.503469, 127.049782);
     // 마커를 생성합니다
     var marker = new kakao.maps.Marker({
@@ -112,7 +171,7 @@ class Map extends Component<{}, Istate> {
     });
     // 마커가 지도 위에 표시되도록 설정합니다
     marker.setMap(map);
-  } // 위워크 marker
+  }; // 위워크 marker
 
   render() {
     return (
