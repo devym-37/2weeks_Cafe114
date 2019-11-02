@@ -10,12 +10,6 @@ const mystyles = {
   height: "100vh"
 } as React.CSSProperties;
 
-const State = {
-  el: any,
-  kakaoMap: any
-};
-// default = 37.503469, 127.049782;
-
 class Map extends Component {
   componentDidMount() {
     const hollysImageSrc = hollys;
@@ -54,19 +48,20 @@ class Map extends Component {
 
     // 장소 검색 객체를 생성합니다
     var ps = new kakao.maps.services.Places(kakaoMap);
-    // 카테고리로 은행을 검색합니다
-    ps.keywordSearch("서울 할리스커피", placesSearchCB);
+    // 카테고리로 검색합니다
+    ps.keywordSearch("서울 은평구 수색로 195", placesSearchCB);
     function placesSearchCB(data: any, status: any, pagination: any) {
       if (status === kakao.maps.services.Status.OK) {
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
         // LatLngBounds 객체에 좌표를 추가합니다
         var bounds = new kakao.maps.LatLngBounds();
+        displayMarker(data[0]);
+        bounds.extend(new kakao.maps.LatLng(data[0].y, data[0].x));
 
-        for (var i = 0; i < data.length; i++) {
-          displayMarker(data[i]);
-          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-        }
-
+        // for (var i = 0; i < data.length; i++) {
+        //   displayMarker(data[0]);
+        //   bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+        // }
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
         kakaoMap.setBounds(bounds);
       }
@@ -95,19 +90,9 @@ class Map extends Component {
       });
     }
 
-    // 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
-    function zoomIn() {
-      kakaoMap.setLevel(kakaoMap.getLevel() - 1);
-    }
-
-    // 지도 확대, 축소 컨트롤에서 축소 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
-    function zoomOut() {
-      kakaoMap.setLevel(kakaoMap.getLevel() + 1);
-    }
     // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
     var zoomControl = new kakao.maps.ZoomControl();
     kakaoMap.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-    kakao.maps.event.addListener(kakaoMap, "zoom_changed");
   }
 
   marker(map: any) {

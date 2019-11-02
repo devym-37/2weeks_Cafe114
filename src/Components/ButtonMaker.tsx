@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Link = styled.a`
+const Link = styled.span`
   vertical-align: top;
   display: flex;
   align-items: center;
@@ -93,7 +93,7 @@ export const IconButton: React.SFC<IconButtonProps> = ({
   id
 }) => (
   <Container className={className}>
-    <Link onClick={click} href={linkTo} id={id}>
+    <Link onClick={click} id={id}>
       <Icon viewBox={viewBox}>
         <path d={path} />
       </Icon>
@@ -107,7 +107,7 @@ export const TextButton: React.SFC<TextButtonProps> = ({
   text
 }) => (
   <Container className={className}>
-    <Link href={linkTo}>
+    <Link>
       <Text>{text}</Text>
     </Link>
   </Container>

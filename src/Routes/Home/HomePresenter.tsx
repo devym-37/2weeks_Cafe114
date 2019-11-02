@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Helmet from "react-helmet";
 import Loader from "../../Components/Loader";
 import BackArrow from "../../Components/BackArrow";
-import ToolGroup from "../../Components/ToolGroup";
+
 import { Form, Input } from "../../Components/Input";
 
 const Container = styled.div``;
@@ -42,7 +42,6 @@ const HomePresenter: React.FC<IProps> = ({
         <Form onSubmit={handleSubmit}>
           <Input value={term} onChange={updateTerm} />
         </Form>
-        <ToolGroup />
       </Container>
     )
   );
