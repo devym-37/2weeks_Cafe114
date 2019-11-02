@@ -1,6 +1,6 @@
 import axios from "axios";
-axios.defaults.headers.common["Content-Type"] =
-  "application/x-www-form-urlencoded";
+// axios.defaults.headers.common["Content-Type"] =
+//   "application/x-www-form-urlencoded";
 const api = axios.create({
   baseURL: "http://13.209.4.48:3000/",
   headers: {

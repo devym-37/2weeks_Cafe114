@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Loader from "../../Components/Loader";
-import { Input, Form } from "../../Components/Input";
+import { Input, Form } from "../../Components/SearchInput";
 import Helmet from "react-helmet";
 import Map from "../../Components/Map";
 import ToolGroup from "../../Components/ToolGroup";

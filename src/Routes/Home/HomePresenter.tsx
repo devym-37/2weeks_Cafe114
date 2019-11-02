@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Helmet from "react-helmet";
 import Loader from "../../Components/Loader";
 import Error from "../../Components/Error";
-import { Input, Form } from "../../Components/Input";
+import { Input, Form } from "../../Components/SearchInput";
 import ToolGroup from "../../Components/ToolGroup";
 import Map from "../../Components/Map";
 import TestMap from "../../Routes/Map";

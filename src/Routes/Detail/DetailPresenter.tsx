@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Helmet from "react-helmet";
 import Loader from "../../Components/Loader";
-import { Input } from "../../Components/Input";
+import { Input } from "../../Components/SearchInput";
 import { SvgIcon } from "../../Components/ButtonMaker";
 import Map from "../../Components/Map";
 const Container = styled.div`
