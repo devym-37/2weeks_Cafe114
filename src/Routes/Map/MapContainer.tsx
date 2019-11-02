@@ -1,18 +1,34 @@
 import React, { Component } from "react";
 import { serverApi } from "../../Components/API";
+import { object } from "prop-types";
 
+interface IData {
+  id: number;
+  name: string;
+  address: string;
+  telephone: string;
+  category: string;
+  createdAt: string;
+  detailCategory: string;
+  parkingLot: number;
+  smokingRoom: number;
+  updatedAt: string;
+}
 interface Istate {
-  result: Array<string>;
+  result: Array<IData>;
+  address: Array<string>;
   loading: boolean;
   error: string;
 }
+
 class MapContainer extends Component<{}, Istate> {
-  state = { result: [], loading: true, error: "" };
+  state = { result: [], address: [], loading: true, error: "" };
 
   async componentDidMount() {
     try {
       const { data: result } = await serverApi.getAllCafes();
-      this.setState({ result });
+      const address = result.map((cafe: IData) => cafe.address);
+      this.setState({ result, address });
     } catch {
       this.setState({ error: "Can't load kakaoMap" });
     } finally {
@@ -21,8 +37,9 @@ class MapContainer extends Component<{}, Istate> {
   }
 
   render() {
-    const { result, loading, error } = this.state;
-    console.log(`result: `, result);
+    const { result, loading, error, address } = this.state;
+    console.log(`address: `, address);
+    console.log(`address: `, result);
     return <div></div>;
   }
 }

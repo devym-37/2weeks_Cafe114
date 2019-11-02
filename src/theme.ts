@@ -4,7 +4,9 @@ const myTheme: DefaultTheme = {
   borderRadius: "5px",
   colors: {
     main: "#562ECD",
-    secondary: "#efebff"
+    secondary: "#efebff",
+    grey: "#7f8c8d",
+    blue: "#3498db"
   }
 };
 
