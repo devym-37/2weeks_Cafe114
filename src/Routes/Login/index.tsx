@@ -1,5 +1,3 @@
-import React from "react";
+import LoginContainer from "./LoginContainer";
 
-const R = () => <span>LoggedinHome</span>;
-
-export default R;
+export default LoginContainer;
