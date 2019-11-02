@@ -27,14 +27,16 @@ interface Istate {
   result: Array<Iinfo>;
   loading: boolean;
   error: string;
+  address: Array<string>;
 }
 
 class Map extends Component<{}, Istate> {
-  state = { result: [], loading: true, error: "" };
+  state = { result: [], address: [], loading: true, error: "" };
   async componentDidMount() {
     try {
       const { data: result } = await serverApi.getAllCafes();
-      this.setState({ result });
+      const address = result.map((cafe: Iinfo) => cafe.address);
+      this.setState({ result, address });
     } catch {
       this.setState({ error: "Can't load kakaoMap" });
     } finally {
@@ -64,8 +66,8 @@ class Map extends Component<{}, Istate> {
     // 주소-좌표 변환 객체를 생성합니다
     var geocoder = new kakao.maps.services.Geocoder();
 
-    for (var i = 0; i < this.state.result.length; i++) {
-      geocoder.addressSearch(this.state.result[i].address, placesSearchCB);
+    for (let i = 0; i < this.state.address.length; i++) {
+      geocoder.addressSearch(this.state.address[i], placesSearchCB);
     }
     // 주소로 좌표를 검색합니다
     function placesSearchCB(data: any, status: any, pagination: any) {
