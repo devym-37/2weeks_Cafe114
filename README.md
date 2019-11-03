@@ -6,10 +6,10 @@
 
 ### Logged Out:
 
-    - [ ] [Home](#home)
+    - [] [Home](#home)
     - [ ] [CafeDetail](#cafe-detail)
     - [ ] [Messages](#messages)
-    - [ ] [Phone Login](#login)
+    - [ ] [Login](#login)
     - [ ] Verify Phone Number
     - [ ] Social Login
     - [ ] [Signup](#signup)
