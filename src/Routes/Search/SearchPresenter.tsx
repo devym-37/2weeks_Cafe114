@@ -62,7 +62,7 @@ const SearchPresenter: React.FC<IProps> = ({
           <Form onSubmit={handleSubmit}>
             <Input value={term} onChange={updateTerm} />
           </Form>
-          <ToolGroup />
+          {/* <ToolGroup /> */}
         </Container>
       )}
     </>

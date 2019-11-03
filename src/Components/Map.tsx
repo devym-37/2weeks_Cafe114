@@ -1,6 +1,7 @@
 import React, { Component, ButtonHTMLAttributes } from "react";
 import hollys from "../assets/marker/hollys-brandcolor.png";
 import tomtom from "../assets/marker/tomtom-brandcolor.png";
+import { Link } from "react-router-dom";
 import { serverApi } from "../Components/API";
 import {
   ZoomIn,
@@ -99,7 +100,7 @@ class Map extends Component<{}, Istate, Iprops> {
     // 주소-좌표 변환 객체를 생성합니다
 
     for (var i = 0; i < this.state.category.length; i++) {
-      console.log("name :", this.state.name[i]);
+      // console.log("name :", this.state.name[i]);
       if (this.state.category[i] === "hollys") {
         const spot = new kakao.maps.LatLng(this.state.y[i], this.state.x[i]);
         const hollysMarker = new kakao.maps.Marker({
@@ -146,6 +147,10 @@ class Map extends Component<{}, Istate, Iprops> {
         });
         kakao.maps.event.addListener(tomtomMarker, "mouseout", function() {
           infowindow.close();
+        });
+
+        kakao.maps.event.addListener(tomtomMarker, "click", function() {
+          window.location.href = `/cafe/${i}`;
         });
       }
     }

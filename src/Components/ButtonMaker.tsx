@@ -130,10 +130,11 @@ export const IconButton: React.SFC<IconButtonProps> = ({
   linkTo,
   path,
   viewBox,
-  className
+  className,
+  onClick
 }) => (
   <Container className={className}>
-    <BoxLink href={linkTo}>
+    <BoxLink href={linkTo} onClick={onClick}>
       <Icon viewBox={viewBox}>
         <path d={path} />
       </Icon>

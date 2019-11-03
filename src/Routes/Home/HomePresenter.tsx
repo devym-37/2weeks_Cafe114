@@ -46,11 +46,11 @@ const HomePresenter: React.FC<IProps> = ({
             <title>Home | 카페114</title>
           </Helmet>
           <TestMap />
-          <Map />
+          {/* <Map /> */}
           <Form onSubmit={handleSubmit}>
             <Input value={term} onChange={updateTerm} />
           </Form>
-          <ToolGroup />
+          {/* <ToolGroup /> */}
         </Container>
       )}
     </>

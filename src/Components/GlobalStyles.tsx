@@ -21,12 +21,28 @@ const GlobalStyle = createGlobalStyle`
     h2,h3{
       font-family: 'Noto Sans KR thin', sans-serif;
     }
-    h1, div{
+    h1,span, div,a{
       font-family: 'Noto Sans KR regular', sans-serif;
     }
     input,
     button {
-        &:focus, &:active{outline:none}
+        &:focus, &:active{outline:none};
+        font-family: 'Noto Sans KR regular', sans-serif;
+        line-height: 1.3;
+        font-weight: normal;
+        letter-spacing: 0;
+    }
+
+    input {
+    
+    text-rendering: auto;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    -webkit-rtl-ordering: logical;
+    cursor: text;
+    font: 400 11px system-ui;
+
     }
   `;
 

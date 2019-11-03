@@ -8,6 +8,12 @@ declare module "styled-components" {
       secondary: string;
       grey: string;
       blue: string;
+      lightGrey: string;
+      black: string;
+      white: string;
+      kakaoBrown: string;
+      kakaoYellow: string;
+      facebook: string;
     };
   }
 }

@@ -11,13 +11,14 @@ import Detail from "../Routes/Detail";
 import AddCafe from "../Routes/AddCafe";
 import EditProfile from "../Routes/EditProfile";
 import LoggedinHome from "../Routes/LoggedinHome";
-import Login from "../Routes/Login";
+
 import SocialLogin from "../Routes/SocialLogin";
 import VerifyPhone from "../Routes/VerifyPhone";
 import Settings from "../Routes/Settings";
 import EditMessage from "../Routes/SendMessage";
 import Messages from "../Routes/Messages";
 import Signup from "../Routes/Signup";
+import FindPassword from "../Routes/FindPassword";
 
 export const LoggedOutRoutes: React.SFC = () => (
   <Router>
@@ -25,7 +26,8 @@ export const LoggedOutRoutes: React.SFC = () => (
       <Route path="/" exact component={Home} />
       <Route path="/search/:term" exact component={Search} />
       <Route path="/cafe/:id" exact component={Detail} />
-      <Route path="/login" exact component={Login} />
+      {/* <Route path="/login" exact component={Login} /> */}
+      <Route path="/auth/find" exact component={FindPassword} />
       <Route path="/social-login" exact component={SocialLogin} />
       <Route path="/verify-phone" exact component={VerifyPhone} />
       <Route path="/signup" exact component={Signup} />
@@ -41,7 +43,7 @@ export const LoggedInRoutes: React.SFC = () => (
     <Switch>
       <Route path="/" exact component={LoggedinHome} />
       <Route path="/search/:term" exact component={Search} />
-      <Route path="/cafe/:id" exact component={Detail} />
+      <Route path="/cafef/:id" exact component={Detail} />
       <Route path="/cafe/:id/save" exact component={AddCafe} />
       <Route path="/social-login" exact component={SocialLogin} />
       <Route path="/messages" exact component={Messages} />
