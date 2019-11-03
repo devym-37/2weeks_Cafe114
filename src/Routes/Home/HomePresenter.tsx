@@ -4,7 +4,6 @@ import Helmet from "react-helmet";
 import Loader from "../../Components/Loader";
 import Error from "../../Components/Error";
 import { Input, Form } from "../../Components/SearchInput";
-import ToolGroup from "../../Components/ToolGroup";
 import Map from "../../Components/Map";
 import TestMap from "../../Routes/Map";
 const Container = styled.div``;
@@ -50,7 +49,7 @@ const HomePresenter: React.FC<IProps> = ({
           <Form onSubmit={handleSubmit}>
             <Input value={term} onChange={updateTerm} />
           </Form>
-          <ToolGroup />
+          
         </Container>
       )}
     </>
