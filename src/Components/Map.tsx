@@ -109,47 +109,49 @@ class Map extends Component<{}, Istate> {
         // 마커에 클릭이벤트를 등록합니다
         // var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
         const hollysName = this.state.name[i];
+        const idNumber = i + 1;
         // var content =
         // '<div class="customoverlay">' +
         // +`  <a href="http://localhost:3000/cafe/${i + 1}">` +
         // `    <span class="title">${hollysName}</span>` +
         // "  </a>" +
         // +"</div>";
-        var content =
-          '<div class="customoverlay">' +
-          // `<Link to={/cafe/${i + 1}}>` +
-          `  <a href="/cafe/${i + 1}">` +
-          `    <span class="title">${hollysName}</span>` +
-          "  </a>" +
-          // `</Link>` +
-          "</div>";
+        // var content =
+        //   '<div class="customoverlay">' +
+        //   `<Link to=/cafe/${i + 1}>` +
+        //   // `  <a href="/cafe/${i + 1}">` +
+        //   `    <span class="title">${hollysName}</span>` +
+        //   // "  </a>" +
+        //   `</Link>` +
+        //   "</div>";
 
-        // 커스텀 오버레이를 생성합니다
-        var hollysOverlay = new kakao.maps.CustomOverlay({
-          map: kakaoMap,
-          position: spot,
-          content: content,
-          yAnchor: 1
-        });
+        // // 커스텀 오버레이를 생성합니다
+        // var hollysOverlay = new kakao.maps.CustomOverlay({
+        //   map: kakaoMap,
+        //   position: spot,
+        //   content: content,
+        //   yAnchor: 1
+        // });
 
         kakao.maps.event.addListener(hollysMarker, "mouseover", function() {
-          // // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-          // infowindow.setContent(
-          //   '<div style="padding:5px;font-size:12px;">' +
-          //     `${hollysName}` +
-          //     "</div>"
-          // );
-          // infowindow.open(kakaoMap, hollysMarker);
-
-          hollysOverlay.setMap(kakaoMap);
+          // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+          infowindow.setContent(
+            '<div class="customoverlay">' +
+              // `<Link to=/cafe/${idNumber}>` +
+              // `  <a href="/cafe/${idNumber}">` +
+              `    <span class="title">${hollysName}</span>` +
+              // "  </a>" +
+              // `</Link>` +
+              "</div>"
+          );
+          infowindow.open(kakaoMap, hollysMarker);
         });
         kakao.maps.event.addListener(hollysMarker, "mouseout", function() {
-          hollysOverlay.setMap(kakaoMap);
-          // infowindow.close();
+          infowindow.close();
         });
-        // kakao.maps.event.addListener(hollysMarker, "click", function() {
-        //   console.log(hollysMarker.a.innerHTML);
-        // });
+        kakao.maps.event.addListener(hollysMarker, "click", function() {
+          window.location.href = `/cafe/${idNumber}`;
+        });
       } else {
         const spot = new kakao.maps.LatLng(this.state.y[i], this.state.x[i]);
         const tomtomMarker = new kakao.maps.Marker({
@@ -161,11 +163,16 @@ class Map extends Component<{}, Istate> {
         tomtomMarker.setMap(kakaoMap);
         var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
         const tomtomName = this.state.name[i];
+        const idNumber = i + 1;
         kakao.maps.event.addListener(tomtomMarker, "mouseover", function() {
           // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
           infowindow.setContent(
-            '<div style="padding:5px;font-size:12px;">' +
-              `${tomtomName}` +
+            '<div class="customoverlay">' +
+              // `<Link to=/cafe/${idNumber}>` +
+              // `  <a href="/cafe/${idNumber}">` +
+              `    <span class="title">${tomtomName}</span>` +
+              // "  </a>" +
+              // `</Link>` +
               "</div>"
           );
           infowindow.open(kakaoMap, tomtomMarker);
@@ -173,10 +180,9 @@ class Map extends Component<{}, Istate> {
         kakao.maps.event.addListener(tomtomMarker, "mouseout", function() {
           infowindow.close();
         });
-
-        // kakao.maps.event.addListener(tomtomMarker, "click", function() {
-        //   window.location.href = `/cafe/${i}`;
-        // });
+        kakao.maps.event.addListener(tomtomMarker, "click", function() {
+          window.location.href = `/cafe/${idNumber}`;
+        });
       }
     }
 
@@ -197,7 +203,8 @@ class Map extends Component<{}, Istate> {
     var markerPosition = new kakao.maps.LatLng(37.503469, 127.049782);
     // 마커를 생성합니다
     var marker = new kakao.maps.Marker({
-      position: markerPosition
+      position: markerPosition,
+      title: "Code States"
     });
     // 마커가 지도 위에 표시되도록 설정합니다
     marker.setMap(map);
