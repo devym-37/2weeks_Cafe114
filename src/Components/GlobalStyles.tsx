@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
     h2,h3{
       font-family: 'Noto Sans KR thin', sans-serif;
     }
-    h1,span, div,a{
+    h1,h4,span, div,a{
       font-family: 'Noto Sans KR regular', sans-serif;
     }
     input,

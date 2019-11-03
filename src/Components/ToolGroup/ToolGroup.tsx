@@ -25,8 +25,12 @@ const ToolGroupContainer = styled.div`
 
 interface IProps {
   toggleLoginModal: any;
+  toggleFilterModal: any;
 }
-const ToolGroup: React.SFC<IProps> = ({ toggleLoginModal }) => (
+const ToolGroup: React.SFC<IProps> = ({
+  toggleLoginModal,
+  toggleFilterModal
+}) => (
   <Container>
     <ToolGroupContainer>
       <Mypage toggleLoginModal={toggleLoginModal} />
@@ -34,7 +38,7 @@ const ToolGroup: React.SFC<IProps> = ({ toggleLoginModal }) => (
       <ZoomOut />
       <CurrentLocation />
       <Update />
-      <Filter />
+      <Filter toggleFilterModal={toggleFilterModal} />
     </ToolGroupContainer>
   </Container>
 );
