@@ -100,7 +100,7 @@ class Map extends Component<{}, Istate, Iprops> {
     // 주소-좌표 변환 객체를 생성합니다
 
     for (var i = 0; i < this.state.category.length; i++) {
-      console.log("name :", this.state.name[i]);
+      // console.log("name :", this.state.name[i]);
       if (this.state.category[i] === "hollys") {
         const spot = new kakao.maps.LatLng(this.state.y[i], this.state.x[i]);
         const hollysMarker = new kakao.maps.Marker({

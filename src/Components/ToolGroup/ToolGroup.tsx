@@ -23,10 +23,13 @@ const ToolGroupContainer = styled.div`
   align-items: flex-end;
 `;
 
-const ToolGroup: React.SFC = () => (
+interface IProps {
+  toggleLoginModal: any;
+}
+const ToolGroup: React.SFC<IProps> = ({ toggleLoginModal }) => (
   <Container>
     <ToolGroupContainer>
-      <Mypage />
+      <Mypage toggleLoginModal={toggleLoginModal} />
       <ZoomIn />
       <ZoomOut />
       <CurrentLocation />
