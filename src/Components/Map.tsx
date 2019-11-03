@@ -1,7 +1,7 @@
 import React, { Component, ButtonHTMLAttributes } from "react";
-import { Link } from "react-router-dom";
-import hollys from "../assets/marker/hollys-brandcolor.png";
-import tomtom from "../assets/marker/tomtom-brandcolor.png";
+
+import hollys from "../assets/marker/hollys-logo.png";
+import tomtom from "../assets/marker/tomtom-logo.png";
 import { Link } from "react-router-dom";
 import { serverApi } from "../Components/API";
 import ToolGroup from "../Components/ToolGroup";
@@ -43,7 +43,9 @@ interface Istate {
   name: Array<Iinfo>;
   geoClickState: boolean;
 }
-
+// interface IProps {
+//   toggleLoginModal: any;
+// }
 class Map extends Component<{}, Istate> {
   state = {
     result: [],
@@ -107,13 +109,19 @@ class Map extends Component<{}, Istate> {
         // 마커에 클릭이벤트를 등록합니다
         // var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
         const hollysName = this.state.name[i];
+        // var content =
+        // '<div class="customoverlay">' +
+        // +`  <a href="http://localhost:3000/cafe/${i + 1}">` +
+        // `    <span class="title">${hollysName}</span>` +
+        // "  </a>" +
+        // +"</div>";
         var content =
           '<div class="customoverlay">' +
-          `<Link to={/cafe/${i + 1}}>` +
-          // `  <a href="http://localhost:3000/cafe/${i + 1}">` +
+          // `<Link to={/cafe/${i + 1}}>` +
+          `  <a href="/cafe/${i + 1}">` +
           `    <span class="title">${hollysName}</span>` +
-          // "  </a>" +
-          `</Link>` +
+          "  </a>" +
+          // `</Link>` +
           "</div>";
 
         // 커스텀 오버레이를 생성합니다
@@ -139,9 +147,9 @@ class Map extends Component<{}, Istate> {
           hollysOverlay.setMap(kakaoMap);
           // infowindow.close();
         });
-        kakao.maps.event.addListener(hollysMarker, "click", function() {
-          console.log(hollysMarker.a.innerHTML);
-        });
+        // kakao.maps.event.addListener(hollysMarker, "click", function() {
+        //   console.log(hollysMarker.a.innerHTML);
+        // });
       } else {
         const spot = new kakao.maps.LatLng(this.state.y[i], this.state.x[i]);
         const tomtomMarker = new kakao.maps.Marker({
@@ -166,9 +174,9 @@ class Map extends Component<{}, Istate> {
           infowindow.close();
         });
 
-        kakao.maps.event.addListener(tomtomMarker, "click", function() {
-          window.location.href = `/cafe/${i}`;
-        });
+        // kakao.maps.event.addListener(tomtomMarker, "click", function() {
+        //   window.location.href = `/cafe/${i}`;
+        // });
       }
     }
 
@@ -196,10 +204,11 @@ class Map extends Component<{}, Istate> {
   }; // 위워크 marker
 
   render() {
+    // const { toggleLoginModal } = this.props.toggleLoginModal;
     return (
       <React.Fragment>
         <div className="Map" id="map" style={mystyles} />
-        <ToolGroup />
+        {/* <ToolGroup toggleLoginModal={toggleLoginModal} /> */}
       </React.Fragment>
     );
   }

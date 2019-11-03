@@ -58,7 +58,7 @@ const SearchPresenter: React.FC<IProps> = ({
           <Helmet>
             <title>Home | 카페114</title>
           </Helmet>
-          <Map />
+          {/* <Map /> */}
           <Form onSubmit={handleSubmit}>
             <Input value={term} onChange={updateTerm} />
           </Form>
