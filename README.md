@@ -1,5 +1,4 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-안녕하세용
 
 ## Available Scripts
 
