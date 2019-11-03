@@ -1,15 +1,11 @@
 import React, { Component, ButtonHTMLAttributes } from "react";
+import { Link } from "react-router-dom";
 import hollys from "../assets/marker/hollys-brandcolor.png";
 import tomtom from "../assets/marker/tomtom-brandcolor.png";
 import { Link } from "react-router-dom";
 import { serverApi } from "../Components/API";
-import {
-  ZoomIn,
-  ZoomOut,
-  Update,
-  CurrentLocation,
-  Filter
-} from "../Components/ToolGroup/MapControl";
+import ToolGroup from "../Components/ToolGroup";
+import { any } from "prop-types";
 
 declare var kakao: any;
 declare const zoomIn: (event: MouseEvent) => any;
@@ -45,13 +41,10 @@ interface Istate {
   y: Array<Iinfo>;
   category: Array<Iinfo>;
   name: Array<Iinfo>;
+  geoClickState: boolean;
 }
 
-interface Iprops {
-  onClick: (event: MouseEvent) => any;
-}
-
-class Map extends Component<{}, Istate, Iprops> {
+class Map extends Component<{}, Istate> {
   state = {
     result: [],
     subAddress: [],
@@ -60,7 +53,8 @@ class Map extends Component<{}, Istate, Iprops> {
     x: [],
     y: [],
     category: [],
-    name: []
+    name: [],
+    geoClickState: false
   };
   async componentDidMount() {
     try {
@@ -100,37 +94,60 @@ class Map extends Component<{}, Istate, Iprops> {
     // 주소-좌표 변환 객체를 생성합니다
 
     for (var i = 0; i < this.state.category.length; i++) {
-      // console.log("name :", this.state.name[i]);
       if (this.state.category[i] === "hollys") {
         const spot = new kakao.maps.LatLng(this.state.y[i], this.state.x[i]);
         const hollysMarker = new kakao.maps.Marker({
           map: kakaoMap, // 마커를 표시할 지도
+          clickable: true,
           position: spot,
-          title: "hollys", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          title: "Hollys Cafe", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
           image: hollysMarkerImage
         });
         hollysMarker.setMap(kakaoMap);
         // 마커에 클릭이벤트를 등록합니다
-        var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+        // var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
         const hollysName = this.state.name[i];
+        var content =
+          '<div class="customoverlay">' +
+          `<Link to={/cafe/${i + 1}}>` +
+          // `  <a href="http://localhost:3000/cafe/${i + 1}">` +
+          `    <span class="title">${hollysName}</span>` +
+          // "  </a>" +
+          `</Link>` +
+          "</div>";
+
+        // 커스텀 오버레이를 생성합니다
+        var hollysOverlay = new kakao.maps.CustomOverlay({
+          map: kakaoMap,
+          position: spot,
+          content: content,
+          yAnchor: 1
+        });
+
         kakao.maps.event.addListener(hollysMarker, "mouseover", function() {
-          // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-          infowindow.setContent(
-            '<div style="padding:5px;font-size:12px;">' +
-              `${hollysName}` +
-              "</div>"
-          );
-          infowindow.open(kakaoMap, hollysMarker);
+          // // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+          // infowindow.setContent(
+          //   '<div style="padding:5px;font-size:12px;">' +
+          //     `${hollysName}` +
+          //     "</div>"
+          // );
+          // infowindow.open(kakaoMap, hollysMarker);
+
+          hollysOverlay.setMap(kakaoMap);
         });
         kakao.maps.event.addListener(hollysMarker, "mouseout", function() {
-          infowindow.close();
+          hollysOverlay.setMap(kakaoMap);
+          // infowindow.close();
+        });
+        kakao.maps.event.addListener(hollysMarker, "click", function() {
+          console.log(hollysMarker.a.innerHTML);
         });
       } else {
         const spot = new kakao.maps.LatLng(this.state.y[i], this.state.x[i]);
         const tomtomMarker = new kakao.maps.Marker({
           map: kakaoMap, // 마커를 표시할 지도
           position: spot,
-          title: "TOMTOM", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          title: "TOMTOMs Cafe", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
           image: tomtomMarkerImage
         });
         tomtomMarker.setMap(kakaoMap);
@@ -182,10 +199,12 @@ class Map extends Component<{}, Istate, Iprops> {
     return (
       <React.Fragment>
         <div className="Map" id="map" style={mystyles} />
+        <ToolGroup />
       </React.Fragment>
     );
   }
 }
+
 export default Map;
 
 // 마커 표시
