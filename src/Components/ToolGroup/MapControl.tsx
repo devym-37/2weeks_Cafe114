@@ -31,4 +31,10 @@ export const Update: React.SFC = () => (
   />
 );
 
-export const Filter: React.SFC = () => <TextButton linkTo="/" text="필터" />;
+interface IFilterProps {
+  toggleFilterModal: any;
+}
+
+export const Filter: React.SFC<IFilterProps> = ({ toggleFilterModal }) => (
+  <TextButton onClick={toggleFilterModal} text="필터" />
+);

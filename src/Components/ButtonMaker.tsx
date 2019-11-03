@@ -44,6 +44,7 @@ const BoxLink = styled.a`
   border-radius: 3px;
   line-height: 37px;
   font-size: 13px;
+  cursor: pointer;
 `;
 
 const Container = styled.div`
@@ -82,7 +83,7 @@ const Text = styled.span`
   color: #666666;
   font-size: 14px;
   font-weight: 800;
-  ${Link}:hover & {
+  ${BoxLink}:hover & {
     color: ${props => props.theme.colors.main};
   }
 `;
@@ -94,12 +95,6 @@ interface IconButtonProps {
   fill?: string;
   size?: string;
   onClick?: (event: React.MouseEvent) => void;
-}
-
-interface TextButtonProps {
-  linkTo: string;
-  text: string;
-  className?: string;
 }
 
 export const SvgIcon: React.SFC<IconButtonProps> = ({
@@ -142,13 +137,21 @@ export const IconButton: React.SFC<IconButtonProps> = ({
   </Container>
 );
 
+interface TextButtonProps {
+  linkTo?: string;
+  text: string;
+  className?: string;
+  onClick: any;
+}
+
 export const TextButton: React.SFC<TextButtonProps> = ({
   linkTo,
+  onClick,
   className,
   text
 }) => (
   <Container className={className}>
-    <BoxLink href={linkTo}>
+    <BoxLink onClick={onClick}>
       <Text>{text}</Text>
     </BoxLink>
   </Container>
