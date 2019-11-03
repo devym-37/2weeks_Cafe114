@@ -4,13 +4,19 @@ import { RouteComponentProps } from "react-router";
 import { toast } from "react-toastify";
 
 interface IState {
-  countryCode: string;
   phoneNumber: string;
+  password: string;
+  email: string;
 }
-class LoginContainer extends Component<RouteComponentProps<any>, IState> {
+
+interface IProps {
+  toggleModal: any;
+}
+class LoginContainer extends Component<IProps, IState> {
   state = {
-    countryCode: "+82",
-    phoneNumber: ""
+    phoneNumber: "",
+    email: "",
+    password: ""
   };
 
   handleInputChange = (
@@ -34,7 +40,7 @@ class LoginContainer extends Component<RouteComponentProps<any>, IState> {
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { countryCode, phoneNumber } = this.state;
+    const { email, phoneNumber } = this.state;
     if (phoneNumber.match(/^\d{11}$/)) {
       var addDash =
         phoneNumber.substr(0, 3) +
@@ -49,18 +55,21 @@ class LoginContainer extends Component<RouteComponentProps<any>, IState> {
     console.log(`isValid: `, isValid);
     isValid
       ? toast.success("Suup", { autoClose: 1300 })
-      : toast.error("유효하지 않은 전화번호입니다", { autoClose: 1300 });
+      : toast.error("로그인정보가 일치하지 않습니다", { autoClose: 1300 });
   };
 
   render() {
-    const { countryCode, phoneNumber } = this.state;
-    console.log(countryCode, phoneNumber);
+    const { email, phoneNumber, password } = this.state;
+    const { toggleModal } = this.props;
+    console.log(email, phoneNumber);
     return (
       <LoginPresenter
-        countryCode={countryCode}
+        password={password}
         phoneNumber={phoneNumber}
         handleInputChange={this.handleInputChange}
+        toggleModal={toggleModal}
         handleSubmit={this.handleSubmit}
+        email={email}
       />
     );
   }

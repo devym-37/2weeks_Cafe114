@@ -1,25 +1,28 @@
 import React from "react";
 import { LoggedOutRoutes, LoggedInRoutes } from "../router";
 import GlobalStyles from "../GlobalStyles";
-import PropTypes from "prop-types";
+import Login from "../../Modal/Login";
 import Map from "../Map";
 
 interface IProps {
   isLoggedIn: boolean;
+  showLoginModal: boolean;
+  toggleLoginModal: any;
 }
 
-const AppPresenter: React.SFC<IProps> = ({ isLoggedIn }) =>
+const AppPresenter: React.SFC<IProps> = ({
+  toggleLoginModal,
+  showLoginModal,
+  isLoggedIn
+}) =>
   isLoggedIn ? (
     <LoggedInRoutes />
   ) : (
     <>
       <LoggedOutRoutes />
+      {showLoginModal ? <Login toggleModal={toggleLoginModal} /> : null}
       <GlobalStyles />
     </>
   );
-
-AppPresenter.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired
-};
 
 export default AppPresenter;

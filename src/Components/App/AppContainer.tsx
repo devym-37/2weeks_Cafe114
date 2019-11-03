@@ -1,20 +1,36 @@
 import React, { Component } from "react";
 import { ToastContainer } from "react-toastify";
 import AppPresenter from "./AppPresenter";
+import Map from "../Map";
 import "react-toastify/dist/ReactToastify.css";
+import ToolGroup from "../ToolGroup";
 interface Istate {
   isLoggedIn: boolean;
+  showLoginModal: boolean;
 }
 class AppContainer extends Component<{}, Istate> {
   state = {
-    isLoggedIn: false
+    isLoggedIn: false,
+    showLoginModal: true
+  };
+
+  toggleLoginModal = () => {
+    this.setState({
+      showLoginModal: !this.state.showLoginModal
+    });
   };
 
   render() {
-    const { isLoggedIn } = this.state;
+    const { isLoggedIn, showLoginModal } = this.state;
     return (
       <div className="App">
-        <AppPresenter isLoggedIn={isLoggedIn} />
+        <Map />
+        <ToolGroup toggleLoginModal={this.toggleLoginModal} />
+        <AppPresenter
+          toggleLoginModal={this.toggleLoginModal}
+          showLoginModal={showLoginModal}
+          isLoggedIn={isLoggedIn}
+        />
         <ToastContainer draggable={true} position={"top-center"} />
       </div>
     );

@@ -1,25 +1,30 @@
 import React from "react";
 import styled from "styled-components";
-import { BooleanLiteral } from "@babel/types";
 
-const Container = styled.input`
-  border: none;
-  border-bottom: 2px solid ${props => props.theme.colors.grey};
-  font-size: 20px;
+const TextInput = styled.input`
+  margin-top: 0;
+  display: block;
+  box-sizing: border-box;
+  margin: 10px 0 0;
+  padding: 0 15px;
   width: 100%;
-  padding-bottom: 10px;
-  font-weight: 500;
-  transition: border-bottom 0.1s linear;
+  border: 1px solid #c8c6e6;
   &:-webkit-autofill {
     box-shadow: 0 0 0px 1000px white inset !important;
   }
-  &:focus {
-    border-bottom-color: #2c3e50;
-    outline: none;
-  }
+  font-size: 15px;
+  border-radius: 3px;
+  height: 44px;
+  -webkit-appearance: none;
+  text-shadow: 0 0 0 #000;
+  background-color: transparent;
   &::placeholder {
-    color: ${props => props.theme.colors.grey};
-    font-weight: 300;
+    color: ${props => props.theme.colors.lightGrey};
+    font-weight: 400;
+  }
+  &:focus {
+    border-color: ${props => props.theme.colors.blue};
+    outline: none;
   }
 `;
 
@@ -39,7 +44,7 @@ const Input: React.SFC<IProps> = ({
   name,
   onChange
 }) => (
-  <Container
+  <TextInput
     type={type}
     name={name}
     required={required}

@@ -2,6 +2,7 @@ import React, { Component, ButtonHTMLAttributes } from "react";
 import { Link } from "react-router-dom";
 import hollys from "../assets/marker/hollys-brandcolor.png";
 import tomtom from "../assets/marker/tomtom-brandcolor.png";
+import { Link } from "react-router-dom";
 import { serverApi } from "../Components/API";
 import ToolGroup from "../Components/ToolGroup";
 import { any } from "prop-types";
@@ -163,6 +164,10 @@ class Map extends Component<{}, Istate> {
         });
         kakao.maps.event.addListener(tomtomMarker, "mouseout", function() {
           infowindow.close();
+        });
+
+        kakao.maps.event.addListener(tomtomMarker, "click", function() {
+          window.location.href = `/cafe/${i}`;
         });
       }
     }
