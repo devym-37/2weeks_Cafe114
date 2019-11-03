@@ -298,7 +298,7 @@ const DetailPresenter: React.FC<IProps> = ({
             <title>카페114 | {result.name ? result.name : "Detail"} </title>
           </Helmet>
         </Container>
-        <Map />
+        {/* <Map /> */}
       </>
     )
   );

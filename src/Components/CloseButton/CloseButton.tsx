@@ -31,7 +31,7 @@ interface IProps {
   onClick: any;
 }
 const CloseButton: React.FC<IProps> = ({ onClick }) => (
-  <CloseBtn href="#" onClick={onClick}>
+  <CloseBtn onClick={onClick}>
     <IconContainer />
   </CloseBtn>
 );

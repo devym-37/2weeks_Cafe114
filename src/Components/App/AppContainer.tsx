@@ -11,7 +11,7 @@ interface Istate {
 class AppContainer extends Component<{}, Istate> {
   state = {
     isLoggedIn: false,
-    showLoginModal: true
+    showLoginModal: false
   };
 
   toggleLoginModal = () => {
