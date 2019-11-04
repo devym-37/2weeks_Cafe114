@@ -37,12 +37,21 @@ class SignupContainer extends Component<IProps, IState> {
     if (name === "password2") {
       if (value !== password.substring(0, value.length)) {
         toast.error("비밀번호가 일치하지 않습니다", { autoClose: 1300 });
+      } else {
+        toast.success("회원가입이 완료되었습니다", { autoClose: 1300 });
       }
     }
   };
+
+  hadleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const { email, password } = this.state;
+
+    // const is = s;
+  };
   render() {
     const { toggleSignupModal } = this.props;
-
+    const { email, password, password2, birth, sex, agreement_ad } = this.state;
     return <SignupPresenter></SignupPresenter>;
   }
 }

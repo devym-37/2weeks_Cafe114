@@ -51,6 +51,14 @@ class AppContainer extends Component<IProps, Istate> {
     });
   };
 
+
+  toggleLoggedIn = () => {
+    this.setState({
+      isLoggedIn: !this.state.isLoggedIn
+    });
+  };
+
+
   render() {
     const {
       isLoggedIn,
@@ -69,6 +77,7 @@ class AppContainer extends Component<IProps, Istate> {
           toggleLocation={this.toggleLocation}
         />
         <AppPresenter
+          toggleLoggedIn={this.toggleLoggedIn}
           toggleLoginModal={this.toggleLoginModal}
           toggleSignupModal={this.toggleSignupModal}
           showSignupModal={showSignupModal}
