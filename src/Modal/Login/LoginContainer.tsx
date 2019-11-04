@@ -3,7 +3,7 @@ import LoginPresenter from "./LoginPresenter";
 import { RouteComponentProps } from "react-router";
 import { toast } from "react-toastify";
 import { serverApi } from "../../Components/API";
-
+import { Link } from "react-router-dom";
 interface IState {
   phoneNumber: string;
   password: string;
@@ -12,6 +12,7 @@ interface IState {
 
 interface IProps {
   toggleModal: any;
+  toggleLoggedIn: any;
 }
 class LoginContainer extends Component<IProps, IState> {
   state = {
@@ -41,11 +42,20 @@ class LoginContainer extends Component<IProps, IState> {
 
   handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const { email, phoneNumber, password } = this.state;
+    const { toggleLoggedIn } = this.props;
     console.log(email, password);
-    const isValid = await serverApi.login();
+    const isValid = await serverApi.login(email, password);
+    if (isValid.data === "Failed login") {
+      toast.error("로그인정보가 일치하지 않습니다", { autoClose: 1300 });
+    } else {
+      toast.success("안녕하세요!", { autoClose: 1300 });
+      toggleLoggedIn();
+    }
 
     console.log(`isValid: `, isValid);
+
     // if (phoneNumber.match(/^\d{11}$/)) {
     //   var addDash =
     //     phoneNumber.substr(0, 3) +

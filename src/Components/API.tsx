@@ -19,14 +19,13 @@ const url = "http://13.209.4.48:3000/signin";
 
 export const serverApi = {
   getAllCafes: () => api.get("cafe"),
-  login: () =>
-    api.post("signin", {
-      email: "dan.kimhaejun@gmail.com",
-      password: "1234"
-    }),
-
-  // axios.post( `/signin`, qs.stringify({ email, password }) ).then(data => { console.log(data); }),
-  // api.post("signin", { email: email, password: password }),,,
+  login: (email: string, password: string) => {
+    // console.log(email, typeof password);
+    return api.post("signin", {
+      email: email,
+      password: password
+    });
+  },
   getCafeInfobyId: (id: number) => api.get(`cafe/${id}`),
   zoomIn: () => api.get(""),
   zoomOut: () => api.get(""),
