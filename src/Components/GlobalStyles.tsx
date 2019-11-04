@@ -23,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
     }
     h1,h4,span, div,a{
       font-family: 'Noto Sans KR regular', sans-serif;
+      color: "#000000";
     }
     input,
     button {
@@ -31,6 +32,13 @@ const GlobalStyle = createGlobalStyle`
         line-height: 1.3;
         font-weight: normal;
         letter-spacing: 0;
+        word-spacing: normal;
+        text-transform: none;
+        text-indent: 0px;
+        text-shadow: none;
+        display: inline-block;
+        text-align: center;
+        align-items: flex-start;
     }
 
     input {
