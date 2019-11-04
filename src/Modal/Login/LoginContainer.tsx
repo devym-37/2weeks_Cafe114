@@ -43,7 +43,7 @@ class LoginContainer extends Component<IProps, IState> {
     event.preventDefault();
     const { email, phoneNumber, password } = this.state;
     console.log(email, password);
-    const isValid = await serverApi.login(email, password);
+    const isValid = await serverApi.login();
 
     console.log(`isValid: `, isValid);
     // if (phoneNumber.match(/^\d{11}$/)) {

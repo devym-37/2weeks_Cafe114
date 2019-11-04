@@ -10,6 +10,7 @@ import MainButton from "../../Components/MainButton";
 import TextButton from "../../Components/TextButton";
 import GhostButton from "../../Components/GhostButton";
 import CloseButton from "../../Components/CloseButton";
+
 const DimmedLayerCantainer = styled.div`
   height: 993px;
   z-index: 999;

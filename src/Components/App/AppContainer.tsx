@@ -9,12 +9,14 @@ interface Istate {
   isLoggedIn: boolean;
   showLoginModal: boolean;
   showFilterModal: boolean;
+  showSignupModal: boolean;
 }
 class AppContainer extends Component<{}, Istate> {
   state = {
     isLoggedIn: false,
     showLoginModal: false,
-    showFilterModal: true
+    showFilterModal: false,
+    showSignupModal: false
   };
 
   toggleLoginModal = () => {
@@ -28,8 +30,19 @@ class AppContainer extends Component<{}, Istate> {
       showFilterModal: !this.state.showFilterModal
     });
   };
+
+  toggleSignupModal = () => {
+    this.setState({
+      showSignupModal: !this.state.showSignupModal
+    });
+  };
   render() {
-    const { isLoggedIn, showLoginModal, showFilterModal } = this.state;
+    const {
+      isLoggedIn,
+      showLoginModal,
+      showFilterModal,
+      showSignupModal
+    } = this.state;
     return (
       <div className="App">
         <Map />
@@ -39,6 +52,8 @@ class AppContainer extends Component<{}, Istate> {
         />
         <AppPresenter
           toggleLoginModal={this.toggleLoginModal}
+          toggleSignupModal={this.toggleSignupModal}
+          showSignupModal={showSignupModal}
           showLoginModal={showLoginModal}
           isLoggedIn={isLoggedIn}
         />
