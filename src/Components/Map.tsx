@@ -51,8 +51,8 @@ interface Istate {
 interface IProps {
   toggleLocation?: any;
 }
-// test 체크중
-class Map extends Component<Istate, IProps> {
+
+class Map extends Component<{}, Istate> {
   state = {
     result: [],
     subAddress: [],
@@ -67,7 +67,7 @@ class Map extends Component<Istate, IProps> {
     centerX: 127.049833,
     level: 5
   };
-  this.props.toggleLocation
+
   async componentDidMount() {
     try {
       const { data: result } = await serverApi.getAllCafes();
@@ -279,7 +279,7 @@ class Map extends Component<Istate, IProps> {
   };
 
   render() {
-    console.log("11111", this.props.children);
+    console.log("11111", this.props);
     return (
       <React.Fragment>
         <div className="Map" id="map" style={mystyles} />
