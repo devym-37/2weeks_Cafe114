@@ -10,7 +10,7 @@ interface IState {
   password: string;
   password2: string;
   birth: string;
-  sex: string;
+  gender: string;
   agreement_ad: number;
 }
 
@@ -20,7 +20,7 @@ class SignupContainer extends Component<IProps, IState> {
     password: "",
     password2: "",
     birth: "",
-    sex: "",
+    gender: "",
     agreement_ad: 0
   };
 
@@ -51,7 +51,14 @@ class SignupContainer extends Component<IProps, IState> {
   };
   render() {
     const { toggleSignupModal } = this.props;
-    const { email, password, password2, birth, sex, agreement_ad } = this.state;
+    const {
+      email,
+      password,
+      password2,
+      birth,
+      gender,
+      agreement_ad
+    } = this.state;
     return <SignupPresenter></SignupPresenter>;
   }
 }

@@ -13,6 +13,7 @@ interface IState {
 interface IProps {
   toggleModal: any;
   toggleLoggedIn: any;
+  toggleSignupModal: any;
 }
 class LoginContainer extends Component<IProps, IState> {
   state = {
@@ -75,7 +76,7 @@ class LoginContainer extends Component<IProps, IState> {
 
   render() {
     const { email, phoneNumber, password } = this.state;
-    const { toggleModal } = this.props;
+    const { toggleModal, toggleSignupModal } = this.props;
     // console.log(email, password);
     return (
       <LoginPresenter
@@ -85,6 +86,7 @@ class LoginContainer extends Component<IProps, IState> {
         toggleModal={toggleModal}
         handleSubmit={this.handleSubmit}
         email={email}
+        toggleSignupModal={toggleSignupModal}
       />
     );
   }

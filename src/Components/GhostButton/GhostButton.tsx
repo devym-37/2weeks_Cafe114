@@ -28,10 +28,11 @@ const Ghostbtn = styled.a`
 
 interface IProps {
   text: string;
-  href: string;
+  href?: string;
+  onClick: any;
 }
 
-const GhostButton: React.SFC<IProps> = ({ href, text }) => (
-  <Ghostbtn href={href}>{text}</Ghostbtn>
+const GhostButton: React.SFC<IProps> = ({ href, text, onClick }) => (
+  <Ghostbtn onClick={onClick}>{text}</Ghostbtn>
 );
 export default GhostButton;

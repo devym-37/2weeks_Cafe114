@@ -12,8 +12,8 @@ import {
 } from "../Components/ToolGroup/MapControl";
 
 declare var kakao: any;
-declare const zoomIn: (event: MouseEvent) => any;
-declare const zoomOut: (event: MouseEvent) => any;
+// declare const zoomIn: (event: MouseEvent) => any;
+// declare const zoomOut: (event: MouseEvent) => any;
 
 const mystyles = {
   width: "100%",
@@ -36,7 +36,7 @@ interface Iinfo {
   updatedAt: string;
 }
 
-interface Istate {
+interface IState {
   result: Array<Iinfo>;
   loading: boolean;
   error: string;
@@ -49,10 +49,11 @@ interface Istate {
 }
 
 interface IProps {
-  toggleLocation?: any;
+  toggleLocation: any;
+  toggleFilterModal: any;
 }
 
-class Map extends Component<{}, Istate> {
+class Map extends Component<IProps, IState> {
   state = {
     result: [],
     subAddress: [],

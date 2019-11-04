@@ -79,6 +79,7 @@ interface IProps {
   email: string;
   password: string;
   toggleModal: any;
+  toggleSignupModal: any;
   handleInputChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
@@ -90,7 +91,8 @@ const LoginPresenter: React.SFC<IProps> = ({
   password,
   handleInputChange,
   handleSubmit,
-  toggleModal
+  toggleModal,
+  toggleSignupModal
 }) => (
   //   handleInputChange
   <DimmedLayerCantainer>
@@ -139,7 +141,11 @@ const LoginPresenter: React.SFC<IProps> = ({
             />
             <TextButton href="/auth/find" text="비밀번호 찾기" />
             <Seperator color="ligtGrey" text="카페114가 처음이세요?" />
-            <GhostButton href="/signup" text="카페114 회원가입" />
+            <GhostButton
+              href="/signup"
+              text="카페114 회원가입"
+              onClick={toggleSignupModal}
+            />
           </Cafe114Login>
         </ContentContainer>
         <CloseButton onClick={toggleModal} />

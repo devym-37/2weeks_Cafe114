@@ -1,10 +1,8 @@
 import axios from "axios";
-// axios.defaults.headers.common["Content-Type"] =
-//   "application/x-www-form-urlencoded";
+
 const api = axios.create({
   baseURL: "http://13.209.4.48:3000/",
   headers: {
-    // "X-Requested-With": "XMLHttpRequest",
     "content-type": "application/json"
   }
 });
@@ -20,13 +18,15 @@ const url = "http://13.209.4.48:3000/signin";
 export const serverApi = {
   getAllCafes: () => api.get("cafe"),
   login: (email: string, password: string) => {
-    // console.log(email, typeof password);
     return api.post("signin", {
-      email: email,
-      password: password
+      email,
+      password
     });
   },
   getCafeInfobyId: (id: number) => api.get(`cafe/${id}`),
+  checkEmail: (email: string) => api.post("signup/email", { email }),
+  signup: (email: string, password: string) =>
+    api.post("signup", { email, password }),
   zoomIn: () => api.get(""),
   zoomOut: () => api.get(""),
   currentLocation: () => api.get(""),
