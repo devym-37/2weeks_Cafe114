@@ -4,18 +4,8 @@ import axios from "axios";
 const api = axios.create({
   baseURL: "http://13.209.4.48:3000/",
   headers: {
-    "X-Requested-With": "XMLHttpRequest",
-    "content-type": "application/x-www-form-urlencoded"
-    // "Access-Control-Allow-Origin": "*",
-    // "Access-Control-Allow-Methods": [
-    //   "GET",
-    //   "POST",
-    //   "PATCH",
-    //   "PUT",
-    //   "DELETE",
-    //   "OPTIONS"
-    // ],
-    // "Access-Control-Allow-Headers": ["Origin", "Content-Type", "X-Auth-Token"]
+    // "X-Requested-With": "XMLHttpRequest",
+    "content-type": "application/json"
   }
 });
 
@@ -23,10 +13,20 @@ interface ILogin {
   email: string;
   password: string;
 }
+
+const Data = { email: "joeun@gmail.com", password: "1234" };
+const url = "http://13.209.4.48:3000/signin";
+
 export const serverApi = {
   getAllCafes: () => api.get("cafe"),
-  login: (email: string, password: string) =>
-    api.post("signin", JSON.stringify([{ email, password }])),
+  login: () =>
+    api.post("signin", {
+      email: "joeun@gmail.com",
+      password: "1234"
+    }),
+
+  // axios.post( `/signin`, qs.stringify({ email, password }) ).then(data => { console.log(data); }),
+  // api.post("signin", { email: email, password: password }),,,
   getCafeInfobyId: (id: number) => api.get(`cafe/${id}`),
   zoomIn: () => api.get(""),
   zoomOut: () => api.get(""),
