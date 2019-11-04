@@ -11,13 +11,20 @@ interface Istate {
   showLoginModal: boolean;
   showFilterModal: boolean;
   showSignupModal: boolean;
+  toggleLocation: boolean;
 }
-class AppContainer extends Component<{}, Istate> {
+
+interface IProps {
+  toggleLocation: any;
+}
+
+class AppContainer extends Component<IProps, Istate> {
   state = {
     isLoggedIn: false,
     showLoginModal: false,
     showFilterModal: false,
-    showSignupModal: false
+    showSignupModal: false,
+    toggleLocation: false
   };
 
   toggleLoginModal = () => {
@@ -38,19 +45,28 @@ class AppContainer extends Component<{}, Istate> {
     });
   };
 
+  toggleLocation = () => {
+    this.setState({
+      toggleLocation: true
+    });
+  };
+
   render() {
     const {
       isLoggedIn,
       showLoginModal,
       showFilterModal,
-      showSignupModal
+      showSignupModal,
+      toggleLocation
     } = this.state;
+    console.log("toggleLocation : ", toggleLocation);
     return (
       <div className="App">
-        <Map />
+        <Map toggleLocation={this.toggleLocation} />
         <ToolGroup
           toggleLoginModal={this.toggleLoginModal}
           toggleFilterModal={this.toggleFilterModal}
+          toggleLocation={this.toggleLocation}
         />
         <AppPresenter
           toggleLoginModal={this.toggleLoginModal}
