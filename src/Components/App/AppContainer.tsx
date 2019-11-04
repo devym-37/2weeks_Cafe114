@@ -16,6 +16,7 @@ class AppContainer extends Component<{}, Istate> {
   state = {
     isLoggedIn: false,
     showLoginModal: false,
+    showFilterModal: false,
     showSignupModal: false
   };
 
@@ -30,7 +31,6 @@ class AppContainer extends Component<{}, Istate> {
       showFilterModal: !this.state.showFilterModal
     });
   };
-
 
   toggleSignupModal = () => {
     this.setState({
