@@ -11,6 +11,7 @@ interface IProps {
   toggleLoginModal: any;
   toggleSignupModal: any;
   showSignupModal: boolean;
+  toggleLoggedIn: any;
 }
 
 const AppPresenter: React.SFC<IProps> = ({
@@ -18,14 +19,17 @@ const AppPresenter: React.SFC<IProps> = ({
   showLoginModal,
   toggleSignupModal,
   showSignupModal,
-  isLoggedIn
+  isLoggedIn,
+  toggleLoggedIn
 }) =>
   isLoggedIn ? (
     <LoggedInRoutes />
   ) : (
     <>
       <LoggedOutRoutes />
-      {showLoginModal ? <Login toggleModal={toggleLoginModal} /> : null}
+      {showLoginModal ? (
+        <Login toggleLoggedIn={toggleLoggedIn} toggleModal={toggleLoginModal} />
+      ) : null}
       {showSignupModal ? (
         <Signup toggleSignupModal={toggleSignupModal} />
       ) : null}
