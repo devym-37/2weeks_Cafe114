@@ -67,6 +67,7 @@ class Map extends Component<{}, Istate, IProps> {
     centerX: 127.049833,
     level: 5
   };
+  this.props.toggleLocation
   async componentDidMount() {
     try {
       const { data: result } = await serverApi.getAllCafes();
