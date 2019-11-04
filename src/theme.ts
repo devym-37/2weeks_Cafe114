@@ -13,6 +13,10 @@ const myTheme: DefaultTheme = {
     kakaoYellow: "#ffde00",
     kakaoBrown: "#3c1e1e",
     facebook: "#4267b2"
+  },
+  modal: {
+    size: { small: "219.5px", medium: "380px" },
+    margin: { small: "-143px", medium: "-190px" }
   }
 };
 

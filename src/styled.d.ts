@@ -15,5 +15,10 @@ declare module "styled-components" {
       kakaoYellow: string;
       facebook: string;
     };
+    modal: {
+      size: { small: string; medium: string };
+
+      margin: { small: string; medium: string };
+    };
   }
 }

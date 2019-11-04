@@ -27,6 +27,9 @@ const AppPresenter: React.SFC<IProps> = ({
   ) : (
     <>
       <LoggedOutRoutes />
+      {showSignupModal ? (
+        <Signup toggleSignupModal={toggleSignupModal} />
+      ) : null}
       {showLoginModal ? (
         <Login
           toggleSignupModal={toggleSignupModal}
@@ -34,9 +37,7 @@ const AppPresenter: React.SFC<IProps> = ({
           toggleModal={toggleLoginModal}
         />
       ) : null}
-      {showSignupModal ? (
-        <Signup toggleSignupModal={toggleSignupModal} />
-      ) : null}
+
       <GlobalStyles />
     </>
   );

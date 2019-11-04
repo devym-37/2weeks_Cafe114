@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-const TextInput = styled.input`
+const TextInput = styled.input<{ width: string }>`
   margin-top: 0;
   display: block;
   box-sizing: border-box;
   margin: 10px 0 0;
   padding: 0 15px;
-  width: 100%;
+  width: ${props => props.width};
   border: 1px solid #c8c6e6;
   &:-webkit-autofill {
     box-shadow: 0 0 0px 1000px white inset !important;
@@ -35,6 +35,7 @@ interface IProps {
   required?: boolean;
   name: string;
   onChange: any;
+  width?: string;
 }
 const Input: React.SFC<IProps> = ({
   placeholder,
@@ -42,7 +43,8 @@ const Input: React.SFC<IProps> = ({
   required = true,
   value,
   name,
-  onChange
+  onChange,
+  width = "100%"
 }) => (
   <TextInput
     type={type}
@@ -50,6 +52,7 @@ const Input: React.SFC<IProps> = ({
     required={required}
     placeholder={placeholder}
     value={value}
+    width={width}
     onChange={onChange}
   />
 );

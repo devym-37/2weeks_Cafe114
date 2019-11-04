@@ -97,7 +97,7 @@ const LoginPresenter: React.SFC<IProps> = ({
   //   handleInputChange
   <DimmedLayerCantainer>
     <Helmet>
-      <title> Login | Cafe114 </title>
+      <title> 로그인 | Cafe114 </title>
     </Helmet>
     <Dimmed />
     <Container>
@@ -118,7 +118,7 @@ const LoginPresenter: React.SFC<IProps> = ({
               text="페이스북 계정으로 로그인"
             />
           </LoginGroup>
-          <Seperator color="ligtGrey" text="직접 로그인하기" />
+          <Seperator color="lightGrey" text="직접 로그인하기" />
           <Cafe114Login>
             <Input
               placeholder={"이메일 아이디"}

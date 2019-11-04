@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 interface IProps {
-  color: string;
+  color?: string;
   text: string;
   className?: string;
 }
@@ -18,10 +18,11 @@ const TextContainer = styled.div<{ color: string }>`
   line-height: 1.3;
   text-indent: 0;
   text-justify: center;
+  color: black;
   color: ${props =>
-    props.color === "black"
-      ? props.theme.colors.black
-      : props.theme.colors.lightGrey};
+    props.color === "lightGrey"
+      ? props.theme.colors.lightGrey
+      : props.theme.colors.black};
 `;
 
 const LeftContainer = styled.div`
