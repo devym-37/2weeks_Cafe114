@@ -14,7 +14,7 @@ interface Istate {
   toggleLocation: boolean;
 }
 
-class AppContainer extends Component<Istate> {
+class AppContainer extends Component<{}, Istate> {
   state = {
     isLoggedIn: false,
     showLoginModal: false,
@@ -66,7 +66,7 @@ class AppContainer extends Component<Istate> {
     console.log("toggleLocation : ", toggleLocation);
     return (
       <div className="App">
-        <Map toggleLocation={this.toggleLocation} />
+        <Map />
         <ToolGroup
           toggleLoginModal={this.toggleLoginModal}
           toggleFilterModal={this.toggleFilterModal}
