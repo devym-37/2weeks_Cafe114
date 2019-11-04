@@ -19,8 +19,14 @@ const api = axios.create({
   }
 });
 
+interface ILogin {
+  email: string;
+  password: string;
+}
 export const serverApi = {
   getAllCafes: () => api.get("cafe"),
+  login: (email: string, password: string) =>
+    api.post("signin", JSON.stringify([{ email, password }])),
   getCafeInfobyId: (id: number) => api.get(`cafe/${id}`),
   zoomIn: () => api.get(""),
   zoomOut: () => api.get(""),
