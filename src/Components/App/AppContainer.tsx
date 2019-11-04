@@ -5,6 +5,7 @@ import Map from "../Map";
 import "react-toastify/dist/ReactToastify.css";
 import ToolGroup from "../ToolGroup";
 import Filter from "../../Modal/Filter";
+
 interface Istate {
   isLoggedIn: boolean;
   showLoginModal: boolean;
@@ -14,7 +15,7 @@ class AppContainer extends Component<{}, Istate> {
   state = {
     isLoggedIn: false,
     showLoginModal: false,
-    showFilterModal: true
+    showFilterModal: false
   };
 
   toggleLoginModal = () => {
@@ -28,6 +29,7 @@ class AppContainer extends Component<{}, Istate> {
       showFilterModal: !this.state.showFilterModal
     });
   };
+
   render() {
     const { isLoggedIn, showLoginModal, showFilterModal } = this.state;
     return (

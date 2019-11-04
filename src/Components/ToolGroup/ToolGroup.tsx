@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import {
-  ZoomIn,
-  ZoomOut,
   Update,
   CurrentLocation,
   Filter
@@ -12,7 +10,8 @@ import { Mypage } from "../../Components/ToolGroup/Mypage";
 const Container = styled.div`
   display: block;
   position: absolute;
-  top: 10px;
+  top: 225px;
+  left: 12px;
   z-index: 2;
 `;
 
@@ -34,8 +33,6 @@ const ToolGroup: React.SFC<IProps> = ({
   <Container>
     <ToolGroupContainer>
       <Mypage toggleLoginModal={toggleLoginModal} />
-      <ZoomIn />
-      <ZoomOut />
       <CurrentLocation />
       <Update />
       <Filter toggleFilterModal={toggleFilterModal} />

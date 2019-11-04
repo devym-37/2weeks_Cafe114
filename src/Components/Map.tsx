@@ -6,8 +6,6 @@ import codestates from "../assets/marker/codestates.png";
 import { BrowserRouter as Router, Switch, Link } from "react-router-dom";
 import { serverApi } from "../Components/API";
 import {
-  ZoomIn,
-  ZoomOut,
   Update,
   CurrentLocation,
   Filter
@@ -101,14 +99,13 @@ class Map extends Component<{}, Istate> {
     const centerY = this.state.centerY;
     const level = this.state.level;
     const el = document.getElementById("map");
+
     let kakaoMap = new kakao.maps.Map(el, {
       center: new kakao.maps.LatLng(centerY, centerX),
       level: level
     }); // 지도 생성
 
     this.marker(kakaoMap); // 위워크 marker
-    // console.log("result ------", this.state.result.length);
-    // 주소-좌표 변환 객체를 생성합니다
 
     for (var i = 0; i < this.state.category.length; i++) {
       if (this.state.category[i] === "hollys") {
@@ -121,8 +118,7 @@ class Map extends Component<{}, Istate> {
           image: hollysMarkerImage
         });
         hollysMarker.setMap(kakaoMap);
-        // 마커에 클릭이벤트를 등록합니다
-        // var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+        var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
         const hollysName = this.state.name[i];
         const idNumber = i + 1;
         const infoWindowContent = ReactDOMServer.renderToString(
@@ -143,6 +139,7 @@ class Map extends Component<{}, Istate> {
         kakao.maps.event.addListener(hollysMarker, "mouseout", function() {
           infowindow.close();
         });
+        // 마커에 클릭이벤트를 등록합니다
         kakao.maps.event.addListener(hollysMarker, "click", function() {
           window.location.href = `/cafe/${idNumber}`;
         });
@@ -192,16 +189,13 @@ class Map extends Component<{}, Istate> {
       // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
       kakaoMap.panTo(moveLatLon);
     }
-  }
-  // 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
-  zoomIn = (map: any) => {
-    map.setLevel(map.getLevel() - 1);
-  };
 
-  // 지도 확대, 축소 컨트롤에서 축소 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
-  zoomOut = (map: any) => {
-    map.setLevel(map.getLevel() + 1);
-  };
+    var mapTypeControl = new kakao.maps.MapTypeControl();
+    kakaoMap.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+    // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+    var zoomControl = new kakao.maps.ZoomControl();
+    kakaoMap.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+  }
 
   marker = (map: any) => {
     const codestatesImageSrc = codestates;
@@ -218,21 +212,19 @@ class Map extends Component<{}, Istate> {
       image: codeMarkerImage
     });
     var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-    kakao.maps.event.addListener(codeMarker, "mouseover", function() {
+    kakao.maps.event.addListener(codeMarker, "click", function() {
       // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
       infowindow.setContent(
         '<div class="customoverlay">' +
-          // `<Link to=/cafe/${idNumber}>` +
-          // `  <a href="/cafe/${idNumber}">` +
+          '<span onclick="zoomIn()" style="cursor:pointer">' +
           `    <span class="title">CodeStates</span>` +
-          // "  </a>" +
-          // `</Link>` +
+          "</span>" +
           "</div>"
       );
       infowindow.open(map, codeMarker);
     });
     kakao.maps.event.addListener(codeMarker, "mouseout", function() {
-      infowindow.close();
+      // infowindow.close();
     });
     // 마커가 지도 위에 표시되도록 설정합니다
     codeMarker.setMap(map);
@@ -247,7 +239,7 @@ class Map extends Component<{}, Istate> {
   };
 
   render() {
-    console.log(this.props.children);
+    console.log("11111", this.props.children);
     return (
       <React.Fragment>
         <div className="Map" id="map" style={mystyles} />
