@@ -62,6 +62,7 @@ class Map extends Component<{}, Istate> {
   async componentDidMount() {
     try {
       const { data: result } = await serverApi.getAllCafes();
+      console.log(`result??: `, result);
       const subAddress = result.map((cafe: Iinfo) => cafe.subAddress);
       const x = result.map((cafe: Iinfo) => cafe.x);
       const y = result.map((cafe: Iinfo) => cafe.y);

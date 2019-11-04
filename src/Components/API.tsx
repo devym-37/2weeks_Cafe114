@@ -21,7 +21,7 @@ export const serverApi = {
   getAllCafes: () => api.get("cafe"),
   login: () =>
     api.post("signin", {
-      email: "joeun@gmail.com",
+      email: "dan.kimhaejun@gmail.com",
       password: "1234"
     }),
 
