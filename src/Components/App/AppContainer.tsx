@@ -14,11 +14,7 @@ interface Istate {
   toggleLocation: boolean;
 }
 
-interface IProps {
-  toggleLocation: any;
-}
-
-class AppContainer extends Component<IProps, Istate> {
+class AppContainer extends Component<Istate> {
   state = {
     isLoggedIn: false,
     showLoginModal: false,
