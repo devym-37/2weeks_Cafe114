@@ -52,7 +52,7 @@ interface IProps {
   toggleLocation?: any;
 }
 
-class Map extends Component<{}, Istate, IProps> {
+class Map extends Component<Istate, IProps> {
   state = {
     result: [],
     subAddress: [],
