@@ -51,7 +51,7 @@ interface Istate {
 interface IProps {
   toggleLocation?: any;
 }
-
+// test 중
 class Map extends Component<Istate, IProps> {
   state = {
     result: [],
