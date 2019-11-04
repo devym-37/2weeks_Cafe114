@@ -20,6 +20,11 @@ const mystyles = {
   height: "100vh"
 } as React.CSSProperties;
 
+const userMarker = {
+  width: "100%",
+  height: "100vh"
+} as React.CSSProperties;
+
 interface Iinfo {
   id: number;
   name: string;
@@ -106,7 +111,7 @@ class Map extends Component<{}, Istate> {
       level: level
     }); // 지도 생성
 
-    this.marker(kakaoMap); // 위워크 marker
+    this.codeMarker(kakaoMap); // 위워크 marker
     for (var i = 0; i < this.state.category.length; i++) {
       if (this.state.category[i] === "hollys") {
         const spot = new kakao.maps.LatLng(this.state.y[i], this.state.x[i]);
@@ -196,9 +201,9 @@ class Map extends Component<{}, Istate> {
     } else {
       // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치
       console.log("Cant access geo location");
-      this.marker(kakaoMap); // 위워크 marker
+      this.codeMarker(kakaoMap); // 위워크 marker
     }
-    // 지도에 마커와 인포윈도우를 표시하는 함수입니다
+
     function saveCoords(coordsObj: any) {
       localStorage.setItem(COORDS, JSON.stringify(coordsObj));
     }
@@ -239,23 +244,14 @@ class Map extends Component<{}, Istate> {
     }
 
     function init() {
-      loadCoords();
+      loadCoords(); // 실행함수
     }
 
     function displayMarker(locPosition: any) {
-      // 마커를 생성합니다
       var marker = new kakao.maps.Marker({
         map: kakaoMap,
         position: locPosition
       });
-
-      // 인포윈도우를 생성합니다
-      var infowindow = new kakao.maps.InfoWindow({
-        content: "location"
-      });
-      // 인포윈도우를 마커위에 표시합니다
-      infowindow.open(kakaoMap, marker);
-      // 지도 중심좌표를 접속위치로 변경합니다
       kakaoMap.setCenter(locPosition);
     }
 
@@ -266,7 +262,7 @@ class Map extends Component<{}, Istate> {
     kakaoMap.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
   }
 
-  marker = (map: any) => {
+  codeMarker = (map: any) => {
     const codestatesImageSrc = codestates;
     const imageSize = new kakao.maps.Size(57, 58);
     const codeMarkerImage = new kakao.maps.MarkerImage(
