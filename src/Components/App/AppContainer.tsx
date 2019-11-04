@@ -19,7 +19,7 @@ class AppContainer extends Component<{}, Istate> {
     isLoggedIn: false,
     showLoginModal: false,
     showFilterModal: false,
-    showSignupModal: true,
+    showSignupModal: false,
     showLocation: false
   };
 
