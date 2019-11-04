@@ -5,8 +5,13 @@ import tomtom from "../assets/marker/tomtom-logo.png";
 import codestates from "../assets/marker/codestates.png";
 import { BrowserRouter as Router, Switch, Link } from "react-router-dom";
 import { serverApi } from "../Components/API";
-import ToolGroup from "../Components/ToolGroup";
-import { any } from "prop-types";
+import {
+  ZoomIn,
+  ZoomOut,
+  Update,
+  CurrentLocation,
+  Filter
+} from "../Components/ToolGroup/MapControl";
 
 declare var kakao: any;
 declare const zoomIn: (event: MouseEvent) => any;
@@ -44,9 +49,11 @@ interface Istate {
   name: Array<Iinfo>;
   geoClickState: boolean;
 }
-// interface IProps {
-//   toggleLoginModal: any;
-// }
+
+interface IProps {
+  toggleZoomIn: any;
+}
+
 class Map extends Component<{}, Istate> {
   state = {
     result: [],
@@ -118,40 +125,19 @@ class Map extends Component<{}, Istate> {
         // var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
         const hollysName = this.state.name[i];
         const idNumber = i + 1;
-        // var content =
-        // '<div class="customoverlay">' +
-        // +`  <a href="http://localhost:3000/cafe/${i + 1}">` +
-        // `    <span class="title">${hollysName}</span>` +
-        // "  </a>" +
-        // +"</div>";
-        // var content =
-        //   '<div class="customoverlay">' +
-        //   `<Link to=/cafe/${i + 1}>` +
-        //   // `  <a href="/cafe/${i + 1}">` +
-        //   `    <span class="title">${hollysName}</span>` +
-        //   // "  </a>" +
-        //   `</Link>` +
-        //   "</div>";
-
-        // // 커스텀 오버레이를 생성합니다
-        // var hollysOverlay = new kakao.maps.CustomOverlay({
-        //   map: kakaoMap,
-        //   position: spot,
-        //   content: content,
-        //   yAnchor: 1
-        // });
-
+        const infoWindowContent = ReactDOMServer.renderToString(
+          <Router>
+            <Switch>
+              <Link to={`/cafe/${idNumber}`}>
+                <div>
+                  <span className="title">{hollysName}</span>
+                </div>
+              </Link>
+            </Switch>
+          </Router>
+        );
         kakao.maps.event.addListener(hollysMarker, "mouseover", function() {
-          // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-          infowindow.setContent(
-            '<div class="customoverlay">' +
-              // `<Link to=/cafe/${idNumber}>` +
-              // `  <a href="/cafe/${idNumber}">` +
-              `    <span class="title">${hollysName}</span>` +
-              // "  </a>" +
-              // `</Link>` +
-              "</div>"
-          );
+          infowindow.setContent(infoWindowContent);
           infowindow.open(kakaoMap, hollysMarker);
         });
         kakao.maps.event.addListener(hollysMarker, "mouseout", function() {
@@ -181,16 +167,16 @@ class Map extends Component<{}, Istate> {
             </Switch>
           </Router>
         );
-        kakao.maps.event.addListener(tomtomMarker, "click", function() {
+        kakao.maps.event.addListener(tomtomMarker, "mouseover", function() {
           // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
           infowindow.setContent(infoWindowContent);
-
           infowindow.open(kakaoMap, tomtomMarker);
         });
         kakao.maps.event.addListener(tomtomMarker, "mouseout", function() {
-          // infowindow.close();
+          infowindow.close();
         });
         kakao.maps.event.addListener(tomtomMarker, "click", function() {
+          window.location.href = `/cafe/${idNumber}`;
           panTo(spot);
         });
         // kakao.maps.event.addListener(kakaoMap, "center_changed", function() {
@@ -206,9 +192,6 @@ class Map extends Component<{}, Istate> {
       // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
       kakaoMap.panTo(moveLatLon);
     }
-
-    this.zoomIn(kakaoMap);
-    this.zoomOut(kakaoMap);
   }
   // 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
   zoomIn = (map: any) => {
@@ -264,11 +247,10 @@ class Map extends Component<{}, Istate> {
   };
 
   render() {
-    // const { toggleLoginModal } = this.props.toggleLoginModal;
+    console.log(this.props.children);
     return (
       <React.Fragment>
         <div className="Map" id="map" style={mystyles} />
-        {/* <ToolGroup toggleLoginModal={toggleLoginModal} /> */}
       </React.Fragment>
     );
   }
@@ -282,4 +264,27 @@ export default Map;
 //   position: new kakao.maps.LatLng(33.450705, 126.570677),
 //   title: "할리스", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
 //   image: hollysMarkerImage
+// });
+
+// var content =
+// '<div class="customoverlay">' +
+// +`  <a href="http://localhost:3000/cafe/${i + 1}">` +
+// `    <span class="title">${hollysName}</span>` +
+// "  </a>" +
+// +"</div>";
+// var content =
+//   '<div class="customoverlay">' +
+//   `<Link to=/cafe/${i + 1}>` +
+//   // `  <a href="/cafe/${i + 1}">` +
+//   `    <span class="title">${hollysName}</span>` +
+//   // "  </a>" +
+//   `</Link>` +
+//   "</div>";
+
+// // 커스텀 오버레이를 생성합니다
+// var hollysOverlay = new kakao.maps.CustomOverlay({
+//   map: kakaoMap,
+//   position: spot,
+//   content: content,
+//   yAnchor: 1
 // });
