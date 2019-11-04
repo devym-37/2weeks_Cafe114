@@ -17,7 +17,7 @@ import VerifyPhone from "../Routes/VerifyPhone";
 import Settings from "../Routes/Settings";
 import EditMessage from "../Routes/SendMessage";
 import Messages from "../Routes/Messages";
-import Signup from "../Routes/Signup";
+// import Signup from "../Modal/Signup";
 import FindPassword from "../Routes/FindPassword";
 
 export const LoggedOutRoutes: React.SFC = () => (
@@ -30,7 +30,7 @@ export const LoggedOutRoutes: React.SFC = () => (
       <Route path="/auth/find" exact component={FindPassword} />
       <Route path="/social-login" exact component={SocialLogin} />
       <Route path="/verify-phone" exact component={VerifyPhone} />
-      <Route path="/signup" exact component={Signup} />
+      {/* <Route path="/signup" exact component={Signup} /> */}
       <Route path="/messages" exact component={Messages} />
 
       <Redirect from="*" to="/" />
