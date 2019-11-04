@@ -16,10 +16,8 @@ interface IProps {
   onClick?: any;
 }
 
-const TextButton: React.SFC<IProps> = ({ href, text, onClick }) => (
-  <Textbtn onClick={onClick} href={href}>
-    {text}
-  </Textbtn>
+const TextButton: React.SFC<IProps> = ({ href, text }) => (
+  <Textbtn href={href}>{text}</Textbtn>
 );
 
 export default TextButton;
