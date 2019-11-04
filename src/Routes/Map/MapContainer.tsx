@@ -38,8 +38,8 @@ class MapContainer extends Component<{}, Istate> {
 
   render() {
     const { result, loading, error, address } = this.state;
-    console.log(`address: `, address);
-    console.log(`address: `, result);
+    // console.log(`address: `, address);
+    // console.log(`address: `, result);
     return <div></div>;
   }
 }
