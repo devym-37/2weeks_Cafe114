@@ -1,26 +1,17 @@
-import React, { Component, ButtonHTMLAttributes } from "react";
+import React, { Component } from "react";
 import ReactDOMServer from "react-dom/server";
 import hollys from "../assets/marker/hollys-logo.png";
 import tomtom from "../assets/marker/tomtom-logo.png";
 import codestates from "../assets/marker/codestates.png";
 import { BrowserRouter as Router, Switch, Link } from "react-router-dom";
 import { serverApi } from "../Components/API";
-import {
-  Update,
-  CurrentLocation,
-  Filter
-} from "../Components/ToolGroup/MapControl";
+import { parentPort } from "worker_threads";
 
 declare var kakao: any;
 // declare const zoomIn: (event: MouseEvent) => any;
 // declare const zoomOut: (event: MouseEvent) => any;
 
 const mystyles = {
-  width: "100%",
-  height: "100vh"
-} as React.CSSProperties;
-
-const userMarker = {
   width: "100%",
   height: "100vh"
 } as React.CSSProperties;
@@ -56,6 +47,7 @@ interface IState {
 interface IProps {
   toggleLocation: any;
   toggleFilterModal: any;
+  showLocation: any;
 }
 
 class Map extends Component<IProps, IState> {
@@ -68,7 +60,7 @@ class Map extends Component<IProps, IState> {
     y: [],
     category: [],
     name: [],
-    geoClickState: false,
+    geoClickState: this.props.showLocation,
     centerY: 37.503444,
     centerX: 127.049833,
     level: 5
@@ -117,7 +109,8 @@ class Map extends Component<IProps, IState> {
       level: level
     }); // 지도 생성
 
-    this.codeMarker(kakaoMap); // 위워크 marker
+    codeMarker(kakaoMap); // 위워크 marker
+
     for (var i = 0; i < this.state.category.length; i++) {
       if (this.state.category[i] === "hollys") {
         const spot = new kakao.maps.LatLng(this.state.y[i], this.state.x[i]);
@@ -193,6 +186,7 @@ class Map extends Component<IProps, IState> {
         // });
       }
     }
+
     function panTo(changeLatLng: any) {
       // 이동할 위도 경도 위치를 생성합니다
       var moveLatLon = changeLatLng;
@@ -202,13 +196,17 @@ class Map extends Component<IProps, IState> {
     }
 
     const COORDS = "coords";
-    if (navigator.geolocation) {
-      init(); // navigator 실행
-    } else {
-      // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치
-      console.log("Cant access geo location");
-      this.codeMarker(kakaoMap); // 위워크 marker
-    }
+    console.log("111---this.props.showLocation : ", this.props.showLocation);
+    console.log("222---this.state.geoClickState : ", this.state.geoClickState);
+    // if (!this.state.geoClickState) {
+    //   if (navigator.geolocation) {
+    //     init(); // navigator 실행
+    //   } else {
+    //     // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치
+    //     console.log("Cant access geo location");
+    //     codeMarker(kakaoMap); // 위워크 marker
+    //   }
+    // }
 
     function saveCoords(coordsObj: any) {
       localStorage.setItem(COORDS, JSON.stringify(coordsObj));
@@ -266,43 +264,44 @@ class Map extends Component<IProps, IState> {
     // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
     var zoomControl = new kakao.maps.ZoomControl();
     kakaoMap.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-  }
 
-  codeMarker = (map: any) => {
-    const codestatesImageSrc = codestates;
-    const imageSize = new kakao.maps.Size(57, 58);
-    const codeMarkerImage = new kakao.maps.MarkerImage(
-      codestatesImageSrc,
-      imageSize
-    );
-    var markerPosition = new kakao.maps.LatLng(37.503444, 127.049833);
-    // 마커를 생성합니다
-    var codeMarker = new kakao.maps.Marker({
-      position: markerPosition,
-      title: "Code States",
-      image: codeMarkerImage
-    });
-    var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-    kakao.maps.event.addListener(codeMarker, "mouseover", function() {
-      // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-      infowindow.setContent(
-        '<div class="customoverlay">' +
-          '<span onclick="zoomIn()" style="cursor:pointer">' +
-          `    <span class="title">CodeStates</span>` +
-          "</span>" +
-          "</div>"
+    function codeMarker(map: any) {
+      const codestatesImageSrc = codestates;
+      const imageSize = new kakao.maps.Size(57, 58);
+      const codeMarkerImage = new kakao.maps.MarkerImage(
+        codestatesImageSrc,
+        imageSize
       );
-      infowindow.open(map, codeMarker);
-    });
-    kakao.maps.event.addListener(codeMarker, "mouseout", function() {
-      infowindow.close();
-    });
-    kakao.maps.event.addListener(codeMarker, "click", function() {
-      window.location.href = `https://www.codestates.com/`;
-    });
-    // 마커가 지도 위에 표시되도록 설정합니다
-    codeMarker.setMap(map);
-  }; // 위워크 marker
+      var markerPosition = new kakao.maps.LatLng(37.503444, 127.049833);
+      // 마커를 생성합니다
+      var codeMarker = new kakao.maps.Marker({
+        position: markerPosition,
+        title: "Code States",
+        image: codeMarkerImage
+      });
+      var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+      kakao.maps.event.addListener(codeMarker, "mouseover", function() {
+        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+        infowindow.setContent(
+          '<div class="customoverlay">' +
+            '<span onclick="zoomIn()" style="cursor:pointer">' +
+            `    <span class="title">CodeStates</span>` +
+            "</span>" +
+            "</div>"
+        );
+        infowindow.open(map, codeMarker);
+      });
+      kakao.maps.event.addListener(codeMarker, "mouseout", function() {
+        infowindow.close();
+      });
+      kakao.maps.event.addListener(codeMarker, "click", function() {
+        // window.location.href = `https://www.codestates.com/`;
+        panTo(markerPosition);
+      });
+      // 마커가 지도 위에 표시되도록 설정합니다
+      codeMarker.setMap(map);
+    } // 위워크 marker
+  }
 
   panTo = (map: any, position: any) => {
     // 이동할 위도 경도 위치를 생성합니다
@@ -313,7 +312,8 @@ class Map extends Component<IProps, IState> {
   };
 
   render() {
-    console.log("11111", this.props);
+    console.log("this.props.showLocation : ", this.props.showLocation);
+    console.log("this.state.geoClickState : ", this.state.geoClickState);
     return (
       <React.Fragment>
         <div className="Map" id="map" style={mystyles} />
