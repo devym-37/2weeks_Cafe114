@@ -4,9 +4,7 @@ import hollys from "../assets/marker/hollys-logo.png";
 import tomtom from "../assets/marker/tomtom-logo.png";
 import codestates from "../assets/marker/codestates.png";
 import currentLoca from "../assets/marker/currentLoca.png";
-import { BrowserRouter as Router, Switch, Link } from "react-router-dom";
 import { serverApi } from "../Components/API";
-import { parentPort } from "worker_threads";
 import "./Map.css";
 
 declare var kakao: any;
@@ -144,7 +142,6 @@ class Map extends Component<IProps, IState> {
           image: hollysMarkerImage
         });
         hollysMarker.setMap(kakaoMap);
-        var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
         const hollysName = this.state.name[i];
         const idNumber = i + 1;
         const infoWindowContent = ReactDOMServer.renderToString(
@@ -175,7 +172,6 @@ class Map extends Component<IProps, IState> {
           image: tomtomMarkerImage
         });
         tomtomMarker.setMap(kakaoMap);
-        var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
         const tomtomName = this.state.name[i];
         const idNumber = i + 1;
         const infoWindowContent = ReactDOMServer.renderToString(
@@ -185,9 +181,9 @@ class Map extends Component<IProps, IState> {
             </a>
           </div>
         );
-        kakao.maps.event.addListener(tomtomMarker, "mouseout", function() {
-          infowindow.close();
-        });
+
+        kakao.maps.event.addListener(tomtomMarker, "mouseout", function() {});
+
         kakao.maps.event.addListener(tomtomMarker, "click", function() {
           var tomtomoverlay = new kakao.maps.CustomOverlay({
             map: kakaoMap,
@@ -198,10 +194,6 @@ class Map extends Component<IProps, IState> {
           // window.location.href = `/cafe/${idNumber}`;
           panTo(spot);
         });
-        // kakao.maps.event.addListener(kakaoMap, "center_changed", function() {
-        //   var latlng = kakaoMap.getCenter(); //
-        //   panTo(latlng.getLat(), latlng.getLng());
-        // });
       }
     }
 
@@ -214,8 +206,8 @@ class Map extends Component<IProps, IState> {
     }
 
     const COORDS = "coords";
-    console.log("111---this.props.showLocation : ", this.props.showLocation);
-    console.log("222---this.state.geoClickState : ", this.state.geoClickState);
+    // console.log("111---this.props.showLocation : ", this.props.showLocation);
+    // console.log("222---this.state.geoClickState : ", this.state.geoClickState);
     // if (!this.state.geoClickState) {
     //   if (navigator.geolocation) {
     //     init(); // navigator 실행
@@ -305,7 +297,6 @@ class Map extends Component<IProps, IState> {
           </a>
         </div>
       );
-      var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
       // kakao.maps.event.addListener(codeMarker, "mouseout", function() {
       //   infowindow.close();
       // });
@@ -333,8 +324,8 @@ class Map extends Component<IProps, IState> {
   };
 
   render() {
-    console.log("this.props.showLocation : ", this.props.showLocation);
-    console.log("this.state.geoClickState : ", this.state.geoClickState);
+    // console.log("this.props.showLocation : ", this.props.showLocation);
+    // console.log("this.state.geoClickState : ", this.state.geoClickState);
     return (
       <React.Fragment>
         <div className="Map" id="map" style={mystyles} />
