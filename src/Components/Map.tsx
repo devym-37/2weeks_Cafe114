@@ -3,6 +3,7 @@ import ReactDOMServer from "react-dom/server";
 import hollys from "../assets/marker/hollys-logo.png";
 import tomtom from "../assets/marker/tomtom-logo.png";
 import codestates from "../assets/marker/codestates.png";
+import currentLoca from "../assets/marker/currentLoca.png";
 import { BrowserRouter as Router, Switch, Link } from "react-router-dom";
 import { serverApi } from "../Components/API";
 import { parentPort } from "worker_threads";
@@ -88,6 +89,7 @@ class Map extends Component<IProps, IState> {
 
     const hollysImageSrc = hollys;
     const tomtomImageSrc = tomtom;
+    const currentImageSrc = currentLoca;
 
     const imageSize = new kakao.maps.Size(57, 58);
     const hollysMarkerImage = new kakao.maps.MarkerImage(
@@ -96,6 +98,11 @@ class Map extends Component<IProps, IState> {
     );
     const tomtomMarkerImage = new kakao.maps.MarkerImage(
       tomtomImageSrc,
+      imageSize
+    );
+
+    const currentMarkerImage = new kakao.maps.MarkerImage(
+      currentImageSrc,
       imageSize
     );
 
@@ -136,16 +143,15 @@ class Map extends Component<IProps, IState> {
             </Switch>
           </Router>
         );
-        kakao.maps.event.addListener(hollysMarker, "mouseover", function() {
-          infowindow.setContent(infoWindowContent);
-          infowindow.open(kakaoMap, hollysMarker);
-        });
-        kakao.maps.event.addListener(hollysMarker, "mouseout", function() {
-          infowindow.close();
-        });
+        // kakao.maps.event.addListener(hollysMarker, "mouseout", function() {
+        //   infowindow.close();
+        // });
         // 마커에 클릭이벤트를 등록합니다
         kakao.maps.event.addListener(hollysMarker, "click", function() {
-          window.location.href = `/cafe/${idNumber}`;
+          infowindow.setContent(infoWindowContent);
+          infowindow.open(kakaoMap, hollysMarker);
+          // window.location.href = `/cafe/${idNumber}`;
+          panTo(spot);
         });
       } else {
         const spot = new kakao.maps.LatLng(this.state.y[i], this.state.x[i]);
@@ -168,16 +174,13 @@ class Map extends Component<IProps, IState> {
             </Switch>
           </Router>
         );
-        kakao.maps.event.addListener(tomtomMarker, "mouseover", function() {
-          // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-          infowindow.setContent(infoWindowContent);
-          infowindow.open(kakaoMap, tomtomMarker);
-        });
         kakao.maps.event.addListener(tomtomMarker, "mouseout", function() {
           infowindow.close();
         });
         kakao.maps.event.addListener(tomtomMarker, "click", function() {
-          window.location.href = `/cafe/${idNumber}`;
+          infowindow.setContent(infoWindowContent);
+          infowindow.open(kakaoMap, tomtomMarker);
+          // window.location.href = `/cafe/${idNumber}`;
           panTo(spot);
         });
         // kakao.maps.event.addListener(kakaoMap, "center_changed", function() {
@@ -254,7 +257,8 @@ class Map extends Component<IProps, IState> {
     function displayMarker(locPosition: any) {
       var marker = new kakao.maps.Marker({
         map: kakaoMap,
-        position: locPosition
+        position: locPosition,
+        image: currentMarkerImage
       });
       kakaoMap.setCenter(locPosition);
     }
@@ -291,9 +295,9 @@ class Map extends Component<IProps, IState> {
         );
         infowindow.open(map, codeMarker);
       });
-      kakao.maps.event.addListener(codeMarker, "mouseout", function() {
-        infowindow.close();
-      });
+      // kakao.maps.event.addListener(codeMarker, "mouseout", function() {
+      //   infowindow.close();
+      // });
       kakao.maps.event.addListener(codeMarker, "click", function() {
         // window.location.href = `https://www.codestates.com/`;
         panTo(markerPosition);
