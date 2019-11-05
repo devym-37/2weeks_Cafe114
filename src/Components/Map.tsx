@@ -1,15 +1,13 @@
-import React, { Component, ButtonHTMLAttributes } from "react";
+import React, { Component } from "react";
 import ReactDOMServer from "react-dom/server";
 import hollys from "../assets/marker/hollys-logo.png";
 import tomtom from "../assets/marker/tomtom-logo.png";
 import codestates from "../assets/marker/codestates.png";
+import currentLoca from "../assets/marker/currentLoca.png";
 import { BrowserRouter as Router, Switch, Link } from "react-router-dom";
 import { serverApi } from "../Components/API";
-import {
-  Update,
-  CurrentLocation,
-  Filter
-} from "../Components/ToolGroup/MapControl";
+import { parentPort } from "worker_threads";
+import "./Map.css";
 
 declare var kakao: any;
 // declare const zoomIn: (event: MouseEvent) => any;
@@ -62,6 +60,7 @@ interface IState {
 interface IProps {
   toggleLocation: any;
   toggleFilterModal: any;
+  showLocation: any;
 }
 
 class Map extends Component<IProps, IState> {
@@ -75,7 +74,7 @@ class Map extends Component<IProps, IState> {
     y: [],
     category: [],
     name: [],
-    geoClickState: false,
+    geoClickState: this.props.showLocation,
     centerY: 37.503444,
     centerX: 127.049833,
     level: 5
@@ -103,6 +102,7 @@ class Map extends Component<IProps, IState> {
 
     const hollysImageSrc = hollys;
     const tomtomImageSrc = tomtom;
+    const currentImageSrc = currentLoca;
 
     const imageSize = new kakao.maps.Size(57, 58);
     const hollysMarkerImage = new kakao.maps.MarkerImage(
@@ -111,6 +111,11 @@ class Map extends Component<IProps, IState> {
     );
     const tomtomMarkerImage = new kakao.maps.MarkerImage(
       tomtomImageSrc,
+      imageSize
+    );
+
+    const currentMarkerImage = new kakao.maps.MarkerImage(
+      currentImageSrc,
       imageSize
     );
 
@@ -123,9 +128,12 @@ class Map extends Component<IProps, IState> {
       center: new kakao.maps.LatLng(centerY, centerX),
       level: level
     }); // 지도 생성
+
     this.setState({ map: kakaoMap });
     console.log(this.state.map);
     this.marker(kakaoMap); // 위워크 marker
+    codeMarker(kakaoMap); // 위워크 marker
+
     for (var i = 0; i < this.state.category.length; i++) {
       if (this.state.category[i] === "hollys") {
         const spot = new kakao.maps.LatLng(this.state.y[i], this.state.x[i]);
@@ -141,26 +149,23 @@ class Map extends Component<IProps, IState> {
         const hollysName = this.state.name[i];
         const idNumber = i + 1;
         const infoWindowContent = ReactDOMServer.renderToString(
-          <Router>
-            <Switch>
-              <Link to={`/cafe/${idNumber}`}>
-                <div>
-                  <span className="title">{hollysName}</span>
-                </div>
-              </Link>
-            </Switch>
-          </Router>
+          <div className="customoverlay">
+            <a>
+              <span className="title">{hollysName}</span>
+            </a>
+          </div>
         );
-        kakao.maps.event.addListener(hollysMarker, "mouseover", function() {
-          infowindow.setContent(infoWindowContent);
-          infowindow.open(kakaoMap, hollysMarker);
-        });
-        kakao.maps.event.addListener(hollysMarker, "mouseout", function() {
-          infowindow.close();
-        });
+        kakao.maps.event.addListener(hollysMarker, "mouseout", function() {});
         // 마커에 클릭이벤트를 등록합니다
         kakao.maps.event.addListener(hollysMarker, "click", function() {
-          window.location.href = `/cafe/${idNumber}`;
+          var hollysoverlay = new kakao.maps.CustomOverlay({
+            map: kakaoMap,
+            position: spot,
+            content: infoWindowContent,
+            yAnchor: 1
+          });
+          // window.location.href = `/cafe/${idNumber}`;
+          panTo(spot);
         });
       } else {
         const spot = new kakao.maps.LatLng(this.state.y[i], this.state.x[i]);
@@ -175,24 +180,23 @@ class Map extends Component<IProps, IState> {
         const tomtomName = this.state.name[i];
         const idNumber = i + 1;
         const infoWindowContent = ReactDOMServer.renderToString(
-          <Router>
-            <Switch>
-              <Link to={`/cafe/${idNumber}`}>
-                <span className="title">{tomtomName}</span>
-              </Link>
-            </Switch>
-          </Router>
+          <div className="customoverlay">
+            <a>
+              <span className="title">{tomtomName}</span>
+            </a>
+          </div>
         );
-        kakao.maps.event.addListener(tomtomMarker, "mouseover", function() {
-          // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-          infowindow.setContent(infoWindowContent);
-          infowindow.open(kakaoMap, tomtomMarker);
-        });
         kakao.maps.event.addListener(tomtomMarker, "mouseout", function() {
           infowindow.close();
         });
         kakao.maps.event.addListener(tomtomMarker, "click", function() {
-          window.location.href = `/cafe/${idNumber}`;
+          var tomtomoverlay = new kakao.maps.CustomOverlay({
+            map: kakaoMap,
+            position: spot,
+            content: infoWindowContent,
+            yAnchor: 1
+          });
+          // window.location.href = `/cafe/${idNumber}`;
           panTo(spot);
         });
         // kakao.maps.event.addListener(kakaoMap, "center_changed", function() {
@@ -201,6 +205,7 @@ class Map extends Component<IProps, IState> {
         // });
       }
     }
+
     function panTo(changeLatLng: any) {
       // 이동할 위도 경도 위치를 생성합니다
       var moveLatLon = changeLatLng;
@@ -208,44 +213,69 @@ class Map extends Component<IProps, IState> {
       // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
       kakaoMap.panTo(moveLatLon);
     }
-    if (navigator.geolocation) {
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var lat = position.coords.latitude, // 위도
-          lon = position.coords.longitude; // 경도
 
-        var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-          message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
+    const COORDS = "coords";
+    console.log("111---this.props.showLocation : ", this.props.showLocation);
+    console.log("222---this.state.geoClickState : ", this.state.geoClickState);
+    // if (!this.state.geoClickState) {
+    //   if (navigator.geolocation) {
+    //     init(); // navigator 실행
+    //   } else {
+    //     // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치
+    //     console.log("Cant access geo location");
+    //     codeMarker(kakaoMap); // 위워크 marker
+    //   }
+    // }
 
-        // 마커와 인포윈도우를 표시합니다
-        displayMarker(locPosition, message);
-      });
-    } else {
-      // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-      var locPosition = new kakao.maps.LatLng(37.503444, 127.049833),
-        message = "geolocation을 사용할수 없어요..";
-
-      displayMarker(locPosition, message);
+    function saveCoords(coordsObj: any) {
+      localStorage.setItem(COORDS, JSON.stringify(coordsObj));
     }
-    // 지도에 마커와 인포윈도우를 표시하는 함수입니다
-    function displayMarker(locPosition: any, message: any) {
-      // 마커를 생성합니다
+
+    function handleGeoSucces(position: any) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      const coordsObj = {
+        latitude,
+        longitude
+      };
+      var locPosition = new kakao.maps.LatLng(
+        coordsObj.latitude,
+        coordsObj.longitude
+      );
+      displayMarker(locPosition);
+      saveCoords(coordsObj);
+    }
+    function handleGeoError() {
+      console.log("Cant access geo location");
+    }
+    function askForCoords() {
+      navigator.geolocation.getCurrentPosition(handleGeoSucces, handleGeoError);
+    }
+
+    function loadCoords() {
+      const loadCoords = localStorage.getItem(COORDS);
+      if (loadCoords === null) {
+        askForCoords();
+      } else {
+        const parseCoords = JSON.parse(loadCoords);
+        var locPosition = new kakao.maps.LatLng(
+          parseCoords.latitude,
+          parseCoords.longitude
+        );
+        displayMarker(locPosition);
+      }
+    }
+
+    function init() {
+      loadCoords(); // 실행함수
+    }
+
+    function displayMarker(locPosition: any) {
       var marker = new kakao.maps.Marker({
         map: kakaoMap,
-        position: locPosition
+        position: locPosition,
+        image: currentMarkerImage
       });
-
-      var iwContent = message, // 인포윈도우에 표시할 내용
-        iwRemoveable = true;
-
-      // 인포윈도우를 생성합니다
-      var infowindow = new kakao.maps.InfoWindow({
-        content: iwContent,
-        removable: iwRemoveable
-      });
-      // 인포윈도우를 마커위에 표시합니다
-      infowindow.open(kakaoMap, marker);
-      // 지도 중심좌표를 접속위치로 변경합니다
       kakaoMap.setCenter(locPosition);
     }
 
@@ -254,51 +284,58 @@ class Map extends Component<IProps, IState> {
     // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
     var zoomControl = new kakao.maps.ZoomControl();
     kakaoMap.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+    function codeMarker(map: any) {
+      const codestatesImageSrc = codestates;
+      const imageSize = new kakao.maps.Size(57, 58);
+      const codeMarkerImage = new kakao.maps.MarkerImage(
+        codestatesImageSrc,
+        imageSize
+      );
+      var markerPosition = new kakao.maps.LatLng(37.503444, 127.049833);
+      // 마커를 생성합니다
+      var codeMarker = new kakao.maps.Marker({
+        position: markerPosition,
+        title: "Code States",
+        image: codeMarkerImage
+      });
+      const infoWindowContent = ReactDOMServer.renderToString(
+        <div className="customoverlay">
+          <a>
+            <span className="title">Code States</span>
+          </a>
+        </div>
+      );
+      var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+      // kakao.maps.event.addListener(codeMarker, "mouseout", function() {
+      //   infowindow.close();
+      // });
+      kakao.maps.event.addListener(codeMarker, "click", function() {
+        // window.location.href = `https://www.codestates.com/`;
+        var codeoverlay = new kakao.maps.CustomOverlay({
+          map: kakaoMap,
+          position: markerPosition,
+          content: infoWindowContent,
+          yAnchor: 1
+        });
+        panTo(markerPosition);
+      });
+      // 마커가 지도 위에 표시되도록 설정합니다
+      codeMarker.setMap(map);
+    } // 위워크 marker
   }
 
-  marker = (map: any) => {
-    const codestatesImageSrc = codestates;
-    const imageSize = new kakao.maps.Size(57, 58);
-    const codeMarkerImage = new kakao.maps.MarkerImage(
-      codestatesImageSrc,
-      imageSize
-    );
-    var markerPosition = new kakao.maps.LatLng(37.503444, 127.049833);
-    // 마커를 생성합니다
-    var codeMarker = new kakao.maps.Marker({
-      position: markerPosition,
-      title: "Code States",
-      image: codeMarkerImage
-    });
-    var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-    kakao.maps.event.addListener(codeMarker, "click", function() {
-      // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-      infowindow.setContent(
-        '<div class="customoverlay">' +
-          '<span onclick="zoomIn()" style="cursor:pointer">' +
-          `    <span class="title">CodeStates</span>` +
-          "</span>" +
-          "</div>"
-      );
-      infowindow.open(map, codeMarker);
-    });
-    kakao.maps.event.addListener(codeMarker, "mouseout", function() {
-      // infowindow.close();
-    });
-    // 마커가 지도 위에 표시되도록 설정합니다
-    codeMarker.setMap(map);
-  }; // 위워크 marker
-
-  panTo = (map: any, y: string, x: string) => {
+  panTo = (map: any, position: any) => {
     // 이동할 위도 경도 위치를 생성합니다
-    var moveLatLon = new kakao.maps.LatLng(y, x);
+    var moveLatLon = position;
     // 지도 중심을 부드럽게 이동시킵니다
     // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
     map.panTo(moveLatLon);
   };
 
   render() {
-    console.log("11111", this.props);
+    console.log("this.props.showLocation : ", this.props.showLocation);
+    console.log("this.state.geoClickState : ", this.state.geoClickState);
     return (
       <React.Fragment>
         <div className="Map" id="map" style={mystyles} />

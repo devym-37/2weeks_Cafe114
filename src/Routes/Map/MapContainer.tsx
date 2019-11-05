@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { serverApi } from "../../Components/API";
-import { object } from "prop-types";
+// import { object } from "prop-types";
 
 interface IData {
   id: number;

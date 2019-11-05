@@ -44,7 +44,7 @@ class AppContainer extends Component<{}, Istate> {
 
   toggleLocation = () => {
     this.setState({
-      showLocation: true
+      showLocation: !this.state.showLocation
     });
   };
 
@@ -59,7 +59,8 @@ class AppContainer extends Component<{}, Istate> {
       isLoggedIn,
       showLoginModal,
       showFilterModal,
-      showSignupModal
+      showSignupModal,
+      showLocation
     } = this.state;
     // console.log("toggleLocation : ", toggleLocation);
     return (
@@ -67,6 +68,7 @@ class AppContainer extends Component<{}, Istate> {
         <Map
           toggleFilterModal={this.toggleFilterModal}
           toggleLocation={this.toggleLocation}
+          showLocation={showLocation}
         />
         <ToolGroup
           toggleLoginModal={this.toggleLoginModal}
