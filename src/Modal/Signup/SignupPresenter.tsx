@@ -76,13 +76,18 @@ const Agreement = styled.div`
   padding: 0;
 `;
 
-const CheckBoxContainer = styled.a`
-  line-height: 1.3;
-  margin-top: 10px;
+const CheckBoxSelect = styled.a`
+  border: 0;
+  width: 17px;
+  height: 17px;
   position: relative;
-  margin: 0;
-  padding: 0;
-  display: block;
+  border-radius: 8.5px;
+  vertical-align: middle;
+  margin-right: 5px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  text-shadow: 0 0 0 #000;
+  background-color: transparent;
 `;
 
 const Checkbox_1 = styled.input`
@@ -99,12 +104,27 @@ const Checkbox_1 = styled.input`
 `;
 
 const CheckBoxLabel = styled.label`
-    font-size: 14px;
-    vertical-align: middle;
-    cursor: pointer;
-    line-height: 1.3;
-}
+  font-size: 14px;
+  vertical-align: middle;
+  cursor: pointer;
+  line-height: 1.3;
 `;
+
+const CheckBoxGroup = styled.div`
+  margin-top: 10px;
+  padding: 15px 15px 15px;
+  border: 1px solid #c8c6e6;
+`;
+
+const CheckBoxContainer = styled.div`
+  line-height: 1.3;
+  margin-top: 10px;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  display: block;
+`;
+
 interface IProps {
   email: string;
   name: string;
@@ -198,6 +218,48 @@ const SignupPresenter: React.SFC<IProps> = ({
       />
       <CheckBoxLabel>전체 동의</CheckBoxLabel>
     </Agreement>
+    <CheckBoxGroup>
+      <CheckBoxContainer>
+        <CheckBoxSelect>
+          <Checkbox_1
+            type="checkbox"
+            name="agreement_privacy"
+            value={agreement_privacy}
+            onChange={handleInputChange}
+          />
+          <CheckBoxLabel>
+            개인정보 수집 및 이용 동의 <Highlight>(필수)</Highlight>
+          </CheckBoxLabel>
+        </CheckBoxSelect>
+      </CheckBoxContainer>
+      <CheckBoxContainer>
+        <CheckBoxSelect>
+          <Checkbox_1
+            type="checkbox"
+            name="agreement_lbs"
+            value={agreement_lbs}
+            onChange={handleInputChange}
+          />
+          <CheckBoxLabel>
+            위치기반서비스 이용약관 동의 <Highlight>(필수)</Highlight>
+          </CheckBoxLabel>
+        </CheckBoxSelect>
+      </CheckBoxContainer>
+      <CheckBoxContainer>
+        <CheckBoxSelect>
+          <Checkbox_1
+            type="checkbox"
+            name="agreement_ad"
+            value={agreement_ad}
+            onChange={handleInputChange}
+            required={false}
+          />{" "}
+          <CheckBoxLabel>
+            마케팅 정보 수신 동의 <Highlight>(선택)</Highlight>
+          </CheckBoxLabel>
+        </CheckBoxSelect>
+      </CheckBoxContainer>
+    </CheckBoxGroup>
     <ConfirmButton text="확인" onClick={handleSubmit} />
   </ModalContainer>
 );

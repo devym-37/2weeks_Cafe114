@@ -156,7 +156,8 @@ class SignupContainer extends Component<IProps, IState> {
   };
 
   handleSelectGender = (event: any) => {
-    event.preventDefault();
+    // event.preventDefault();
+    console.log(`버튼event`, event);
     const {
       target: { value }
     } = event;

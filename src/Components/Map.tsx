@@ -36,7 +36,18 @@ interface Iinfo {
   updatedAt: string;
 }
 
+interface IMapProps {
+  minLevel?: number;
+  maxLevel?: number;
+  options: any;
+  onBoundChanged?: any;
+  onCenterChanged?: any;
+  onClick?: any;
+  onLoad?: any;
+  onZoomChanged?: any;
+}
 interface IState {
+  map: IMapProps | {};
   result: Array<Iinfo>;
   loading: boolean;
   error: string;
@@ -55,6 +66,7 @@ interface IProps {
 
 class Map extends Component<IProps, IState> {
   state = {
+    map: {},
     result: [],
     subAddress: [],
     loading: true,
@@ -111,7 +123,8 @@ class Map extends Component<IProps, IState> {
       center: new kakao.maps.LatLng(centerY, centerX),
       level: level
     }); // 지도 생성
-
+    this.setState({ map: kakaoMap });
+    console.log(this.state.map);
     this.marker(kakaoMap); // 위워크 marker
     for (var i = 0; i < this.state.category.length; i++) {
       if (this.state.category[i] === "hollys") {

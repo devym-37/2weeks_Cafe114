@@ -104,24 +104,48 @@ const FilterPresenter: React.SFC<IProps> = ({ handleReset, handleCheck }) => (
   <FilterLayer>
     <FilterTitle>카페</FilterTitle>
     <CheckBoxContainer>
-      <CheckBox name="할리스" value="hollys" onClick={handleCheck}></CheckBox>
+      <CheckBox
+        name="할리스"
+        text="할리스"
+        value="hollys"
+        onChange={handleCheck}
+        defaultChecked={true}
+      ></CheckBox>
     </CheckBoxContainer>
     <CheckBoxContainer>
-      <CheckBox name="탐앤탐스" value="tomtom" onClick={handleCheck}></CheckBox>
+      <CheckBox
+        name="탐앤탐스"
+        value="tomtom"
+        text="탐앤탐스"
+        onChange={handleCheck}
+        defaultChecked={true}
+      ></CheckBox>
     </CheckBoxContainer>
     <Divider />
     <FilterTitle>서비스 옵션</FilterTitle>
     <CheckBoxContainer>
-      <CheckBox name="24시간" value="allDay" onClick={handleCheck}></CheckBox>
+      <CheckBox
+        name="allDay"
+        text="24시간"
+        value="allDay"
+        onChange={handleCheck}
+        defaultChecked={true}
+      ></CheckBox>
     </CheckBoxContainer>
     <CheckBoxContainer>
-      <CheckBox name="흡연실" value="smoke" onClick={handleCheck}></CheckBox>
+      <CheckBox
+        name="흡연실"
+        text="흡연실"
+        value="smoke"
+        onChange={handleCheck}
+      ></CheckBox>
     </CheckBoxContainer>
     <CheckBoxContainer>
       <CheckBox
         name="주차가능"
+        text="주차가능"
         value="parking"
-        onClick={handleCheck}
+        onChange={handleCheck}
       ></CheckBox>
     </CheckBoxContainer>
     <Divider />
