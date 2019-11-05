@@ -98,27 +98,42 @@ const ResetIcon = styled.div`
 interface IProps {
   handleReset: any;
   handleCheck: any;
+  hollys: boolean;
+  tomtom: boolean;
+  allDay: boolean;
+  smoke: boolean;
+  parking: boolean;
+  quantity: boolean;
 }
 
-const FilterPresenter: React.SFC<IProps> = ({ handleReset, handleCheck }) => (
+const FilterPresenter: React.SFC<IProps> = ({
+  hollys,
+  tomtom,
+  allDay,
+  smoke,
+  parking,
+  quantity,
+  handleReset,
+  handleCheck
+}) => (
   <FilterLayer>
     <FilterTitle>카페</FilterTitle>
     <CheckBoxContainer>
       <CheckBox
-        name="할리스"
+        name="hollys"
         text="할리스"
         value="hollys"
-        onChange={handleCheck}
-        defaultChecked={true}
+        onClick={handleCheck}
+        checked={hollys}
       ></CheckBox>
     </CheckBoxContainer>
     <CheckBoxContainer>
       <CheckBox
-        name="탐앤탐스"
+        name="tomtom"
         value="tomtom"
         text="탐앤탐스"
-        onChange={handleCheck}
-        defaultChecked={true}
+        onClick={handleCheck}
+        checked={tomtom}
       ></CheckBox>
     </CheckBoxContainer>
     <Divider />
@@ -128,24 +143,26 @@ const FilterPresenter: React.SFC<IProps> = ({ handleReset, handleCheck }) => (
         name="allDay"
         text="24시간"
         value="allDay"
-        onChange={handleCheck}
-        defaultChecked={true}
+        onClick={handleCheck}
+        checked={allDay}
       ></CheckBox>
     </CheckBoxContainer>
     <CheckBoxContainer>
       <CheckBox
-        name="흡연실"
+        name="smoke"
         text="흡연실"
         value="smoke"
-        onChange={handleCheck}
+        onClick={handleCheck}
+        checked={smoke}
       ></CheckBox>
     </CheckBoxContainer>
     <CheckBoxContainer>
       <CheckBox
-        name="주차가능"
+        name="parking"
         text="주차가능"
         value="parking"
-        onChange={handleCheck}
+        onClick={handleCheck}
+        checked={parking}
       ></CheckBox>
     </CheckBoxContainer>
     <Divider />
