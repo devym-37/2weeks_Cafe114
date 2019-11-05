@@ -18,6 +18,7 @@ const TextInput = styled.input<{ width: string }>`
   -webkit-appearance: none;
   text-shadow: 0 0 0 #000;
   background-color: transparent;
+  text-align: left;
   &::placeholder {
     color: ${props => props.theme.colors.lightGrey};
     font-weight: 400;
