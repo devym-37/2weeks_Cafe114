@@ -131,7 +131,7 @@ class Map extends Component<IProps, IState> {
 
     this.setState({ map: kakaoMap });
     console.log(this.state.map);
-    this.marker(kakaoMap); // 위워크 marker
+    // this.marker(kakaoMap); // 위워크 marker
     codeMarker(kakaoMap); // 위워크 marker
 
     for (var i = 0; i < this.state.category.length; i++) {

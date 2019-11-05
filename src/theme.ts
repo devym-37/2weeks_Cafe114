@@ -5,6 +5,7 @@ const myTheme: DefaultTheme = {
   colors: {
     main: "#562ECD",
     secondary: "rgba(86,46,205,0.8)",
+    disabled: "rgba(87,55,232,0.4)",
     white: "#ffffff",
     grey: "#7f8c8d",
     blue: "#3498db",

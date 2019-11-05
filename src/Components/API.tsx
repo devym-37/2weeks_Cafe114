@@ -25,11 +25,9 @@ export const serverApi = {
     });
   },
   getCafeInfobyId: (id: number) => api.get(`cafe/${id}`),
-  checkEmail: (email: string) => api.post("signup/email", { email }),
-  signup: (email: string, password: string) =>
-    api.post("signup", { email, password }),
-  zoomIn: () => api.get(""),
-  zoomOut: () => api.get(""),
-  currentLocation: () => api.get(""),
-  search: (term: string) => api.get("")
+  validateEmail: (email: string) => api.post("signup/email", { email }),
+  signup: (email: string, password: string, name: string, gender: number) =>
+    api.post("signup", { email, password, name, sex: gender }),
+  signout: () => api.get("signout"),
+  getUserInfo: () => api.get("user/mypage")
 };

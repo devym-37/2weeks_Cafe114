@@ -1,3 +1,3 @@
-import CheckBox from "./CheckBox";
+import CheckBoxPresenter from "./CheckBoxPresenter";
 
-export default CheckBox;
+export default CheckBoxPresenter;
