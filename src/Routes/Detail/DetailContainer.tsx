@@ -49,7 +49,10 @@ export default class extends Component<IProps, IState> {
   async componentDidMount() {
     try {
       const { id } = this.state;
-      const { data: result } = await serverApi.getCafeInfobyId(id);
+      const {
+        data: { data: result }
+      } = await serverApi.getCafeInfobyId(id);
+      // console.log("detail: ", result);
 
       this.setState({ result });
     } catch {
