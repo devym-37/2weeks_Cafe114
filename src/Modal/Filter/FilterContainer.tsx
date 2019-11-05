@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import FilterPresenter from "./FilterPresenter";
 import { string } from "prop-types";
+import { tsSymbolKeyword } from "@babel/types";
 
 // interface IProps {
 //   toggleFilterModal: any;
@@ -16,16 +17,23 @@ interface IState {
 }
 class FilterContainer extends Component<{}, IState> {
   state = {
-    hollys: true,
-    tomtom: true,
-    allDay: true,
+    hollys: false,
+    tomtom: false,
+    allDay: false,
     smoke: false,
     parking: false,
     quantity: false
   };
 
   handleReset = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(event.target);
+    this.setState({
+      hollys: false,
+      tomtom: false,
+      allDay: false,
+      smoke: false,
+      parking: false,
+      quantity: false
+    });
   };
 
   handleCheck = (event: any) => {
