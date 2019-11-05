@@ -48,7 +48,7 @@ const BoxLink = styled.a`
 `;
 
 const Container = styled.div`
-  width: 100px;
+  padding-right: 2px;
   display: flex;
   /* position: relative; */
   top: 0px;

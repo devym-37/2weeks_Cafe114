@@ -10,8 +10,7 @@ import { Mypage } from "../../Components/ToolGroup/Mypage";
 const Container = styled.div`
   display: block;
   position: absolute;
-  top: 225px;
-  left: 12px;
+  top: 227px;
   z-index: 2;
 `;
 
