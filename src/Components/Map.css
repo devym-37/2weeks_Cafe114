@@ -20,8 +20,8 @@
   font-weight: bold;
   overflow: hidden;
   background: #562ecd;
-  background: #562ecd;
-  image: "../assets/Cafe114Symbol.png" no-repeat right 14px center;
+  background: #562ecd url("../assets/Cafe114Symbol.png") no-repeat right 14px
+    center;
 }
 .customoverlay .title {
   display: block;

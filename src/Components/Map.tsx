@@ -131,7 +131,6 @@ class Map extends Component<IProps, IState> {
 
     this.setState({ map: kakaoMap });
     console.log(this.state.map);
-    this.marker(kakaoMap); // 위워크 marker
     codeMarker(kakaoMap); // 위워크 marker
 
     for (var i = 0; i < this.state.category.length; i++) {
@@ -151,7 +150,7 @@ class Map extends Component<IProps, IState> {
         const infoWindowContent = ReactDOMServer.renderToString(
           <div className="customoverlay">
             <a>
-              <span className="title">{hollysName}</span>
+              <span className="title">Hollys {hollysName}</span>
             </a>
           </div>
         );
@@ -182,7 +181,7 @@ class Map extends Component<IProps, IState> {
         const infoWindowContent = ReactDOMServer.renderToString(
           <div className="customoverlay">
             <a>
-              <span className="title">{tomtomName}</span>
+              <span className="title">TOMNTOMS {tomtomName}</span>
             </a>
           </div>
         );
@@ -302,7 +301,7 @@ class Map extends Component<IProps, IState> {
       const infoWindowContent = ReactDOMServer.renderToString(
         <div className="customoverlay">
           <a>
-            <span className="title">Code States</span>
+            <span className="title">CODE STATES</span>
           </a>
         </div>
       );
