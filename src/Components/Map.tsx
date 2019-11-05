@@ -76,7 +76,12 @@ class Map extends Component<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const { data: result } = await serverApi.getAllCafes();
+      const {
+        data: {
+          data: { result: result }
+        }
+      } = await serverApi.getAllCafes();
+      console.log(`new result: `, result);
       const subAddress = result.map((cafe: Iinfo) => cafe.subAddress);
       const x = result.map((cafe: Iinfo) => cafe.x);
       const y = result.map((cafe: Iinfo) => cafe.y);

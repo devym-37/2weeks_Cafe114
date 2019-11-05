@@ -46,16 +46,21 @@ class LoginContainer extends Component<IProps, IState> {
 
     const { email, phoneNumber, password } = this.state;
     const { toggleLoggedIn } = this.props;
-    console.log(email, password);
+    // console.log(email, password);
     const isValid = await serverApi.login(email, password);
-    if (isValid.data === "Failed login") {
-      toast.error("로그인정보가 일치하지 않습니다", { autoClose: 1300 });
-    } else {
+    console.log(`isValid: `, isValid);
+    const {
+      data: { success: isSucceed }
+    } = isValid;
+
+    console.log(`isSucceed: `, isSucceed);
+
+    if (isSucceed) {
       toast.success("안녕하세요!", { autoClose: 1300 });
       toggleLoggedIn();
+    } else {
+      toast.error("로그인정보가 일치하지 않습니다", { autoClose: 1300 });
     }
-
-    console.log(`isValid: `, isValid);
 
     // if (phoneNumber.match(/^\d{11}$/)) {
     //   var addDash =
