@@ -3,9 +3,11 @@ import ReactDOMServer from "react-dom/server";
 import hollys from "../assets/marker/hollys-logo.png";
 import tomtom from "../assets/marker/tomtom-logo.png";
 import codestates from "../assets/marker/codestates.png";
+import currentLoca from "../assets/marker/currentLoca.png";
 import { BrowserRouter as Router, Switch, Link } from "react-router-dom";
 import { serverApi } from "../Components/API";
 import { parentPort } from "worker_threads";
+import "./Map.css";
 
 declare var kakao: any;
 // declare const zoomIn: (event: MouseEvent) => any;
@@ -88,6 +90,7 @@ class Map extends Component<IProps, IState> {
 
     const hollysImageSrc = hollys;
     const tomtomImageSrc = tomtom;
+    const currentImageSrc = currentLoca;
 
     const imageSize = new kakao.maps.Size(57, 58);
     const hollysMarkerImage = new kakao.maps.MarkerImage(
@@ -96,6 +99,11 @@ class Map extends Component<IProps, IState> {
     );
     const tomtomMarkerImage = new kakao.maps.MarkerImage(
       tomtomImageSrc,
+      imageSize
+    );
+
+    const currentMarkerImage = new kakao.maps.MarkerImage(
+      currentImageSrc,
       imageSize
     );
 
@@ -126,26 +134,23 @@ class Map extends Component<IProps, IState> {
         const hollysName = this.state.name[i];
         const idNumber = i + 1;
         const infoWindowContent = ReactDOMServer.renderToString(
-          <Router>
-            <Switch>
-              <Link to={`/cafe/${idNumber}`}>
-                <div>
-                  <span className="title">{hollysName}</span>
-                </div>
-              </Link>
-            </Switch>
-          </Router>
+          <div className="customoverlay">
+            <a>
+              <span className="title">{hollysName}</span>
+            </a>
+          </div>
         );
-        kakao.maps.event.addListener(hollysMarker, "mouseover", function() {
-          infowindow.setContent(infoWindowContent);
-          infowindow.open(kakaoMap, hollysMarker);
-        });
-        kakao.maps.event.addListener(hollysMarker, "mouseout", function() {
-          infowindow.close();
-        });
+        kakao.maps.event.addListener(hollysMarker, "mouseout", function() {});
         // 마커에 클릭이벤트를 등록합니다
         kakao.maps.event.addListener(hollysMarker, "click", function() {
-          window.location.href = `/cafe/${idNumber}`;
+          var hollysoverlay = new kakao.maps.CustomOverlay({
+            map: kakaoMap,
+            position: spot,
+            content: infoWindowContent,
+            yAnchor: 1
+          });
+          // window.location.href = `/cafe/${idNumber}`;
+          panTo(spot);
         });
       } else {
         const spot = new kakao.maps.LatLng(this.state.y[i], this.state.x[i]);
@@ -160,24 +165,23 @@ class Map extends Component<IProps, IState> {
         const tomtomName = this.state.name[i];
         const idNumber = i + 1;
         const infoWindowContent = ReactDOMServer.renderToString(
-          <Router>
-            <Switch>
-              <Link to={`/cafe/${idNumber}`}>
-                <span className="title">{tomtomName}</span>
-              </Link>
-            </Switch>
-          </Router>
+          <div className="customoverlay">
+            <a>
+              <span className="title">{tomtomName}</span>
+            </a>
+          </div>
         );
-        kakao.maps.event.addListener(tomtomMarker, "mouseover", function() {
-          // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-          infowindow.setContent(infoWindowContent);
-          infowindow.open(kakaoMap, tomtomMarker);
-        });
         kakao.maps.event.addListener(tomtomMarker, "mouseout", function() {
           infowindow.close();
         });
         kakao.maps.event.addListener(tomtomMarker, "click", function() {
-          window.location.href = `/cafe/${idNumber}`;
+          var tomtomoverlay = new kakao.maps.CustomOverlay({
+            map: kakaoMap,
+            position: spot,
+            content: infoWindowContent,
+            yAnchor: 1
+          });
+          // window.location.href = `/cafe/${idNumber}`;
           panTo(spot);
         });
         // kakao.maps.event.addListener(kakaoMap, "center_changed", function() {
@@ -254,7 +258,8 @@ class Map extends Component<IProps, IState> {
     function displayMarker(locPosition: any) {
       var marker = new kakao.maps.Marker({
         map: kakaoMap,
-        position: locPosition
+        position: locPosition,
+        image: currentMarkerImage
       });
       kakaoMap.setCenter(locPosition);
     }
@@ -279,23 +284,25 @@ class Map extends Component<IProps, IState> {
         title: "Code States",
         image: codeMarkerImage
       });
+      const infoWindowContent = ReactDOMServer.renderToString(
+        <div className="customoverlay">
+          <a>
+            <span className="title">Code States</span>
+          </a>
+        </div>
+      );
       var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-      kakao.maps.event.addListener(codeMarker, "mouseover", function() {
-        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-        infowindow.setContent(
-          '<div class="customoverlay">' +
-            '<span onclick="zoomIn()" style="cursor:pointer">' +
-            `    <span class="title">CodeStates</span>` +
-            "</span>" +
-            "</div>"
-        );
-        infowindow.open(map, codeMarker);
-      });
-      kakao.maps.event.addListener(codeMarker, "mouseout", function() {
-        infowindow.close();
-      });
+      // kakao.maps.event.addListener(codeMarker, "mouseout", function() {
+      //   infowindow.close();
+      // });
       kakao.maps.event.addListener(codeMarker, "click", function() {
         // window.location.href = `https://www.codestates.com/`;
+        var codeoverlay = new kakao.maps.CustomOverlay({
+          map: kakaoMap,
+          position: markerPosition,
+          content: infoWindowContent,
+          yAnchor: 1
+        });
         panTo(markerPosition);
       });
       // 마커가 지도 위에 표시되도록 설정합니다
