@@ -43,6 +43,9 @@ class LoginContainer extends Component<IProps, IState> {
         const ServerRequest = await serverApi.loginkakao(id);
         if (ServerRequest) {
           this.props.toggleLoggedIn();
+          toast.success("로그인이 정상적으로 완료었습니다", {
+            autoClose: 1300
+          });
         }
       }
     } catch {
