@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Input, Form } from "../../Components/SearchInput";
 
 const Map = styled.div`
   position: absolute;
@@ -19,13 +20,23 @@ const Center = styled.div`
 
 interface IProps {
   mapRef: any;
+  address: string;
+  onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (event: React.FormEvent) => void;
 }
 
 class MapPresenter extends React.Component<IProps> {
+  updateTerm = () => {};
+
+  handleSearchSubmit = (event: React.FormEvent) => {};
   public render() {
-    const { mapRef } = this.props;
+    const { mapRef, address, onInputChange, onSubmit } = this.props;
+
     return (
       <div>
+        <Form onSubmit={onSubmit}>
+          <Input value={address} onChange={onInputChange} />
+        </Form>
         <Map ref={mapRef} />
       </div>
     );
