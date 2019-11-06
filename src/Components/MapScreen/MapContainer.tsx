@@ -53,9 +53,18 @@ class MapContainer extends React.Component<any, IState> {
     const mapNode = ReactDOM.findDOMNode(this.mapRef.current);
     const mapConfig: google.maps.MapOptions = {
       center: { lat, lng },
-      disableDefaultUI: true,
-      zoom: 15
+      zoom: 15,
+      zoomControl: true,
+      mapTypeControl: false,
+      scaleControl: true,
+      streetViewControl: true,
+      rotateControl: true,
+      fullscreenControl: true,
+      fullscreenControlOptions: {
+        position: google.maps.ControlPosition.TOP_RIGHT
+      }
     };
+
     this.map = new maps.Map(mapNode, mapConfig);
   };
 
@@ -64,6 +73,7 @@ class MapContainer extends React.Component<any, IState> {
       target: { value }
     } = event;
     this.setState({ term: value } as any);
+    console.log("value", value);
   };
 
   public onInputAddress = () => {
