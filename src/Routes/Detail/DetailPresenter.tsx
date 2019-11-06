@@ -4,7 +4,7 @@ import Helmet from "react-helmet";
 import Loader from "../../Components/Loader";
 import { Input } from "../../Components/SearchInput";
 import { SvgIcon } from "../../Components/ButtonMaker";
-import Map from "../../Components/Map";
+import Map from "../../Components/MapScreen/index";
 import Gallery from "../../Components/ImageCarousel";
 
 const Container = styled.div`
