@@ -46,10 +46,15 @@ class LoginContainer extends Component<IProps, IState> {
         }
       }
     } catch {
-      this.setState({ error: "서버상 문제가 발생했습니다." });
+      this.setState({ error: "서버상에 문제가 발생했습니다." });
     } finally {
       this.setState({ loading: false });
     }
+  };
+
+  handleFailureKakaoLogin = (error: any) => {
+    toast.error("잘못된 카카오 로그인 정보입니다", { autoClose: 1300 });
+    this.setState({ error: JSON.stringify(error) });
   };
 
   handleInputChange = (
@@ -110,12 +115,14 @@ class LoginContainer extends Component<IProps, IState> {
   };
 
   render() {
+    // console.log(`error: `, this.state.error);
     // console.log(`kakao: `, this.state.kakao);
     const { email, phoneNumber, password } = this.state;
     const { toggleModal, toggleSignupModal } = this.props;
     // console.log(email, password);
     return (
       <LoginPresenter
+        handleFailureKakaoLogin={this.handleFailureKakaoLogin}
         handleSuccessKakaoLogin={this.handleSuccessKakaoLogin}
         password={password}
         phoneNumber={phoneNumber}

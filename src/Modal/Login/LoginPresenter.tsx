@@ -11,6 +11,31 @@ import TextButton from "../../Components/TextButton";
 import GhostButton from "../../Components/GhostButton";
 import CloseButton from "../../Components/CloseButton";
 import KakaoLogin from "react-kakao-login";
+import reset from "styled-reset";
+
+const KakaoCustomLogin = styled(KakaoLogin)`
+  ${reset}
+  border: none;
+  color: transparent;
+  background-color: transparent;
+  top: 0px;
+  width: 100%;
+  height: 44px;
+  padding: 0;
+  position: absolute;
+  display: block;
+  float: none;
+  letter-spacing: 0;
+  text-decoration: none;
+  text-indent: 0;
+  letter-spacing: 0;
+  text-decoration: none;
+  text-indent: 0;
+  font-size: 15px;
+  text-align: center;
+  z-index: 2;
+  cursor: pointer;
+`;
 
 const DimmedLayerCantainer = styled.div`
   height: 993px;
@@ -86,6 +111,7 @@ interface IProps {
   ) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   handleSuccessKakaoLogin: any;
+  handleFailureKakaoLogin: any;
 }
 const LoginPresenter: React.SFC<IProps> = ({
   email,
@@ -95,7 +121,8 @@ const LoginPresenter: React.SFC<IProps> = ({
   handleInputChange,
   handleSubmit,
   toggleModal,
-  toggleSignupModal
+  toggleSignupModal,
+  handleFailureKakaoLogin
   // handleClickKakaoLogin
 }) => (
   <DimmedLayerCantainer>
@@ -108,20 +135,18 @@ const LoginPresenter: React.SFC<IProps> = ({
         <ContentContainer>
           <Seperator color="black" text="10초만에 로그인하기" />
           <LoginGroup>
-            {/* <a href="/"> */}
-            <KakaoLogin
+            <KakaoCustomLogin
               jsKey={"779e30fceaa73c0848336e7a32714297"}
               onSuccess={handleSuccessKakaoLogin}
-              onFailure={error => console.log(error)}
+              onFailure={handleFailureKakaoLogin}
             />
-            {/* </a> */}
             <MainButton
               name="Kakao"
               icon={KakaoLogo}
               href="#"
-              // onClick={handleClickKakaoLogin}
               text="카카오 계정으로 로그인"
             />
+
             <MainButton
               name="Facebook"
               icon={FacebookLogo}
