@@ -8,6 +8,15 @@ const Map = styled.div`
   height: 100%;
   width: 100%;
 `;
+
+const Center = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+`;
+
 interface IProps {
   mapRef: any;
 }

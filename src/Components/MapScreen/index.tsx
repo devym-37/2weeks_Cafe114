@@ -1,5 +1,10 @@
+import dotenv from "dotenv";
+import { MAPS_KEY } from "../../keys";
 import { GoogleApiWrapper } from "google-maps-react";
 import MapContainer from "./MapContainer";
+
+dotenv.config();
+
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyCuPHNMx3eJkL0CPtiifZwH4xx1Y8Z5wZA"
+  apiKey: MAPS_KEY
 })(MapContainer);
