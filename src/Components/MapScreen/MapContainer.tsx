@@ -57,7 +57,7 @@ class MapContainer extends React.Component<any, IState> {
       zoom: 15
     };
     this.map = new maps.Map(mapNode, mapConfig);
-  };
+  }; // 맵생성
 
   public onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
