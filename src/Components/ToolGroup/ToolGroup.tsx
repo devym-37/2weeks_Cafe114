@@ -7,19 +7,20 @@ import {
 } from "../../Components/ToolGroup/MapControl";
 import { Mypage } from "../../Components/ToolGroup/Mypage";
 
-const Container = styled.div`
-  display: block;
-  position: absolute;
-  top: 225px;
-  left: 12px;
-  z-index: 2;
-`;
+// const Container = styled.div`
+//   display: block;
+//   position: absolute;
+//   top: 225px;
+//   left: 0px;
+//   z-index: 2;
+// `;
 
 const ToolGroupContainer = styled.div`
-  display: flex;
-  width: 100vw;
-  flex-direction: column;
-  align-items: flex-end;
+  position: absolute;
+  right: 4px;
+  top: 230px;
+  z-index: 2;
+  display: block;
 `;
 
 interface IProps {
@@ -33,14 +34,14 @@ const ToolGroup: React.SFC<IProps> = ({
   toggleFilterModal,
   toggleLocation
 }) => (
-  <Container>
-    <ToolGroupContainer>
-      <Mypage toggleLoginModal={toggleLoginModal} />
-      <CurrentLocation toggleLocation={toggleLocation} />
-      <Update />
-      <Filter toggleFilterModal={toggleFilterModal} />
-    </ToolGroupContainer>
-  </Container>
+  // <Container>
+  <ToolGroupContainer>
+    <Mypage toggleLoginModal={toggleLoginModal} />
+    <CurrentLocation toggleLocation={toggleLocation} />
+    <Update />
+    <Filter toggleFilterModal={toggleFilterModal} />
+  </ToolGroupContainer>
+  // </Container>
 );
 
 export default ToolGroup;
