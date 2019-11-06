@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { ToastContainer } from "react-toastify";
 import AppPresenter from "./AppPresenter";
-import Map from "../Map";
+// import Map from "../MapScreen/Map";
+import Map from "../../Components/MapScreen/index";
 import "react-toastify/dist/ReactToastify.css";
 import ToolGroup from "../ToolGroup";
 import Filter from "../../Modal/Filter";
@@ -65,11 +66,7 @@ class AppContainer extends Component<{}, Istate> {
     // console.log("toggleLocation : ", toggleLocation);
     return (
       <div className="App">
-        <Map
-          toggleFilterModal={this.toggleFilterModal}
-          toggleLocation={this.toggleLocation}
-          showLocation={showLocation}
-        />
+        <Map />
         <ToolGroup
           toggleLoginModal={this.toggleLoginModal}
           toggleFilterModal={this.toggleFilterModal}
