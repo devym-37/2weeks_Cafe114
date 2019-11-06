@@ -69,6 +69,6 @@ class MapContainer extends React.Component<any, IState> {
   public onInputAddress = () => {
     const { address } = this.state;
     geoCode(address);
-  };
+  }; // 주소 입력
 }
 export default MapContainer;
