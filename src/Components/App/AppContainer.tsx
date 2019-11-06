@@ -78,7 +78,7 @@ class AppContainer extends Component<{}, Istate> {
       showLocation,
       term
     } = this.state;
-    // console.log("toggleLocation : ", toggleLocation);
+    console.log("toggleLocation : ", term);
     return (
       <div className="App">
         <Map

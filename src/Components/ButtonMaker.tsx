@@ -17,8 +17,8 @@ const BoxLink = styled.a`
   justify-content: center;
   padding: 0;
   background: white;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-top-color: rgba(0, 0, 0, 0.1);
   border-top-style: solid;
   border-top-width: 1px;
@@ -36,9 +36,7 @@ const BoxLink = styled.a`
   border-image-width: initial;
   border-image-outset: initial;
   border-image-repeat: initial;
-  margin-top: 10px;
-  margin-left: 2px;
-  padding: 0 5px;
+  padding: 5px;
   white-space: nowrap;
   text-align: center;
   border-radius: 3px;
@@ -48,8 +46,9 @@ const BoxLink = styled.a`
 `;
 
 const Container = styled.div`
-  width: 36px;
+  width: 40px;
   display: flex;
+  margin: 6px;
   /* position: relative; */
   top: 0px;
   /* width: 100%;
