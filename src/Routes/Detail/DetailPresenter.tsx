@@ -4,7 +4,6 @@ import Helmet from "react-helmet";
 import Loader from "../../Components/Loader";
 import { Input } from "../../Components/SearchInput";
 import { SvgIcon } from "../../Components/ButtonMaker";
-import Map from "../../Components/MapScreen/index";
 import Gallery from "../../Components/ImageCarousel";
 
 const Container = styled.div`
@@ -218,17 +217,16 @@ interface IInfo {
 }
 interface IProps {
   result: IInfo;
-  term: string;
+
   error: string;
   loading: boolean;
-  updateTerm: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const DetailPresenter: React.FC<IProps> = ({
   result,
-  term,
+
   error,
-  updateTerm,
+
   loading
 }) => {
   const { name, images, address, parkingLot, smokingRoom, telephone } = result;
@@ -239,10 +237,6 @@ const DetailPresenter: React.FC<IProps> = ({
     result && (
       <>
         <SearchGroupExceptContent>
-          <Legend>검색</Legend>
-          <KewordGroup>
-            <Input value={term} onChange={updateTerm} />
-          </KewordGroup>
           <HeaderInfo>
             <CafeTitle>
               <TitleLink href="#">{name}</TitleLink>
@@ -267,6 +261,7 @@ const DetailPresenter: React.FC<IProps> = ({
               />
             </CloseContainer>
           </HeaderInfo>
+
           <>
             <SearchSelectGroup>
               <List>
@@ -287,7 +282,6 @@ const DetailPresenter: React.FC<IProps> = ({
             </SearchSelectGroup>
           </>
         </SearchGroupExceptContent>
-
         <Container>
           <Card>
             <Gallery urls={images} />
