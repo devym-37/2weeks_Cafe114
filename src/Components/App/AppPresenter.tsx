@@ -8,10 +8,10 @@ import Map from "../Map";
 interface IProps {
   isLoggedIn: boolean;
   showLoginModal: boolean;
-  toggleLoginModal: any;
-  toggleSignupModal: any;
+  toggleLoginModal: () => void;
+  toggleSignupModal: () => void;
   showSignupModal: boolean;
-  toggleLoggedIn: any;
+  toggleLoggedIn: () => void;
 }
 
 const AppPresenter: React.SFC<IProps> = ({
@@ -27,9 +27,6 @@ const AppPresenter: React.SFC<IProps> = ({
   ) : (
     <>
       <LoggedOutRoutes />
-      {showSignupModal ? (
-        <Signup toggleSignupModal={toggleSignupModal} />
-      ) : null}
       {showLoginModal ? (
         <Login
           toggleSignupModal={toggleSignupModal}
@@ -37,7 +34,9 @@ const AppPresenter: React.SFC<IProps> = ({
           toggleModal={toggleLoginModal}
         />
       ) : null}
-
+      {showSignupModal ? (
+        <Signup toggleSignupModal={toggleSignupModal} />
+      ) : null}
       <GlobalStyles />
     </>
   );
