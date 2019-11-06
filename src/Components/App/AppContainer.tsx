@@ -22,12 +22,8 @@ class AppContainer extends Component<{}, Istate> {
     showLoginModal: false,
     showFilterModal: false,
     showSignupModal: false,
-<<<<<<< HEAD
-    showLocation: false
-=======
     showLocation: false,
     term: ""
->>>>>>> 5ff13e3e7e55bfacac58368f6420be9749d3ed2f
   };
 
   toggleLoginModal = () => {
