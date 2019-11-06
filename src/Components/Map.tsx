@@ -297,9 +297,7 @@ class Map extends Component<IProps, IState> {
           </a>
         </div>
       );
-      // kakao.maps.event.addListener(codeMarker, "mouseout", function() {
-      //   infowindow.close();
-      // });
+
       kakao.maps.event.addListener(codeMarker, "click", function() {
         // window.location.href = `https://www.codestates.com/`;
         var codeoverlay = new kakao.maps.CustomOverlay({
@@ -335,34 +333,3 @@ class Map extends Component<IProps, IState> {
 }
 
 export default Map;
-
-// 마커 표시
-// const hollysMarker = new kakao.maps.Marker({
-//   map: kakaoMap, // 마커를 표시할 지도
-//   position: new kakao.maps.LatLng(33.450705, 126.570677),
-//   title: "할리스", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-//   image: hollysMarkerImage
-// });
-
-// var content =
-// '<div class="customoverlay">' +
-// +`  <a href="http://localhost:3000/cafe/${i + 1}">` +
-// `    <span class="title">${hollysName}</span>` +
-// "  </a>" +
-// +"</div>";
-// var content =
-//   '<div class="customoverlay">' +
-//   `<Link to=/cafe/${i + 1}>` +
-//   // `  <a href="/cafe/${i + 1}">` +
-//   `    <span class="title">${hollysName}</span>` +
-//   // "  </a>" +
-//   `</Link>` +
-//   "</div>";
-
-// // 커스텀 오버레이를 생성합니다
-// var hollysOverlay = new kakao.maps.CustomOverlay({
-//   map: kakaoMap,
-//   position: spot,
-//   content: content,
-//   yAnchor: 1
-// });
