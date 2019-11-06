@@ -16,11 +16,8 @@ interface IState {
   result: IInfo;
   error: string;
   loading: boolean;
-  term: string;
 }
-interface IProps extends RouteComponentProps<any> {
-  updateTerm: (event: ChangeEvent<HTMLInputElement>) => void;
-}
+interface IProps extends RouteComponentProps<any> {}
 
 export default class extends Component<IProps, IState> {
   constructor(props: IProps) {
@@ -40,7 +37,6 @@ export default class extends Component<IProps, IState> {
         smokingRoom: 0,
         telephone: ""
       },
-      term: "",
       error: "",
       loading: false
     };
@@ -61,24 +57,10 @@ export default class extends Component<IProps, IState> {
       this.setState({ loading: false });
     }
   }
-  updateTerm = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value }
-    } = event;
-    this.setState({ term: value });
-  };
 
   render() {
-    const { result, term, error, loading } = this.state;
+    const { result, error, loading } = this.state;
     // console.log("result: ", result);
-    return (
-      <DetailPresenter
-        result={result}
-        term={term}
-        updateTerm={this.updateTerm}
-        error={error}
-        loading={loading}
-      />
-    );
+    return <DetailPresenter result={result} error={error} loading={loading} />;
   }
 }
