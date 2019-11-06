@@ -4,7 +4,8 @@ import GlobalStyles from "../GlobalStyles";
 import Login from "../../Modal/Login";
 import Signup from "../../Modal/Signup";
 import Map from "../../Components/MapScreen/index";
-
+import ToolGroup from "../ToolGroup";
+import LoggedToolGroup from "../LoggedToolGroup";
 interface IProps {
   isLoggedIn: boolean;
   showLoginModal: boolean;
@@ -12,6 +13,9 @@ interface IProps {
   toggleSignupModal: () => void;
   showSignupModal: boolean;
   toggleLoggedIn: () => void;
+  toggleFilterModal: () => void;
+  toggleLocation: () => void;
+  toggleMypageSlider: () => void;
 }
 
 const AppPresenter: React.SFC<IProps> = ({
@@ -20,12 +24,27 @@ const AppPresenter: React.SFC<IProps> = ({
   toggleSignupModal,
   showSignupModal,
   isLoggedIn,
-  toggleLoggedIn
+  toggleLoggedIn,
+  toggleFilterModal,
+  toggleLocation,
+  toggleMypageSlider
 }) =>
   isLoggedIn ? (
-    <LoggedInRoutes />
+    <>
+      <LoggedToolGroup
+        toggleMypageSlider={toggleMypageSlider}
+        toggleFilterModal={toggleFilterModal}
+        toggleLocation={toggleLocation}
+      />
+      <LoggedInRoutes />
+    </>
   ) : (
     <>
+      <ToolGroup
+        toggleLoginModal={toggleLoginModal}
+        toggleFilterModal={toggleFilterModal}
+        toggleLocation={toggleLocation}
+      />
       <LoggedOutRoutes />
       {showLoginModal ? (
         <Login
