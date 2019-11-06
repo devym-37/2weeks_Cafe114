@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 
 const Container = styled.div``;
 
-const HomeLink = styled(Link)``;
+const HomeLink = styled.a``;
 
 const Logo = styled.div`
   background-image: url(${logo});
@@ -36,9 +36,9 @@ const HomeNew = styled.span`
 
 const BtnHome: React.SFC = () => (
   <Container>
-    <Link to="/">
+    <HomeLink href="/">
       <Logo />
-    </Link>
+    </HomeLink>
 
     <HomeNew />
   </Container>

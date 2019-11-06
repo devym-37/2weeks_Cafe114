@@ -32,6 +32,11 @@ const HomePresenter: React.FC<IProps> = ({ error, loading }) => {
           <Helmet>
             <title>Home | 카페114</title>
           </Helmet>
+          {/* <TestMap /> */}
+          {/* <Map /> */}
+          {/* <Form onSubmit={handleSubmit}>
+            <Input value={term} onChange={updateTerm} />
+          </Form> */}
         </Container>
       )}
     </>

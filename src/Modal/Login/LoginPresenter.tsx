@@ -136,7 +136,7 @@ const LoginPresenter: React.SFC<IProps> = ({
             <MainButton
               onClick={handleSubmit}
               icon={Cafe114Logo}
-              href="#"
+              href="/"
               text="카페114 로그인"
             />
             <TextButton href="/auth/find" text="비밀번호 찾기" />

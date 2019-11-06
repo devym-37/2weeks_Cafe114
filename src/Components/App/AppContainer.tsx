@@ -5,6 +5,7 @@ import Map from "../Map";
 import "react-toastify/dist/ReactToastify.css";
 import ToolGroup from "../ToolGroup";
 import Filter from "../../Modal/Filter";
+import { Input, Form } from "../../Components/SearchInput";
 
 interface Istate {
   isLoggedIn: boolean;
@@ -12,6 +13,7 @@ interface Istate {
   showFilterModal: boolean;
   showSignupModal: boolean;
   showLocation: boolean;
+  term: string;
 }
 
 class AppContainer extends Component<{}, Istate> {
@@ -20,7 +22,8 @@ class AppContainer extends Component<{}, Istate> {
     showLoginModal: false,
     showFilterModal: false,
     showSignupModal: false,
-    showLocation: false
+    showLocation: false,
+    term: ""
   };
 
   toggleLoginModal = () => {
@@ -54,13 +57,26 @@ class AppContainer extends Component<{}, Istate> {
     });
   };
 
+  updateTerm = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value }
+    } = event;
+    this.setState({ term: value });
+  };
+
+  handleSearchSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    const { term } = this.state;
+    console.log(`term: `, term);
+  };
   render() {
     const {
       isLoggedIn,
       showLoginModal,
       showFilterModal,
       showSignupModal,
-      showLocation
+      showLocation,
+      term
     } = this.state;
     // console.log("toggleLocation : ", toggleLocation);
     return (
@@ -70,6 +86,9 @@ class AppContainer extends Component<{}, Istate> {
           toggleLocation={this.toggleLocation}
           showLocation={showLocation}
         />
+        <Form onSubmit={this.handleSearchSubmit}>
+          <Input value={term} onChange={this.updateTerm} />
+        </Form>
         <ToolGroup
           toggleLoginModal={this.toggleLoginModal}
           toggleFilterModal={this.toggleFilterModal}
