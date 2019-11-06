@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import LoginPresenter from "./LoginPresenter";
-import { RouteComponentProps } from "react-router";
+//@ts-ignore
+import Kakao from "kakaojs";
 import { toast } from "react-toastify";
 import { serverApi } from "../../Components/API";
-import { Link } from "react-router-dom";
+
 interface IState {
   phoneNumber: string;
   password: string;
   email: string;
+  error: string;
+  loading: boolean;
 }
 
 interface IProps {
@@ -17,9 +20,36 @@ interface IProps {
 }
 class LoginContainer extends Component<IProps, IState> {
   state = {
+    error: "",
     phoneNumber: "",
     email: "",
-    password: ""
+    password: "",
+    loading: false
+  };
+
+  handleSuccessKakaoLogin = async (response: any) => {
+    try {
+      this.setState({ loading: true });
+      const KakaoRequest = await Kakao.API.request({
+        url: "/v2/user/me",
+        success: function(res: any) {
+          const { id } = res;
+          return id;
+        }
+      });
+      if (KakaoRequest.id !== undefined) {
+        const { id } = KakaoRequest;
+
+        const ServerRequest = await serverApi.loginkakao(id);
+        if (ServerRequest) {
+          this.props.toggleLoggedIn();
+        }
+      }
+    } catch {
+      this.setState({ error: "서버상 문제가 발생했습니다." });
+    } finally {
+      this.setState({ loading: false });
+    }
   };
 
   handleInputChange = (
@@ -48,12 +78,12 @@ class LoginContainer extends Component<IProps, IState> {
     const { toggleLoggedIn } = this.props;
     // console.log(email, password);
     const isValid = await serverApi.login(email, password);
-    console.log(`isValid: `, isValid);
+    // console.log(`isValid: `, isValid);
     const {
       data: { success: isSucceed }
     } = isValid;
 
-    console.log(`isSucceed: `, isSucceed);
+    // console.log(`isSucceed: `, isSucceed);
 
     if (isSucceed) {
       toast.success("안녕하세요!", { autoClose: 1300 });
@@ -80,11 +110,13 @@ class LoginContainer extends Component<IProps, IState> {
   };
 
   render() {
+    // console.log(`kakao: `, this.state.kakao);
     const { email, phoneNumber, password } = this.state;
     const { toggleModal, toggleSignupModal } = this.props;
     // console.log(email, password);
     return (
       <LoginPresenter
+        handleSuccessKakaoLogin={this.handleSuccessKakaoLogin}
         password={password}
         phoneNumber={phoneNumber}
         handleInputChange={this.handleInputChange}

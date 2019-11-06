@@ -8,14 +8,6 @@ const api = axios.create({
   withCredentials: true
 });
 
-interface ILogin {
-  email: string;
-  password: string;
-}
-
-const Data = { email: "joeun@gmail.com", password: "1234" };
-const url = "http://13.209.4.48:3000/signin";
-
 export const serverApi = {
   getAllCafes: () => api.get("cafe"),
   login: (email: string, password: string) => {
@@ -29,5 +21,6 @@ export const serverApi = {
   signup: (email: string, password: string, name: string, gender: number) =>
     api.post("signup", { email, password, name, sex: gender }),
   signout: () => api.get("signout"),
-  getUserInfo: () => api.get("user/mypage")
+  getUserInfo: () => api.get("user/mypage"),
+  loginkakao: (id: number) => api.post("signin/kakao", { kakao: { id } })
 };

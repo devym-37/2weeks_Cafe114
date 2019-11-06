@@ -10,6 +10,7 @@ import MainButton from "../../Components/MainButton";
 import TextButton from "../../Components/TextButton";
 import GhostButton from "../../Components/GhostButton";
 import CloseButton from "../../Components/CloseButton";
+import KakaoLogin from "react-kakao-login";
 
 const DimmedLayerCantainer = styled.div`
   height: 993px;
@@ -84,17 +85,19 @@ interface IProps {
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  handleSuccessKakaoLogin: any;
 }
 const LoginPresenter: React.SFC<IProps> = ({
   email,
   phoneNumber,
+  handleSuccessKakaoLogin,
   password,
   handleInputChange,
   handleSubmit,
   toggleModal,
   toggleSignupModal
+  // handleClickKakaoLogin
 }) => (
-  //   handleInputChange
   <DimmedLayerCantainer>
     <Helmet>
       <title> 로그인 | Cafe114 </title>
@@ -105,10 +108,18 @@ const LoginPresenter: React.SFC<IProps> = ({
         <ContentContainer>
           <Seperator color="black" text="10초만에 로그인하기" />
           <LoginGroup>
+            {/* <a href="/"> */}
+            <KakaoLogin
+              jsKey={"779e30fceaa73c0848336e7a32714297"}
+              onSuccess={handleSuccessKakaoLogin}
+              onFailure={error => console.log(error)}
+            />
+            {/* </a> */}
             <MainButton
               name="Kakao"
               icon={KakaoLogo}
               href="#"
+              // onClick={handleClickKakaoLogin}
               text="카카오 계정으로 로그인"
             />
             <MainButton
