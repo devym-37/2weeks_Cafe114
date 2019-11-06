@@ -3,7 +3,8 @@ import styled from "styled-components";
 import Helmet from "react-helmet";
 import Loader from "../../Components/Loader";
 import Error from "../../Components/Error";
-import Map from "../../Components/Map";
+// import { Input, Form } from "../../Components/SearchInput";
+import Map from "../../Components/MapScreen/index";
 import TestMap from "../../Routes/Map";
 const Container = styled.div``;
 

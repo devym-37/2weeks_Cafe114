@@ -3,7 +3,7 @@ import { LoggedOutRoutes, LoggedInRoutes } from "../router";
 import GlobalStyles from "../GlobalStyles";
 import Login from "../../Modal/Login";
 import Signup from "../../Modal/Signup";
-import Map from "../Map";
+import Map from "../../Components/MapScreen/index";
 
 interface IProps {
   isLoggedIn: boolean;
