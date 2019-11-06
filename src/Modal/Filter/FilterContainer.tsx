@@ -1,52 +1,70 @@
 import React, { Component } from "react";
 import FilterPresenter from "./FilterPresenter";
 import { string } from "prop-types";
+import { tsSymbolKeyword } from "@babel/types";
 
 // interface IProps {
 //   toggleFilterModal: any;
 // }
 
 interface IState {
-  hollys: number;
-  tomtom: number;
-  allDay: number;
-  smoke: number;
-  parking: number;
-  quantity: number;
+  hollys: boolean;
+  tomtom: boolean;
+  allDay: boolean;
+  smoke: boolean;
+  parking: boolean;
+  quantity: boolean;
 }
 class FilterContainer extends Component<{}, IState> {
   state = {
-    hollys: 1,
-    tomtom: 1,
-    allDay: 1,
-    smoke: 0,
-    parking: 0,
-    quantity: 0
+    hollys: false,
+    tomtom: false,
+    allDay: false,
+    smoke: false,
+    parking: false,
+    quantity: false
   };
 
   handleReset = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(event.target);
+    this.setState({
+      hollys: false,
+      tomtom: false,
+      allDay: false,
+      smoke: false,
+      parking: false,
+      quantity: false
+    });
   };
 
-  handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleCheck = (event: any) => {
     const {
-      target: { name, value, checked }
+      target: { name }
     } = event;
 
-    if (checked) {
-    }
     if (name === "hollys") {
-      this.setState(prevState => ({ hollys: prevState.hollys ? 0 : 1 }));
+      this.setState({ hollys: !this.state.hollys });
     } else if (name === "tomtom") {
-      this.setState(prevState => ({ tomtom: prevState.tomtom ? 0 : 1 }));
+      this.setState({ tomtom: !this.state.tomtom });
+    } else if (name === "allDay") {
+      this.setState({ allDay: !this.state.allDay });
+    } else if (name === "smoke") {
+      this.setState({ smoke: !this.state.smoke });
+    } else if (name === "parking") {
+      this.setState({ parking: !this.state.parking });
     }
-    console.log(event.target.name);
   };
 
   render() {
-    console.log(`hollys: `, this.state.hollys);
+    const { hollys, tomtom, allDay, smoke, parking, quantity } = this.state;
+    console.log(`필터: `, this.state);
     return (
       <FilterPresenter
+        hollys={hollys}
+        tomtom={tomtom}
+        allDay={allDay}
+        smoke={smoke}
+        parking={parking}
+        quantity={quantity}
         handleCheck={this.handleCheck}
         handleReset={this.handleReset}
       />

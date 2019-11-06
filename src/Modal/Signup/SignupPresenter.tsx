@@ -6,6 +6,7 @@ import ConfirmButton from "../../Components/ConfirmButton";
 import TextButton from "../../Components/TextButton";
 import ModalContainer from "../../Components/ModalLayout";
 import Seperator from "../../Components/Seperator";
+import CheckBox from "../../Components/CheckBox";
 
 const Label = styled.label`
   cursor: default;
@@ -65,10 +66,13 @@ const SelectButton = styled.button`
   letter-spacing: 0;
   border-radius: 3px;
   &:focus {
-    /* border-color: ${props => props.theme.colors.main}; */
     border: 1px solid ${props => props.theme.colors.main};
     outline: none;
   }
+  /* &:checked {
+    border: 1px solid ${props => props.theme.colors.main};
+    outline: none;
+  } */
 `;
 
 const Agreement = styled.div`
@@ -130,16 +134,17 @@ interface IProps {
   name: string;
   password: string;
   password2: string;
-  gender: number;
-  agreement_all: number;
-  agreement_privacy: number;
-  agreement_lbs: number;
-  agreement_ad: number;
+  gender: string;
+  agreement_all: boolean;
+  agreement_privacy: boolean;
+  agreement_lbs: boolean;
+  agreement_ad: boolean;
   birth: string;
   toggleSignupModal: any;
   handleInputChange: any;
   handleSubmit: any;
   handleSelectGender: any;
+  handleCheck: any;
 }
 const SignupPresenter: React.SFC<IProps> = ({
   email,
@@ -155,7 +160,8 @@ const SignupPresenter: React.SFC<IProps> = ({
   toggleSignupModal,
   handleInputChange,
   handleSubmit,
-  handleSelectGender
+  handleSelectGender,
+  handleCheck
 }) => (
   <ModalContainer size="medium" onClick={toggleSignupModal}>
     <Seperator text="회원가입" />
@@ -175,7 +181,7 @@ const SignupPresenter: React.SFC<IProps> = ({
     />
     <Input
       type="password"
-      placeholder={"비밀번호(4자리 이상)"}
+      placeholder={"비밀번호(6자리 이상)"}
       name="password"
       value={password}
       onChange={handleInputChange}
@@ -210,57 +216,54 @@ const SignupPresenter: React.SFC<IProps> = ({
       </ButtonGroup>
     </LabelContainer>
     <Agreement>
-      <Checkbox_1
-        type="checkbox"
+      <CheckBox
         name="agreement_all"
-        value={agreement_all}
-        onChange={handleInputChange}
+        value="agreement_all"
+        text="전체 동의"
+        checked={agreement_all}
+        onClick={handleCheck}
       />
-      <CheckBoxLabel>전체 동의</CheckBoxLabel>
     </Agreement>
     <CheckBoxGroup>
-      <CheckBoxContainer>
-        <CheckBoxSelect>
-          <Checkbox_1
-            type="checkbox"
-            name="agreement_privacy"
-            value={agreement_privacy}
-            onChange={handleInputChange}
-          />
-          <CheckBoxLabel>
-            개인정보 수집 및 이용 동의 <Highlight>(필수)</Highlight>
-          </CheckBoxLabel>
-        </CheckBoxSelect>
-      </CheckBoxContainer>
-      <CheckBoxContainer>
-        <CheckBoxSelect>
-          <Checkbox_1
-            type="checkbox"
-            name="agreement_lbs"
-            value={agreement_lbs}
-            onChange={handleInputChange}
-          />
-          <CheckBoxLabel>
-            위치기반서비스 이용약관 동의 <Highlight>(필수)</Highlight>
-          </CheckBoxLabel>
-        </CheckBoxSelect>
-      </CheckBoxContainer>
-      <CheckBoxContainer>
-        <CheckBoxSelect>
-          <Checkbox_1
-            type="checkbox"
-            name="agreement_ad"
-            value={agreement_ad}
-            onChange={handleInputChange}
-            required={false}
-          />{" "}
-          <CheckBoxLabel>
-            마케팅 정보 수신 동의 <Highlight>(선택)</Highlight>
-          </CheckBoxLabel>
-        </CheckBoxSelect>
-      </CheckBoxContainer>
+      <CheckBox
+        name="agreement_privacy"
+        value="agreement_privacy"
+        text="개인정보 수집 및 이용 동의"
+        highlight="(필수)"
+        checked={agreement_privacy}
+        onClick={handleCheck}
+      />
+      <CheckBox
+        name="agreement_lbs"
+        value="agreement_lbs"
+        text="위치기반서비스 이용약관 동의"
+        highlight="(필수)"
+        checked={agreement_lbs}
+        onClick={handleCheck}
+      />
+
+      <CheckBox
+        name="agreement_ad"
+        value="agreement_ad"
+        text="마케팅 정보 수신 동의"
+        highlight="(선택)"
+        checked={agreement_ad}
+        onClick={handleCheck}
+      />
     </CheckBoxGroup>
-    <ConfirmButton text="확인" onClick={handleSubmit} />
+    <ConfirmButton
+      disabled={[
+        agreement_privacy,
+        agreement_lbs,
+        name,
+        email,
+        password,
+        password2,
+        gender
+      ].every(n => Boolean(n))}
+      text="확인"
+      onClick={handleSubmit}
+    />
   </ModalContainer>
 );
 
