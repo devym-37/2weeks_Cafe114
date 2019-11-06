@@ -13,6 +13,17 @@ declare var kakao: any;
 // declare const zoomIn: (event: MouseEvent) => any;
 // declare const zoomOut: (event: MouseEvent) => any;
 
+interface IMapProps {
+  minLevel?: number;
+  maxLevel?: number;
+  options: any;
+  onBoundChanged?: any;
+  onCenterChanged?: any;
+  onClick?: any;
+  onLoad?: any;
+  onZoomChanged?: any;
+}
+
 const mystyles = {
   width: "100%",
   height: "100vh"
@@ -35,6 +46,7 @@ interface Iinfo {
 }
 
 interface IState {
+  map: IMapProps | {};
   result: Array<Iinfo>;
   loading: boolean;
   error: string;
@@ -54,6 +66,7 @@ interface IProps {
 
 class Map extends Component<IProps, IState> {
   state = {
+    map: {},
     result: [],
     subAddress: [],
     loading: true,
@@ -116,6 +129,8 @@ class Map extends Component<IProps, IState> {
       center: new kakao.maps.LatLng(centerY, centerX),
       level: level
     }); // 지도 생성
+
+    this.setState({ map: kakaoMap });
 
     codeMarker(kakaoMap); // 위워크 marker
 
@@ -199,71 +214,6 @@ class Map extends Component<IProps, IState> {
       kakaoMap.panTo(moveLatLon);
     }
 
-    const COORDS = "coords";
-    console.log("111---this.props.showLocation : ", this.props.showLocation);
-    console.log("222---this.state.geoClickState : ", this.state.geoClickState);
-    // if (!this.state.geoClickState) {
-    //   if (navigator.geolocation) {
-    //     init(); // navigator 실행
-    //   } else {
-    //     // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치
-    //     console.log("Cant access geo location");
-    //     codeMarker(kakaoMap); // 위워크 marker
-    //   }
-    // }
-
-    function saveCoords(coordsObj: any) {
-      localStorage.setItem(COORDS, JSON.stringify(coordsObj));
-    }
-
-    function handleGeoSucces(position: any) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      const coordsObj = {
-        latitude,
-        longitude
-      };
-      var locPosition = new kakao.maps.LatLng(
-        coordsObj.latitude,
-        coordsObj.longitude
-      );
-      displayMarker(locPosition);
-      saveCoords(coordsObj);
-    }
-    function handleGeoError() {
-      console.log("Cant access geo location");
-    }
-    function askForCoords() {
-      navigator.geolocation.getCurrentPosition(handleGeoSucces, handleGeoError);
-    }
-
-    function loadCoords() {
-      const loadCoords = localStorage.getItem(COORDS);
-      if (loadCoords === null) {
-        askForCoords();
-      } else {
-        const parseCoords = JSON.parse(loadCoords);
-        var locPosition = new kakao.maps.LatLng(
-          parseCoords.latitude,
-          parseCoords.longitude
-        );
-        displayMarker(locPosition);
-      }
-    }
-
-    function init() {
-      loadCoords(); // 실행함수
-    }
-
-    function displayMarker(locPosition: any) {
-      var marker = new kakao.maps.Marker({
-        map: kakaoMap,
-        position: locPosition,
-        image: currentMarkerImage
-      });
-      kakaoMap.setCenter(locPosition);
-    }
-
     var mapTypeControl = new kakao.maps.MapTypeControl();
     kakaoMap.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
     // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
@@ -317,6 +267,83 @@ class Map extends Component<IProps, IState> {
     // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
     map.panTo(moveLatLon);
   };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.props !== this.props.showLocation) {
+      const COORDS = "coords";
+      console.log("111---this.props.showLocation : ", this.props.showLocation);
+      console.log(
+        "222---this.state.geoClickState : ",
+        this.state.geoClickState
+      );
+      // if (!this.state.geoClickState) {
+      //   if (navigator.geolocation) {
+      //     init(); // navigator 실행
+      //   } else {
+      //     // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치
+      //     console.log("Cant access geo location");
+      //     codeMarker(kakaoMap); // 위워크 marker
+      //   }
+      // }
+
+     
+    }
+  }
+
+  function saveCoords(coordsObj: any) {
+    localStorage.setItem(COORDS, JSON.stringify(coordsObj));
+  }
+
+  handleGeoSucces(position: any) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    const coordsObj = {
+      latitude,
+      longitude
+    };
+    var locPosition = new kakao.maps.LatLng(
+      coordsObj.latitude,
+      coordsObj.longitude
+    );
+    displayMarker(locPosition);
+    saveCoords(coordsObj);
+  }
+  handleGeoError() {
+    console.log("Cant access geo location");
+  }
+  askForCoords() {
+    navigator.geolocation.getCurrentPosition(
+      this.handleGeoSucces,
+      handleGeoError
+    );
+  }
+
+  function loadCoords() {
+    const loadCoords = localStorage.getItem(COORDS);
+    if (loadCoords === null) {
+      askForCoords();
+    } else {
+      const parseCoords = JSON.parse(loadCoords);
+      var locPosition = new kakao.maps.LatLng(
+        parseCoords.latitude,
+        parseCoords.longitude
+      );
+      displayMarker(locPosition);
+    }
+  }
+
+  function init() {
+    loadCoords(); // 실행함수
+  }
+
+  function displayMarker(locPosition: any) {
+    var marker = new kakao.maps.Marker({
+      map: kakaoMap,
+      position: locPosition,
+      image: currentMarkerImage
+    });
+    kakaoMap.setCenter(locPosition);
+  }
 
   render() {
     console.log("this.props.showLocation : ", this.props.showLocation);
