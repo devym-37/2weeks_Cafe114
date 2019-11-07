@@ -15,6 +15,7 @@
     "noImplicitAny": false,
     "noImplicitReturns": false,
     "jsx": "react",
+    "typeRoots": ["node_modules/@types"],
     "allowJs": true
   },
   "include": ["src"]
