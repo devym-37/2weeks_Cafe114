@@ -1,10 +1,10 @@
-import React from "react";
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import ReactDOMServer from "react-dom/server";
 import hollys from "../../assets/marker/hollys-logo.png";
 import tomtom from "../../assets/marker/tomtom-logo.png";
 import codestates from "../../assets/marker/codestates.png";
-import currentLoca from "../assets/marker/currentLoca.png";
+import currentLoca from "../../assets/marker/currentLoca.png";
 import { geoCode } from "../../mapHelpers";
 import { serverApi } from "../API";
 import MapPresenter from "./MapPresenter";
@@ -62,8 +62,9 @@ class MapContainer extends React.Component<any, IState> {
     y: [],
     category: [],
     name: [],
-    centerY: 37.503444,
-    centerX: 127.049833,
+    centerY: this.props.centerY,
+    centerX: this.props.centerX,
+    navigatorBoolean: this.props.navigatorBoolean,
     level: 16
   };
 
@@ -98,18 +99,15 @@ class MapContainer extends React.Component<any, IState> {
         position: google.maps.ControlPosition.TOP_RIGHT
       }
     };
+
     const googleMap = new google.maps.Map(mapNode, mapConfig); // 지도생성
-    this.setState({
-      map: this.props.google
-    });
+
     try {
       const {
         data: {
           data: { result: result }
         }
       } = await serverApi.getAllCafes();
-      console.log(`new result: `, result[0]);
-
       const subAddress = result.map((cafe: Iinfo) => cafe.subAddress);
       const x = result.map((cafe: Iinfo) => cafe.x);
       const y = result.map((cafe: Iinfo) => cafe.y);
@@ -117,7 +115,7 @@ class MapContainer extends React.Component<any, IState> {
       const name = result.map((cafe: Iinfo) => cafe.name);
       this.setState({ result, subAddress, x, y, category, name });
     } catch {
-      this.setState({ error: "Can't load kakaoMap" });
+      this.setState({ error: "Can't load googleMap" });
     } finally {
       this.setState({ loading: false });
     }
@@ -142,7 +140,6 @@ class MapContainer extends React.Component<any, IState> {
         });
         hollysMarker.setMap(googleMap);
         const hollysName = this.state.name[i];
-        console.log("hollysName", hollysName);
         const idNumber = i + 1;
         const infoWindowContent = await ReactDOMServer.renderToString(
           <div className="customoverlay">
@@ -156,13 +153,11 @@ class MapContainer extends React.Component<any, IState> {
           content: infoWindowContent
         });
         hollysMarker.addListener("click", function() {
-          console.log("click2222");
           infowindow.open(googleMap, hollysMarker);
           googleMap.panTo(spot);
           // window.location.href = `/cafe/${idNumber}`;
         });
         hollysMarker.addListener("mouseover", function() {
-          console.log("over2222");
           infowindow.open(googleMap, hollysMarker);
         });
         hollysMarker.addListener("mouseout", function() {
@@ -199,13 +194,11 @@ class MapContainer extends React.Component<any, IState> {
           content: infoWindowContent
         });
         tomtomMarker.addListener("click", function() {
-          console.log("click");
           infowindow.open(googleMap, tomtomMarker);
           googleMap.panTo(spot);
           // window.location.href = `/cafe/${idNumber}`;
         });
         tomtomMarker.addListener("mouseover", function() {
-          console.log("over");
           infowindow.open(googleMap, tomtomMarker);
         });
         tomtomMarker.addListener("mouseout", function() {
@@ -214,11 +207,79 @@ class MapContainer extends React.Component<any, IState> {
       }
     }
 
-    this.codeStatesMarker(googleMap); // codestates marker
+    const COORDS = "coords";
+    if (this.props.navigatorBoolean) {
+      if (navigator.geolocation) {
+        init(); // navigator 실행
+      } else {
+        // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치
+        console.log("Cant access geo location");
+        this.codeStatesMarker(googleMap); // 위워크 marker
+      }
+    }
 
-    // function createPopupClass() {
-    //   function Popup(position: any, content: any) {}
-    // }
+    function saveCoords(coordsObj: any) {
+      localStorage.setItem(COORDS, JSON.stringify(coordsObj));
+    }
+
+    function handleGeoSucces(position: any) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      const coordsObj = {
+        latitude,
+        longitude
+      };
+      var locPosition = new google.maps.LatLng(
+        coordsObj.latitude,
+        coordsObj.longitude
+      );
+      displayMarker(locPosition);
+      saveCoords(coordsObj);
+    }
+    function handleGeoError() {
+      console.log("Cant access geo location");
+    }
+    function askForCoords() {
+      navigator.geolocation.getCurrentPosition(handleGeoSucces, handleGeoError);
+    }
+
+    function loadCoords() {
+      const loadCoords = localStorage.getItem(COORDS);
+      if (loadCoords === null) {
+        askForCoords();
+      } else {
+        const parseCoords = JSON.parse(loadCoords);
+        var locPosition = new google.maps.LatLng(
+          parseCoords.latitude,
+          parseCoords.longitude
+        );
+        displayMarker(locPosition);
+      }
+    }
+
+    function displayMarker(locPosition: any) {
+      const currentLocaSrc = currentLoca;
+      const imageSize = new google.maps.Size(60, 60);
+      const currentLocaImage = new google.maps.MarkerImage(
+        currentLocaSrc,
+        imageSize,
+        null,
+        null,
+        imageSize
+      );
+      var marker = new google.maps.Marker({
+        map: googleMap,
+        position: locPosition,
+        image: currentLocaImage
+      });
+      googleMap.setCenter(locPosition);
+    }
+
+    function init() {
+      loadCoords(); // 실행함수
+    }
+
+    this.codeStatesMarker(googleMap); // codestates marker
 
     function toggleBounce(marker: any) {
       if (marker.getAnimation() !== null) {
@@ -227,27 +288,6 @@ class MapContainer extends React.Component<any, IState> {
         marker.setAnimation(google.maps.Animation.BOUNCE);
       }
     }
-
-    // googleMap.addListener("dragend", this.handleDragEnd);
-  }
-  // public handleDragEnd = () => {
-  //   const newCenter = this.map.getCenter();
-  //   const lat = newCenter.lat();
-  //   const lng = newCenter.lng();
-  //   this.setState({
-  //     lat,
-  //     lng
-  //   });
-  // };
-
-  shouldComponentUpdate(nextProps: any) {
-    return false;
-  }
-
-  public onPickPlace(pathname: string) {
-    const { address, lat, lng } = this.state;
-    const { history } = this.props;
-    history.push({ pathname: pathname, state: { address, lat, lng } });
   }
 
   public codeStatesMarker(map: any) {
@@ -285,6 +325,9 @@ class MapContainer extends React.Component<any, IState> {
     codeMarker.addListener("mouseover", function() {
       infowindow.open(map, codeMarker);
     });
+    codeMarker.addListener("mouseout", function() {
+      infowindow.close();
+    });
   }
 
   public onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -292,7 +335,6 @@ class MapContainer extends React.Component<any, IState> {
       target: { name, value }
     } = event;
     this.setState({ [name]: value } as any);
-    console.log("value", value);
   };
 
   public onSubmit = async () => {

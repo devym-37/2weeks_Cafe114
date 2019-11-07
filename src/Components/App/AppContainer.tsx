@@ -18,6 +18,9 @@ interface Istate {
   showMypageSlider: boolean;
   error: string;
   term: string;
+  centerY: number;
+  centerX: number;
+  navigatorBoolean: boolean;
 }
 
 class AppContainer extends Component<{}, Istate> {
@@ -29,7 +32,10 @@ class AppContainer extends Component<{}, Istate> {
     showLocation: false,
     showMypageSlider: false,
     error: "",
-    term: ""
+    term: "",
+    centerY: 37.503444,
+    centerX: 127.049833,
+    navigatorBoolean: false
   };
 
   toggleLoginModal = () => {
@@ -99,7 +105,10 @@ class AppContainer extends Component<{}, Istate> {
       showSignupModal,
       showLocation,
       showMypageSlider,
-      term
+      term,
+      centerX,
+      centerY,
+      navigatorBoolean
     } = this.state;
     console.log("toggleLocation : ", term);
     return (
@@ -108,6 +117,9 @@ class AppContainer extends Component<{}, Istate> {
           toggleFilterModal={this.toggleFilterModal}
           toggleLocation={this.toggleLocation}
           showLocation={showLocation}
+          centerY={centerY}
+          centerX={centerX}
+          navigatorBoolean={navigatorBoolean}
         />
         <Form onSubmit={this.handleSearchSubmit}>
           <Input value={term} onChange={this.updateTerm} />
