@@ -7,7 +7,7 @@ export const geoCode = async (address: string) => {
   const URL = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${MAPS_KEY}`;
   const { data } = await axios(URL);
   console.log(data);
-  if (!data.error_message) {
+  if (data.status === "OK") {
     const { results } = data;
     const firstPlace = results[0];
     const {
@@ -16,24 +16,8 @@ export const geoCode = async (address: string) => {
         location: { lat, lng }
       }
     } = firstPlace;
-    return { formatted_address, lat, lng };
-  } else {
-    toast.error(data.error_message);
-    return false;
-  }
-};
 
-export const reverseGeoCode = async (lat: number, lng: number) => {
-  const URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${MAPS_KEY}`;
-  const { data } = await axios(URL);
-  if (!data.error_message) {
-    const { results } = data;
-    const firstPlace = results[0];
-    if (!firstPlace) {
-      return false;
-    }
-    const address = firstPlace.formatted_address;
-    return address;
+    return { formatted_address, lat, lng };
   } else {
     toast.error(data.error_message);
     return false;
