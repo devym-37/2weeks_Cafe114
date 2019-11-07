@@ -189,7 +189,7 @@ class MapContainer extends React.Component<any, IState> {
         tomtomMarker.addListener("click", function() {
           infowindow.open(googleMap, tomtomMarker);
           googleMap.panTo(spot);
-          // window.location.href = `/cafe/${idNumber}`;
+          window.location.href = `/cafe/${idNumber}`;
         });
         tomtomMarker.addListener("mouseover", function() {
           infowindow.open(googleMap, tomtomMarker);
