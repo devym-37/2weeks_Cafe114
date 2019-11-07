@@ -8,6 +8,7 @@ import currentLoca from "../../assets/marker/currentLoca.png";
 import { geoCode } from "../../mapHelpers";
 import { serverApi } from "../API";
 import MapPresenter from "./MapPresenter";
+import ToolGroup from "../ToolGroup";
 
 interface Iinfo {
   id: number;

@@ -14,6 +14,7 @@ const AWrap = styled.div`
   min-width: 750px;
   height: 100%;
   width: 100%;
+  z-index: 10;
 `;
 
 const Navigation = styled.div`
@@ -26,7 +27,6 @@ const Navigation = styled.div`
 `;
 
 const Sidebar = styled.div`
-  z-index: 21;
   position: absolute;
   top: 0px;
   bottom: 0px;

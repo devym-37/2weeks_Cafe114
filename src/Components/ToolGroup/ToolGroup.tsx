@@ -16,9 +16,9 @@ import { Mypage } from "../../Components/ToolGroup/Mypage";
 // `;
 
 const ToolGroupContainer = styled.div`
-  position: absolute;
+  position: fixed;
   right: 4px;
-  top: 230px;
+  top: 200px;
   z-index: 2;
   display: block;
 `;
