@@ -16,6 +16,7 @@ interface IProps {
   toggleFilterModal: () => void;
   toggleLocation: () => void;
   toggleMypageSlider: () => void;
+  handleCafePosition: any;
 }
 
 const AppPresenter: React.SFC<IProps> = ({
@@ -27,7 +28,8 @@ const AppPresenter: React.SFC<IProps> = ({
   toggleLoggedIn,
   toggleFilterModal,
   toggleLocation,
-  toggleMypageSlider
+  toggleMypageSlider,
+  handleCafePosition
 }) =>
   isLoggedIn ? (
     <>
@@ -36,7 +38,7 @@ const AppPresenter: React.SFC<IProps> = ({
         toggleFilterModal={toggleFilterModal}
         toggleLocation={toggleLocation}
       />
-      <LoggedInRoutes />
+      <LoggedInRoutes handleCafePosition={handleCafePosition} />
     </>
   ) : (
     <>
@@ -45,7 +47,7 @@ const AppPresenter: React.SFC<IProps> = ({
         toggleFilterModal={toggleFilterModal}
         toggleLocation={toggleLocation}
       />
-      <LoggedOutRoutes />
+      <LoggedOutRoutes handleCafePosition={handleCafePosition} />
       {showLoginModal ? (
         <Login
           toggleSignupModal={toggleSignupModal}

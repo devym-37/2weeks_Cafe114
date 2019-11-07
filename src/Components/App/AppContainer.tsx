@@ -41,6 +41,13 @@ class AppContainer extends Component<{}, Istate> {
     address: ""
   };
 
+  handleCafePosition = (centerX: number, centerY: number) => {
+    this.setState({
+      centerX,
+      centerY
+    });
+  };
+
   toggleLoginModal = () => {
     this.setState({
       showLoginModal: !this.state.showLoginModal
@@ -61,11 +68,6 @@ class AppContainer extends Component<{}, Istate> {
   toggleMypageSlider = () => {
     this.setState({
       showMypageSlider: !this.state.showMypageSlider
-    });
-  };
-  toggleFilterModal = () => {
-    this.setState({
-      showFilterModal: !this.state.showFilterModal
     });
   };
 
@@ -93,6 +95,11 @@ class AppContainer extends Component<{}, Istate> {
       target: { value }
     } = event;
     this.setState({ term: value });
+  };
+  toggleFilterModal = () => {
+    this.setState({
+      showFilterModal: !this.state.showFilterModal
+    });
   };
 
   public handleSearchSubmit = async (event: React.FormEvent) => {
@@ -123,23 +130,14 @@ class AppContainer extends Component<{}, Istate> {
       centerY,
       navigatorBoolean
     } = this.state;
-    console.log("centerX", centerX, "centerY", centerY);
-    console.log("toggleLocation : ", term);
+
+
+    console.log(`포지션 변경 ceterX: `, centerX);
+
     return (
       <div className="App">
-        <Map
-          toggleFilterModal={this.toggleFilterModal}
-          toggleLocation={this.toggleLocation}
-          showLocation={showLocation}
-          centerY={centerY}
-          centerX={centerX}
-          navigatorBoolean={navigatorBoolean}
-          address={term}
-        />
-        <Form onSubmit={this.handleSearchSubmit}>
-          <Input value={term} onChange={this.updateTerm} />
-        </Form>
         <AppPresenter
+          handleCafePosition={this.handleCafePosition}
           toggleMypageSlider={this.toggleMypageSlider}
           toggleLoggedIn={this.toggleLoggedIn}
           toggleLoginModal={this.toggleLoginModal}

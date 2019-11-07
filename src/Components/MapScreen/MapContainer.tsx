@@ -72,7 +72,7 @@ class MapContainer extends React.Component<any, IState> {
     const maps = google.maps;
     const mapNode = ReactDOM.findDOMNode(this.mapRef.current);
     const mapConfig: google.maps.MapOptions = {
-      center: { lat: this.state.centerY, lng: this.state.centerX },
+      center: { lat: this.props.centerY, lng: this.props.centerX },
       minZoom: 9,
       zoom: 15,
       zoomControl: true,
@@ -149,7 +149,7 @@ class MapContainer extends React.Component<any, IState> {
         hollysMarker.addListener("click", function() {
           infowindow.open(googleMap, hollysMarker);
           googleMap.panTo(spot);
-          // window.location.href = `/cafe/${idNumber}`;
+          window.location.href = `/cafe/${idNumber}`;
         });
         hollysMarker.addListener("mouseover", function() {
           infowindow.open(googleMap, hollysMarker);
@@ -184,13 +184,13 @@ class MapContainer extends React.Component<any, IState> {
             </a>
           </div>
         );
-        var infowindow = new google.maps.InfoWindow({
+        const infowindow = new google.maps.InfoWindow({
           content: infoWindowContent
         });
         tomtomMarker.addListener("click", function() {
           infowindow.open(googleMap, tomtomMarker);
           googleMap.panTo(spot);
-          // window.location.href = `/cafe/${idNumber}`;
+          window.location.href = `/cafe/${idNumber}`;
         });
         tomtomMarker.addListener("mouseover", function() {
           infowindow.open(googleMap, tomtomMarker);
