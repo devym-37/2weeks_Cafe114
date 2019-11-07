@@ -31,7 +31,6 @@ class MapPresenter extends React.Component<IProps> {
   handleSearchSubmit = (event: React.FormEvent) => {};
   public render() {
     const { mapRef, address, onInputChange, onSubmit } = this.props;
-
     return (
       <div>
         <Form onSubmit={onSubmit}>
