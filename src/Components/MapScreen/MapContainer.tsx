@@ -65,6 +65,7 @@ class MapContainer extends React.Component<any, IState> {
     centerY: this.props.centerY,
     centerX: this.props.centerX,
     navigatorBoolean: this.props.navigatorBoolean,
+
     level: 16
   };
 
@@ -279,7 +280,9 @@ class MapContainer extends React.Component<any, IState> {
       loadCoords(); // 실행함수
     }
 
+
     this.codeStatesMarker(googleMap); // codestates marker
+
 
     function toggleBounce(marker: any) {
       if (marker.getAnimation() !== null) {
