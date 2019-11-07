@@ -8,7 +8,8 @@ import currentLoca from "../assets/marker/currentLoca.png";
 import { geoCode } from "../../mapHelpers";
 import { serverApi } from "../API";
 import MapPresenter from "./MapPresenter";
-import "../../Components/Map.css";
+import { async } from "q";
+// import "../../Components/Map.css";
 
 interface Iinfo {
   id: number;
@@ -38,6 +39,7 @@ interface IState {
   y: Array<Iinfo>;
   category: Array<Iinfo>;
   name: Array<Iinfo>;
+  map: any;
 }
 
 const mapStyles = {
@@ -48,6 +50,7 @@ const mapStyles = {
 class MapContainer extends React.Component<any, IState> {
   public mapRef: any;
   public state = {
+    map: this.props.google.maps.Map,
     address: "",
     lat: 0,
     lng: 0,
@@ -75,21 +78,30 @@ class MapContainer extends React.Component<any, IState> {
     const mapNode = ReactDOM.findDOMNode(this.mapRef.current);
     const mapConfig: google.maps.MapOptions = {
       center: { lat: this.state.centerY, lng: this.state.centerX },
+      minZoom: 9,
       zoom: 15,
       zoomControl: true,
+      zoomControlOptions: {
+        position: google.maps.ControlPosition.RIGHT_CENTER
+      },
       mapTypeControl: false,
       mapTypeControlOptions: {
         position: google.maps.ControlPosition.TOP_RIGHT
       },
       scaleControl: true,
       streetViewControl: true,
+      streetViewControlOptions: {
+        position: google.maps.ControlPosition.RIGHT_CENTER
+      },
       fullscreenControl: true,
       fullscreenControlOptions: {
         position: google.maps.ControlPosition.TOP_RIGHT
       }
     };
     const googleMap = new google.maps.Map(mapNode, mapConfig); // 지도생성
-
+    this.setState({
+      map: this.props.google
+    });
     try {
       const {
         data: {
@@ -109,8 +121,8 @@ class MapContainer extends React.Component<any, IState> {
     } finally {
       this.setState({ loading: false });
     }
-    console.log("lat: ", this.state.y[0], "lng: ", this.state.x[0]);
-    for (var i = 0; i < this.state.category.length; i++) {
+
+    for (let i = 0; i < this.state.category.length; i++) {
       if (this.state.category[i] === "hollys") {
         const { google } = this.props;
         const hollysSrc = hollys;
@@ -129,22 +141,32 @@ class MapContainer extends React.Component<any, IState> {
           icon: hollysMarkerImage
         });
         hollysMarker.setMap(googleMap);
-        const tomtomName = this.state.name[i];
+        const hollysName = this.state.name[i];
+        console.log("hollysName", hollysName);
         const idNumber = i + 1;
-        const infoWindowContent = ReactDOMServer.renderToString(
+        const infoWindowContent = await ReactDOMServer.renderToString(
           <div className="customoverlay">
             <a>
-              <span className="title">TOMNTOMS {tomtomName}</span>
+              <span className="title">Hollys {hollysName}</span>
             </a>
           </div>
         );
-        var infowindow = new google.maps.InfoWindow({
+
+        const infowindow = new google.maps.InfoWindow({
           content: infoWindowContent
         });
         hollysMarker.addListener("click", function() {
+          console.log("click2222");
           infowindow.open(googleMap, hollysMarker);
-          // window.location.href = `/cafe/${idNumber}`;
           googleMap.panTo(spot);
+          // window.location.href = `/cafe/${idNumber}`;
+        });
+        hollysMarker.addListener("mouseover", function() {
+          console.log("over2222");
+          infowindow.open(googleMap, hollysMarker);
+        });
+        hollysMarker.addListener("mouseout", function() {
+          infowindow.close();
         });
       } else {
         const { google } = this.props;
@@ -164,9 +186,39 @@ class MapContainer extends React.Component<any, IState> {
           icon: tomtomMarkerImage
         });
         tomtomMarker.setMap(googleMap);
+        const tomtomNames = this.state.name[i];
+        const idNumber = i + 1;
+        const infoWindowContent = await ReactDOMServer.renderToString(
+          <div className="customoverlay">
+            <a>
+              <span className="title">TOMNTOMS {tomtomNames}</span>
+            </a>
+          </div>
+        );
+        var infowindow = new google.maps.InfoWindow({
+          content: infoWindowContent
+        });
+        tomtomMarker.addListener("click", function() {
+          console.log("click");
+          infowindow.open(googleMap, tomtomMarker);
+          googleMap.panTo(spot);
+          // window.location.href = `/cafe/${idNumber}`;
+        });
+        tomtomMarker.addListener("mouseover", function() {
+          console.log("over");
+          infowindow.open(googleMap, tomtomMarker);
+        });
+        tomtomMarker.addListener("mouseout", function() {
+          infowindow.close();
+        });
       }
     }
+
     this.codeStatesMarker(googleMap); // codestates marker
+
+    // function createPopupClass() {
+    //   function Popup(position: any, content: any) {}
+    // }
 
     function toggleBounce(marker: any) {
       if (marker.getAnimation() !== null) {
@@ -175,12 +227,33 @@ class MapContainer extends React.Component<any, IState> {
         marker.setAnimation(google.maps.Animation.BOUNCE);
       }
     }
+
+    // googleMap.addListener("dragend", this.handleDragEnd);
+  }
+  // public handleDragEnd = () => {
+  //   const newCenter = this.map.getCenter();
+  //   const lat = newCenter.lat();
+  //   const lng = newCenter.lng();
+  //   this.setState({
+  //     lat,
+  //     lng
+  //   });
+  // };
+
+  shouldComponentUpdate(nextProps: any) {
+    return false;
+  }
+
+  public onPickPlace(pathname: string) {
+    const { address, lat, lng } = this.state;
+    const { history } = this.props;
+    history.push({ pathname: pathname, state: { address, lat, lng } });
   }
 
   public codeStatesMarker(map: any) {
     const codeStatesSrc = codestates;
     const { google } = this.props;
-    const imageSize = new google.maps.Size(50, 50);
+    const imageSize = new google.maps.Size(60, 60);
     const codeMarkerImage = new google.maps.MarkerImage(
       codeStatesSrc,
       imageSize,
@@ -193,7 +266,25 @@ class MapContainer extends React.Component<any, IState> {
       title: "CODE STATES",
       icon: codeMarkerImage
     });
+    const infoWindowContent = ReactDOMServer.renderToString(
+      <div className="customoverlay">
+        <a>
+          <span className="title">CODE STATES</span>
+        </a>
+      </div>
+    );
+    var infowindow = new google.maps.InfoWindow({
+      content: infoWindowContent
+    });
     codeMarker.setMap(map);
+    codeMarker.addListener("click", function() {
+      infowindow.open(map, codeMarker);
+      // window.location.href = `/cafe/${idNumber}`;
+      map.panTo({ lat: 37.503444, lng: 127.049833 });
+    });
+    codeMarker.addListener("mouseover", function() {
+      infowindow.open(map, codeMarker);
+    });
   }
 
   public onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -233,7 +324,8 @@ class MapContainer extends React.Component<any, IState> {
   };
 
   public render() {
-    console.log("this.props", this.props.showLocation);
+    console.log("this.props", this.props);
+    console.log("this.state.map : ", this.state.map);
     const { address } = this.state;
     return (
       // <Map

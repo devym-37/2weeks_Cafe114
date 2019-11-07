@@ -17,8 +17,8 @@ const BoxLink = styled.a`
   justify-content: center;
   padding: 0;
   background: white;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-top-color: rgba(0, 0, 0, 0.1);
   border-top-style: solid;
   border-top-width: 1px;
