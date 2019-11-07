@@ -8,6 +8,7 @@ import Filter from "../../Modal/Filter";
 import { Input, Form } from "../../Components/SearchInput";
 import Mypage from "../../Modal/Mypage";
 import { serverApi } from "../API";
+import { geoCode } from "../../mapHelpers";
 
 interface Istate {
   isLoggedIn: boolean;
@@ -101,11 +102,21 @@ class AppContainer extends Component<{}, Istate> {
     });
   };
 
-  handleSearchSubmit = (event: React.FormEvent) => {
+  public handleSearchSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const { term } = this.state;
     console.log(`term: `, term);
+    const result = await geoCode(term);
+    if (result !== false) {
+      const { lat, lng, formatted_address: formatedAddress } = result;
+      this.setState({
+        address: formatedAddress,
+        centerY: lat,
+        centerX: lng
+      });
+    }
   };
+
   render() {
     const {
       isLoggedIn,
@@ -119,9 +130,10 @@ class AppContainer extends Component<{}, Istate> {
       centerY,
       navigatorBoolean
     } = this.state;
-    // console.log("toggleLocation : ", term);
+
 
     console.log(`포지션 변경 ceterX: `, centerX);
+
     return (
       <div className="App">
         <AppPresenter
