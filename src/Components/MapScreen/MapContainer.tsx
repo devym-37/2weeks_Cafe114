@@ -183,7 +183,7 @@ class MapContainer extends React.Component<any, IState> {
             </a>
           </div>
         );
-        var infowindow = new google.maps.InfoWindow({
+        const infowindow = new google.maps.InfoWindow({
           content: infoWindowContent
         });
         tomtomMarker.addListener("click", function() {
