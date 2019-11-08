@@ -12,10 +12,10 @@ const InputContainer = styled.div`
   display: block;
   margin-inline-start: 2px;
   margin-inline-end: 2px;
-  padding-block-start: 0.35em;
+  /* padding-block-start: 0.35em;
   padding-inline-start: 0.75em;
   padding-inline-end: 0.75em;
-  padding-block-end: 0.625em;
+  padding-block-end: 0.625em; */
   min-inline-size: min-content;
   position: fixed;
   top: 12px;
@@ -23,9 +23,9 @@ const InputContainer = styled.div`
   width: 354px;
   height: 56px;
   border-radius: 3px;
-  border: 1px solid #cecece;
+  /* border: 1px solid #cecece;
   border-bottom: 1px solid #c0c0c0;
-  border-top: 1px solid #e9e9e9;
+  border-top: 1px solid #e9e9e9; */
   background-color: #fff;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.075), -1px 1px 1px rgba(0, 0, 0, 0.03),
     1px 1px 1px rgba(0, 0, 0, 0.03);
@@ -42,30 +42,30 @@ const KewordGroup = styled.div`
   display: block;
 `;
 
-const Legend = styled.legend`
-  overflow: hidden;
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  font-size: 0;
-  line-height: 0;
-  white-space: nowrap;
-  margin: 0;
-  padding: 0;
-  display: block;
-  padding-inline-start: 2px;
-  padding-inline-end: 2px;
-  border-width: initial;
-  border-style: none;
-  border-color: initial;
-  border-image: initial;
-`;
+// const Legend = styled.legend`
+//   overflow: hidden;
+//   position: absolute;
+//   width: 1px;
+//   height: 1px;
+//   font-size: 0;
+//   line-height: 0;
+//   white-space: nowrap;
+//   margin: 0;
+//   padding: 0;
+//   display: block;
+//   padding-inline-start: 2px;
+//   padding-inline-end: 2px;
+//   border-width: initial;
+//   border-style: none;
+//   border-color: initial;
+//   border-image: initial;
+// `;
 
 const TextInput = styled.input`
   all: unset;
   box-sizing: border-box;
   width: 100%;
-  padding: 5px 40px 10px 110px;
+  padding: 14px 60px 10px 110px;
   height: 48px;
   font-size: 16px;
   background-color: #ffffff;
@@ -107,35 +107,35 @@ const Button = styled.button`
   display: inline-block;
 `;
 
-const RealtimeContainer = styled.div`
-  position: relative;
-  height: 52px;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  display: block;
-`;
+// const RealtimeContainer = styled.div`
+//   position: relative;
+//   height: 52px;
+//   overflow: hidden;
+//   margin: 0;
+//   padding: 0;
+//   display: block;
+// `;
 
-const SingleMode = styled.div`
-  position: relative;
-  height: 52px;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  display: block;
-  font-size: 16px;
-`;
+// const SingleMode = styled.div`
+//   position: relative;
+//   height: 52px;
+//   overflow: hidden;
+//   margin: 0;
+//   padding: 0;
+//   display: block;
+//   font-size: 16px;
+// `;
 
-const RollingContainer = styled.div`
-  transform: translate(0px, 0px);
-  position: absolute;
-  top: 0;
-  left: 100px;
-  right: 45px;
-  height: 52px;
-  margin: 0;
-  padding: 0;
-`;
+// const RollingContainer = styled.div`
+//   transform: translate(0px, 0px);
+//   position: absolute;
+//   top: 0;
+//   left: 100px;
+//   right: 45px;
+//   height: 52px;
+//   margin: 0;
+//   padding: 0;
+// `;
 
 const FormPresenter = styled.form`
   all: unset;

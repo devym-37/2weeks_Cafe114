@@ -33,9 +33,6 @@ class MapPresenter extends React.Component<IProps> {
     const { mapRef, address, onInputChange, onSubmit } = this.props;
     return (
       <div>
-        <Form onSubmit={onSubmit}>
-          <Input value={address} onChange={onInputChange} />
-        </Form>
         <Map ref={mapRef} />
       </div>
     );

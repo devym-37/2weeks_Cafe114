@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CloseButton from "../../Components/CloseButton";
 import Helmet from "react-helmet";
 const DimmedLayerCantainer = styled.div`
-  height: 993px;
+  height: 100vh;
   z-index: 999;
   position: absolute;
   top: 0;

@@ -14,7 +14,7 @@ import { Mypage } from "../LoggedToolGroup/LoggedMypage";
 const ToolGroupContainer = styled.div`
   position: absolute;
   right: 4px;
-  top: 230px;
+  top: 150px;
   z-index: 2;
   display: block;
 `;

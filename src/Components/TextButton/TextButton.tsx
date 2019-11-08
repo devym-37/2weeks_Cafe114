@@ -5,7 +5,7 @@ const Textbtn = styled.a`
   display: block;
   text-align: right;
   color: ${props => props.color};
-  text-decoration: underline;
+  text-decoration: none;
   font-size: 13px;
   margin-bottom: 10px;
 `;
