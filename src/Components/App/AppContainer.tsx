@@ -59,7 +59,7 @@ class AppContainer extends Component<{}, Istate> {
     centerX: 127.049833,
     navigatorBoolean: false,
     address: "",
-    showMypageLikeCafe: true,
+    showMypageLikeCafe: false,
     userName: "",
     userEmail: "",
     favoriteCafe: {}
