@@ -52,7 +52,7 @@ class AppContainer extends Component<{}, Istate> {
     showFilterModal: false,
     showSignupModal: false,
     showLocation: false,
-    showMypageSlider: true,
+    showMypageSlider: false,
     error: "",
     term: "",
     centerY: 37.503444,
