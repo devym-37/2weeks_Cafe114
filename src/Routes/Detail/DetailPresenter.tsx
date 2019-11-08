@@ -296,7 +296,7 @@ const DetailPresenter: React.FC<IProps> = ({
               </List>
               <MarkerContainer>
                 <MarkerText>
-                  <img src={icon24h} width="29" height="32" alt="" />
+                  <img src={icon24h} width="27" height="30" alt="" />
                 </MarkerText>
                 {smokingRoom === 1 ? (
                   <MarkerText>
