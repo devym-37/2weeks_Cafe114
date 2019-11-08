@@ -47,14 +47,19 @@ class LoginContainer extends Component<IProps, IState> {
         const {
           id,
           kakao_account: { email },
-          properties: { nickname, thumbnail_image: image }
+          properties: { nickname: nickname, thumbnail_image: image }
         } = KakaoRequest;
-        console.log(`카카오 되는건지? `, id, email, nickname, image);
+        console.log(
+          `id:${id}, email:${email}, nickname:${nickname}, image:${image}`
+        );
         const ServerRequest = await serverApi.loginkakao(
           id,
           email,
           nickname,
           image
+        );
+        console.log(
+          `id:${id}, email:${email}, nickname:${nickname}, image:${image}`
         );
         console.log(`server: `, ServerRequest);
         if (ServerRequest) {
