@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import MypagePresenter from "./MypagePresenter";
 import { serverApi } from "../../Components/API";
-import { userInfo } from "os";
 
 interface IProps {
   toggleMypageSlider: any;
@@ -10,6 +9,7 @@ interface IProps {
   userName: string;
   userEmail: string;
   showMypageLikeCafe: boolean;
+  favoriteCafe: any;
 }
 interface IState {
   user: any;
@@ -39,15 +39,17 @@ class MypageContainer extends Component<IProps, IState> {
       handleLikeCafe,
       userName,
       userEmail,
-      showMypageLikeCafe
+      showMypageLikeCafe,
+      favoriteCafe
     } = this.props;
-    console.log("user111", this.state.user);
+    console.log("MypageContainer:", favoriteCafe);
     return (
       <MypagePresenter
         handleLogout={handleLogout}
         toggleMypageSlider={toggleMypageSlider}
         handleLikeCafe={handleLikeCafe}
         showMypageLikeCafe={showMypageLikeCafe}
+        favoriteCafe={favoriteCafe}
         userName={userName}
         userEmail={userEmail}
       />

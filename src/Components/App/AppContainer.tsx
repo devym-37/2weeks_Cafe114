@@ -10,6 +10,22 @@ import Mypage from "../../Modal/Mypage";
 import { serverApi } from "../API";
 import { geoCode } from "../../mapHelpers";
 
+interface Iinfo {
+  id: number;
+  name: string;
+  address: string;
+  subAddress: string;
+  x: string;
+  y: string;
+  telephone: string;
+  category: string;
+  detailCategory: string;
+  parkingLot: number;
+  smokingRoom: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface Istate {
   isLoggedIn: boolean;
   showLoginModal: boolean;
@@ -26,6 +42,7 @@ interface Istate {
   address: string;
   userName: string;
   userEmail: string;
+  favoriteCafe: any;
 }
 
 class AppContainer extends Component<{}, Istate> {
@@ -42,9 +59,10 @@ class AppContainer extends Component<{}, Istate> {
     centerX: 127.049833,
     navigatorBoolean: false,
     address: "",
-    showMypageLikeCafe: false,
+    showMypageLikeCafe: true,
     userName: "",
-    userEmail: ""
+    userEmail: "",
+    favoriteCafe: {}
   };
 
   handleCafePosition = (centerX: number, centerY: number) => {
@@ -94,10 +112,28 @@ class AppContainer extends Component<{}, Istate> {
     }
   };
 
-  handleLikeCafe = () => {
-    this.setState({
-      showMypageLikeCafe: !this.state.showMypageLikeCafe
-    });
+  handleLikeCafe = async () => {
+    try {
+      const {
+        data: {
+          data: { favoriteCafe: userInfoCafe }
+        }
+      } = await serverApi.getUserInfo();
+      console.log("userInfo", userInfoCafe);
+      if (userInfoCafe.length !== 0) {
+        this.setState({
+          showMypageLikeCafe: !this.state.showMypageLikeCafe,
+          favoriteCafe: [...userInfoCafe]
+        });
+      } else {
+        this.setState({
+          showMypageLikeCafe: !this.state.showMypageLikeCafe,
+          favoriteCafe: {}
+        });
+      }
+    } catch {
+      this.setState({ error: "로그인에 실패했습니다." });
+    }
   };
 
   toggleSignupModal = () => {
@@ -160,11 +196,11 @@ class AppContainer extends Component<{}, Istate> {
       navigatorBoolean,
       userName,
       userEmail,
-      showMypageLikeCafe
+      showMypageLikeCafe,
+      favoriteCafe
     } = this.state;
 
-    console.log(`포지션 변경 ceterX: `, centerX);
-
+    console.log("likecafe", favoriteCafe);
     return (
       <div className="App">
         <AppPresenter
@@ -187,6 +223,7 @@ class AppContainer extends Component<{}, Istate> {
             showMypageLikeCafe={showMypageLikeCafe}
             userName={userName}
             userEmail={userEmail}
+            favoriteCafe={favoriteCafe}
           />
         )}
         {showFilterModal && <Filter />}

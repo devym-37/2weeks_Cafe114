@@ -5,7 +5,7 @@ import TextButton from "../../Components/TextButton";
 import SubTextButton from "../../Components/SubTextButton";
 import user from "../../assets/profile-placeholder.png";
 import CloseButton from "../../Components/CloseButton";
-import FavoriteCafe from "../../Components/FavoriteCafe";
+import FavoriteCafe from "../../Components/FavoriteCafe/index";
 
 const AWrap = styled.div`
   position: fixed;
@@ -270,6 +270,7 @@ interface IProps {
   userName: string;
   userEmail: string;
   showMypageLikeCafe: boolean;
+  favoriteCafe: any;
 }
 const MypagePresenter: React.SFC<IProps> = ({
   toggleMypageSlider,
@@ -277,7 +278,8 @@ const MypagePresenter: React.SFC<IProps> = ({
   handleLikeCafe,
   showMypageLikeCafe,
   userName,
-  userEmail
+  userEmail,
+  favoriteCafe
 }) => (
   <AWrap>
     <Navigation role="navigation">
@@ -326,7 +328,15 @@ const MypagePresenter: React.SFC<IProps> = ({
                   />
                 </SubContainer>
               </PropfileSubContainer>
-              {showMypageLikeCafe ? "" : <FavoriteCafe />}
+              {showMypageLikeCafe
+                ? ""
+                : favoriteCafe.length === 0
+                ? ""
+                : favoriteCafe.map(cafename => (
+                    <FavoriteCafe
+                      cafeName={`${cafename.category}  ${cafename.name}`}
+                    />
+                  ))}
             </PropfileContainer>
           </ExceptContent>
         </div>

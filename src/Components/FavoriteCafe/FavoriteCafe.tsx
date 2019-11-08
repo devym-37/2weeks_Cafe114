@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import likeImg from "../../assets/likeicon.png";
 
 const Container = styled.div`
   position: relative;
   background-color: #eef0f3;
-  width: 270px;
+  width: 365px;
   margin-top: 5px;
   margin-left: 10px;
   margin-bottom: 5px;
@@ -13,19 +14,20 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.div`
-  position: absolute;
-  left: 15px;
-  bottom: 10px;
+  position: relative;
   margin: 0;
   padding: 0;
 `;
 
-const SubTextbtn = styled.span`
+const SubTextbtn = styled.div`
+  @import url("https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap");
+  position: relative;
   text-align: right;
-  margin-bottom: 10px;
-  padding-left: 22px;
+  top: 11px;
+  left: 10px;
+  font-family: "Noto Sans KR", sans-serif;
   text-align: center;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 18px;
   vertical-align: middle;
   display: inline-block;
@@ -39,14 +41,26 @@ const SubTextbtn = styled.span`
   color: black;
 `;
 
-interface IProps {}
+const Like = styled.span`
+  position: absolute;
+  right: 5px;
+`;
 
-const FavoriteCafe: React.SFC<IProps> = () => (
-  <Container>
-    <InnerContainer>
-      <SubTextbtn>like cafe</SubTextbtn>
-    </InnerContainer>
-  </Container>
-);
+interface IProps {
+  cafeName: string;
+}
+
+const FavoriteCafe: React.SFC<IProps> = ({ cafeName }) => {
+  return (
+    <Container>
+      <InnerContainer>
+        <SubTextbtn>{cafeName}</SubTextbtn>
+        <Like>
+          <img src={likeImg} width="40" height="50" alt="" />
+        </Like>
+      </InnerContainer>
+    </Container>
+  );
+};
 
 export default FavoriteCafe;
