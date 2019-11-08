@@ -17,12 +17,23 @@ interface IInfo {
   smokingRoom: number;
   telephone: string;
   images: Array<string>;
+  userId: number | null;
 }
-
+interface IChat {
+  cafeId: number;
+  id: number;
+  comment: string;
+  image: null | string;
+  createdAt: string;
+  updatedAt: string;
+  userId: number;
+  user: { name: string; email: string };
+}
 interface IState {
   centerX: number;
   centerY: number;
   id: number;
+  userId: number | null;
   result: IInfo;
   error: string;
   loading: boolean;
@@ -33,7 +44,7 @@ interface IState {
   showFilterModal: boolean;
   newComment: string;
   showSendButton: boolean;
-  response: string;
+  comments: Array<IChat> | null;
 }
 interface IProps extends RouteComponentProps<any> {
   handleCafePosition: any;
@@ -49,6 +60,7 @@ export default class extends Component<IProps, IState> {
     } = props;
     this.state = {
       id: props.match.params.id,
+      userId: null,
       term: "",
       result: {
         images: [],
@@ -56,6 +68,7 @@ export default class extends Component<IProps, IState> {
         address: "",
         parkingLot: 0,
         smokingRoom: 0,
+        userId: null,
         telephone: ""
       },
       centerX: 0,
@@ -68,7 +81,7 @@ export default class extends Component<IProps, IState> {
       showLocation: false,
       showFilterModal: false,
       showSendButton: false,
-      response: ""
+      comments: null
     };
   }
 
@@ -79,7 +92,7 @@ export default class extends Component<IProps, IState> {
       socket.on("giveCommentsToClient", comments => {
         console.log(comments);
         this.setState({
-          response: comments
+          comments: comments
         });
       });
       const {
@@ -87,6 +100,7 @@ export default class extends Component<IProps, IState> {
       } = await serverApi.getCafeInfobyId(id);
       this.props.handleCafePosition(Number(result.x));
       this.setState({
+        userId: result.userId ? result.userId : Math.random(),
         result,
         centerX: Number(result.x),
         centerY: Number(result.y)
@@ -104,12 +118,13 @@ export default class extends Component<IProps, IState> {
     } = event;
     this.setState({ newComment: value });
   };
+
   handleCommentSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const { newComment, id } = this.state;
+    const { newComment, id, result, userId } = this.state;
 
     socket.emit("postCommentToSaveDB", {
-      userId: 1,
+      userId: result.userId,
       cafeId: id,
       comment: newComment
     });
@@ -117,7 +132,7 @@ export default class extends Component<IProps, IState> {
     socket.on("giveNewChatInfo", chat => {
       console.log("너 뭐냐고", chat);
       this.setState({
-        response: chat
+        comments: chat
       });
     });
 
@@ -159,6 +174,7 @@ export default class extends Component<IProps, IState> {
   };
   render() {
     const {
+      userId,
       result,
       error,
       showLocation,
@@ -170,10 +186,10 @@ export default class extends Component<IProps, IState> {
       navigatorBoolean,
       newComment,
       showSendButton,
-      response
+      comments
     } = this.state;
-    console.log(`response: `, response);
-
+    console.log(`comments: `, comments);
+    // console.log(`userId: `, userId);
     return (
       <>
         {" "}
@@ -192,6 +208,8 @@ export default class extends Component<IProps, IState> {
           <Input value={term} onChange={this.updateTerm} />
         </Form>{" "}
         <DetailPresenter
+          userId={userId}
+          comments={comments}
           newComment={newComment}
           handleCommentSubmit={this.handleCommentSubmit}
           handleCommentInput={this.handleCommentInput}
