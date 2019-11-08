@@ -56,7 +56,7 @@ const SubTitle = styled.h1`
 
 const Button = styled.div`
   width: 285px;
-  height: 48px;
+  height: 100px;
   background-color: white;
   color: #666666;
   font-weight: 800;
