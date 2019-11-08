@@ -102,6 +102,7 @@ class MapContainer extends React.Component<any, IState> {
           data: { result: result }
         }
       } = await serverApi.getAllCafes();
+      console.log("result", result);
       const subAddress = result.map((cafe: Iinfo) => cafe.subAddress);
       const x = result.map((cafe: Iinfo) => cafe.x);
       const y = result.map((cafe: Iinfo) => cafe.y);
