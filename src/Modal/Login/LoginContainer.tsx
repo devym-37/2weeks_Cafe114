@@ -34,19 +34,22 @@ class LoginContainer extends Component<IProps, IState> {
         url: "/v2/user/me",
         success: function(res: any) {
           // console.log("kakao res: ", res);
-          return res;
-          // const { id } = res;
-          // return id;
+          // return res;
+          const { id } = res;
+          return id;
         }
       });
       if (KakaoRequest.id !== undefined) {
-        // console.log(`KakaoRequest: `, KakaoRequest);
+        console.log(`KakaoRequest: `, KakaoRequest);
+
+        // const email = KakaoRequest.kakao_account.email;
+        // const nickname = KakoRequest.n
         const {
           id,
           kakao_account: { email },
-          profile: { nickname, thumbnail_image_url: image }
+          properties: { nickname, thumbnail_image: image }
         } = KakaoRequest;
-
+        console.log(`카카오 되는건지? `, id, email, nickname, image);
         const ServerRequest = await serverApi.loginkakao(
           id,
           email,
