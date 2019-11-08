@@ -1,3 +1,3 @@
-import MypagePresenter from "./MypagePresenter";
+import MypageContainer from "./MypageContainer";
 
-export default MypagePresenter;
+export default MypageContainer;
