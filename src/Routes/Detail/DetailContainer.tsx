@@ -6,6 +6,7 @@ import { Input, Form } from "../../Components/SearchInput";
 import Map from "../../Components/MapScreen";
 import io from "socket.io-client";
 import { IconButton } from "../../Components/ButtonMaker";
+
 const socket = io.connect("http://13.209.4.48:3000");
 
 socket.on("connect", () => {
@@ -45,6 +46,7 @@ interface IState {
   showFilterModal: boolean;
   newComment: string;
   showSendButton: boolean;
+
   comments: Array<IChat> | null;
 }
 interface IProps extends RouteComponentProps<any> {
@@ -54,13 +56,15 @@ interface IProps extends RouteComponentProps<any> {
 export default class extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+    // this.childDiv = React.createRef();
     const {
       match: {
         params: { id }
       }
     } = props;
+
     this.state = {
-      id: props.match.params.id,
+      id: id,
       userId: null,
       term: "",
       result: {
@@ -223,6 +227,7 @@ export default class extends Component<IProps, IState> {
           <Input value={term} onChange={this.updateTerm} />
         </Form>{" "}
         <DetailPresenter
+          // myRef={this.myRef}
           userId={userId}
           comments={comments}
           newComment={newComment}

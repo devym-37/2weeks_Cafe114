@@ -14,6 +14,8 @@ import reset from "styled-reset";
 import SendButton from "../../Components/ConfirmButton";
 import user from "../../assets/profile-placeholder.png";
 import chat from "../../assets/chat.png";
+import { css } from "glamor";
+import ScrollToBottom from "react-scroll-to-bottom";
 // import CommentInput from "../../Components/CommentInput";
 const Container = styled.div`
   overflow: hidden;
@@ -220,7 +222,7 @@ const PhoneText = styled.h2`
 `;
 
 const FixContainer = styled.div`
-  border-top: 1px solid rgba(0, 0, 0, 0.03);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
   /* box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.075), -1px 1px 1px rgba(0, 0, 0, 0.03), */
   /* 1px 1px 1px rgba(0, 0, 0, 0.03); */
   width: 385px;
@@ -234,7 +236,7 @@ const CommentInputContainer = styled.div`
   position: relative;
   display: block;
   padding-left: 20px;
-  padding-top: 3px;
+  padding-top: 0px;
   border-bottom: 1px solid #e2e3e5;
   background-color: #fff;
 
@@ -278,6 +280,7 @@ const CommentDivider = styled.div`
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   background-color: #00a6ff;
+  /* background-color: ${props => props.theme.colors.main}; */
   content: "";
   position: absolute;
   top: 0;
@@ -300,7 +303,7 @@ const ChatImageStandAlone = styled.div`
   position: relative;
   display: inline-block;
   left: 136px;
-  left: 37%;
+  left: 36%;
   top: 2px;
   padding: 0;
 `;
@@ -349,14 +352,14 @@ const InputContainer = styled.div`
 
 const CardTitleContainer = styled.div`
   margin: 10px 0;
-  padding: 20px 4px;
+  padding: 5px 4px 10px;
 `;
 const CardTitle = styled.h2`
   color: #666;
   display: inline-block;
   text-align: center;
   position: relative;
-  left: 39%;
+  left: 38%;
   font-family: "Noto Sans KR regular", sans-serif;
 `;
 
@@ -439,9 +442,38 @@ const Chats = styled.div`
   overflow: auto;
   scroll-margin: 0px;
   /* scroll-behavior: auto; */
-  height: 500px;
+  height: 592px;
   width: 385px;
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    /* background: #f1f1f1; */
+    width: 10px;
+    /* border-radius: 10px; */
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    /* background: #888; */
+    border-radius: 12px;
+    background: ${props => props.theme.colors.lightGrey};
+    /* width: 5px; */
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a6a2a2;
+    /* background: #a690e6; */
+    /* width: 5px; */
+  }
 `;
+const ROOT_CSS = css({
+  height: 592,
+  width: 385
+});
 
 const Form = styled.form`
   width: 370px;
@@ -577,7 +609,8 @@ const DetailPresenter: React.FC<IProps> = ({
               </ChatImageStandAlone>
               <CardTitle>실시간 이야기</CardTitle>
             </CardTitleContainer>
-            <Chats>
+            <ScrollToBottom className={ROOT_CSS}>
+              {/* <Chats> */}
               {comments &&
                 comments.length > 0 &&
                 comments.map((comment, i) => (
@@ -609,9 +642,8 @@ const DetailPresenter: React.FC<IProps> = ({
                     </CommentTextContainer>
                   </CommentsContainer>
                 ))}
-            </Chats>
-          </Card>
-          <Card>
+              {/* </Chats> */}
+            </ScrollToBottom>
             <FixContainer>
               <CommentInputContainer>
                 <Form onSubmit={handleCommentSubmit}>
