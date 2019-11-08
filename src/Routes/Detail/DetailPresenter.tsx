@@ -656,7 +656,6 @@ const DetailPresenter: React.FC<IProps> = ({
                       type="text"
                       placeholder="실시간 카페 자리상황 이야기하기"
                       onFocus={activateSendButton}
-                      // onPointerOver={deactivateSendButton}
                       onChange={handleCommentInput}
                       value={newComment}
                     />

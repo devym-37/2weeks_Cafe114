@@ -33,14 +33,27 @@ class LoginContainer extends Component<IProps, IState> {
       const KakaoRequest = await Kakao.API.request({
         url: "/v2/user/me",
         success: function(res: any) {
-          const { id } = res;
-          return id;
+          // console.log("kakao res: ", res);
+          return res;
+          // const { id } = res;
+          // return id;
         }
       });
       if (KakaoRequest.id !== undefined) {
-        const { id } = KakaoRequest;
+        // console.log(`KakaoRequest: `, KakaoRequest);
+        const {
+          id,
+          kakao_account: { email },
+          profile: { nickname, thumbnail_image_url: image }
+        } = KakaoRequest;
 
-        const ServerRequest = await serverApi.loginkakao(id);
+        const ServerRequest = await serverApi.loginkakao(
+          id,
+          email,
+          nickname,
+          image
+        );
+        console.log(`server: `, ServerRequest);
         if (ServerRequest) {
           this.props.toggleLoggedIn();
           toast.success("로그인이 정상적으로 완료었습니다", {

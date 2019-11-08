@@ -3,13 +3,6 @@ import styled from "styled-components";
 import { Update, CurrentLocation, Filter } from "../ToolGroup/MapControl";
 import { Mypage } from "../LoggedToolGroup/LoggedMypage";
 import user from "../../assets/profile-placeholder.png";
-// const Container = styled.div`
-//   display: block;
-//   position: absolute;
-//   top: 225px;
-//   left: 0px;
-//   z-index: 2;
-// `;
 
 const ToolGroupContainer = styled.div`
   position: absolute;
