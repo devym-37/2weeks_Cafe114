@@ -23,14 +23,12 @@ const ToolGroup: React.SFC<IProps> = ({
   toggleLocation,
   toggleMypageSlider
 }) => (
-  // <Container>
   <ToolGroupContainer>
     <Mypage toggleMypageSlider={toggleMypageSlider} url={user} />
     <CurrentLocation toggleLocation={toggleLocation} />
     <Update />
     <Filter toggleFilterModal={toggleFilterModal} />
   </ToolGroupContainer>
-  // </Container>
 );
 
 export default ToolGroup;

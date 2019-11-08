@@ -132,17 +132,19 @@ export const IconButton: React.SFC<IconButtonProps> = ({
 );
 
 const ImageStandAlone = styled.div`
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   font-size: 38px;
   position: relative;
   display: inline-block;
-  left: 37%;
-  top: 2px;
+
+  left: 0px;
+  top: 0px;
   padding: 0;
 `;
 
 const ImageWrap = styled.div<{ url: string }>`
+  border-radius: 16px;
   overflow: hidden;
   background-image: url(${props => props.url});
   background-position: center;
