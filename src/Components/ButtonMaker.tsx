@@ -131,6 +131,53 @@ export const IconButton: React.SFC<IconButtonProps> = ({
   </Container>
 );
 
+const ImageStandAlone = styled.div`
+  width: 20px;
+  height: 20px;
+  font-size: 38px;
+  position: relative;
+  display: inline-block;
+  left: 37%;
+  top: 2px;
+  padding: 0;
+`;
+
+const ImageWrap = styled.div<{ url: string }>`
+  overflow: hidden;
+  background-image: url(${props => props.url});
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  line-height: 1.2;
+`;
+
+interface PngButtonProps {
+  linkTo?: string;
+  className?: string;
+  size?: string;
+  url: string;
+  onClick?: (event: React.MouseEvent) => void;
+}
+
+export const PngButton: React.SFC<PngButtonProps> = ({
+  linkTo,
+  className,
+  url,
+  onClick
+}) => (
+  <Container className={className}>
+    <BoxLink href={linkTo} onClick={onClick}>
+      <ImageStandAlone>
+        <ImageWrap url={url} />{" "}
+      </ImageStandAlone>
+    </BoxLink>
+  </Container>
+);
+
 interface TextButtonProps {
   linkTo?: string;
   text: string;

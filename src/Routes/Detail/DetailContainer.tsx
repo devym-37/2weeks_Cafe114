@@ -5,7 +5,8 @@ import { RouteComponentProps } from "react-router";
 import { Input, Form } from "../../Components/SearchInput";
 import Map from "../../Components/MapScreen";
 import io from "socket.io-client";
-const socket = io.connect("http://127.0.0.1:3000");
+import { IconButton } from "../../Components/ButtonMaker";
+const socket = io.connect("http://13.209.4.48:3000");
 
 socket.on("connect", () => {
   console.log("connection server");
@@ -68,7 +69,7 @@ export default class extends Component<IProps, IState> {
         address: "",
         parkingLot: 0,
         smokingRoom: 0,
-        userId: null,
+        userId: 99999999,
         telephone: ""
       },
       centerX: 0,
@@ -112,6 +113,20 @@ export default class extends Component<IProps, IState> {
     }
   }
 
+  async componentDidUpdate(prevProps, prevState) {
+    try {
+      console.log(`prevState: ${JSON.stringify(prevState)}`);
+      socket.on("giveNewChatInfo", chat => {
+        if (prevState.comment && chat.length !== prevState.comments.length) {
+          this.setState({
+            comments: chat
+          });
+        }
+      });
+    } catch {
+    } finally {
+    }
+  }
   handleCommentInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value }

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Update, CurrentLocation, Filter } from "../ToolGroup/MapControl";
 import { Mypage } from "../LoggedToolGroup/LoggedMypage";
-
+import user from "../../assets/profile-placeholder.png";
 // const Container = styled.div`
 //   display: block;
 //   position: absolute;
@@ -32,7 +32,7 @@ const ToolGroup: React.SFC<IProps> = ({
 }) => (
   // <Container>
   <ToolGroupContainer>
-    <Mypage toggleMypageSlider={toggleMypageSlider} />
+    <Mypage toggleMypageSlider={toggleMypageSlider} url={user} />
     <CurrentLocation toggleLocation={toggleLocation} />
     <Update />
     <Filter toggleFilterModal={toggleFilterModal} />

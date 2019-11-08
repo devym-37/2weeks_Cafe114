@@ -26,6 +26,7 @@ const Container = styled.div`
   overflow-x: hidden;
   background-color: #eaebed;
   z-index: 2;
+  overflow: hidden;
 `;
 const SearchGroupExceptContent = styled.fieldset`
   position: absolute;
@@ -154,6 +155,7 @@ const Card = styled.div`
   border-bottom: 1px solid #e2e3e5;
   background-color: #fff;
   padding: 0;
+  overflow: hidden;
   user-select: none;
 `;
 
@@ -217,11 +219,27 @@ const PhoneText = styled.h2`
   color: #dedeea;
 `;
 
+const FixContainer = styled.div`
+  border-top: 1px solid rgba(0, 0, 0, 0.03);
+  /* box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.075), -1px 1px 1px rgba(0, 0, 0, 0.03), */
+  /* 1px 1px 1px rgba(0, 0, 0, 0.03); */
+  width: 385px;
+  padding: 4px 0;
+  position: fixed;
+  bottom: 0px;
 
+  background-color: white;
+`;
 const CommentInputContainer = styled.div`
   position: relative;
   display: block;
-  padding: 0 20px;
+  padding-left: 20px;
+  padding-top: 3px;
+  border-bottom: 1px solid #e2e3e5;
+  background-color: #fff;
+
+  overflow: hidden;
+  user-select: none;
 `;
 
 const CommentInput = styled.input`
@@ -268,20 +286,20 @@ const CommentDivider = styled.div`
   width: 4px;
 `;
 
-const User = styled.span`
-  width: 24px;
-  height: 24px;
-  background-image: url(${user});
-  background-position: center;
-  background-size: contain;
-`;
+// const User = styled.span`
+//   width: 24px;
+//   height: 24px;
+//   background-image: url(${user});
+//   background-position: center;
+//   background-size: contain;
+// `;
 const ChatImageStandAlone = styled.div`
   width: 18px;
   height: 18px;
   font-size: 38px;
   position: relative;
   display: inline-block;
-  /* left: 136px; */
+  left: 136px;
   left: 37%;
   top: 2px;
   padding: 0;
@@ -345,8 +363,9 @@ const CardTitle = styled.h2`
 const CommentsContainer = styled.div`
   position: relative;
   display: block;
-  padding: 0 20px;
+  padding-left: 20px;
   margin-bottom: 12px;
+  width: 320px;
 `;
 
 const CommentInfoContainer = styled.div`
@@ -415,7 +434,18 @@ const MarkerText = styled.span`
   color: #dedeea;
 `;
 
+const Chats = styled.div`
+  display: absolute;
+  overflow: auto;
+  scroll-margin: 0px;
+  /* scroll-behavior: auto; */
+  height: 500px;
+  width: 385px;
+`;
 
+const Form = styled.form`
+  width: 370px;
+`;
 interface IInfo {
   name: string;
   address: string;
@@ -547,7 +577,7 @@ const DetailPresenter: React.FC<IProps> = ({
               </ChatImageStandAlone>
               <CardTitle>실시간 이야기</CardTitle>
             </CardTitleContainer>
-            <div className="Chats">
+            <Chats>
               {comments &&
                 comments.length > 0 &&
                 comments.map((comment, i) => (
@@ -558,9 +588,7 @@ const DetailPresenter: React.FC<IProps> = ({
                         <CommentDivider />
                       )}
                       <PropfileImageStandAlone>
-                        <PropfileImageWrapCircle>
-                          <User />
-                        </PropfileImageWrapCircle>
+                        <PropfileImageWrapCircle></PropfileImageWrapCircle>
                       </PropfileImageStandAlone>
 
                       <CommentInfoContainer>
@@ -581,14 +609,15 @@ const DetailPresenter: React.FC<IProps> = ({
                     </CommentTextContainer>
                   </CommentsContainer>
                 ))}
-
+            </Chats>
+          </Card>
+          <Card>
+            <FixContainer>
               <CommentInputContainer>
-                <form onSubmit={handleCommentSubmit}>
+                <Form onSubmit={handleCommentSubmit}>
                   <InputContainer>
                     <PropfileImageStandAlone>
-                      <PropfileImageWrapCircle>
-                        <User />
-                      </PropfileImageWrapCircle>
+                      <PropfileImageWrapCircle></PropfileImageWrapCircle>
                     </PropfileImageStandAlone>
 
                     <CommentInput
@@ -610,9 +639,9 @@ const DetailPresenter: React.FC<IProps> = ({
                       </ButtonContainer>
                     )}
                   </InputContainer>
-                </form>
+                </Form>
               </CommentInputContainer>
-            </div>
+            </FixContainer>
           </Card>
           <Helmet>
             <title>카페114 | {result.name ? result.name : "Detail"} </title>
