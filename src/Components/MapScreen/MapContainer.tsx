@@ -148,8 +148,10 @@ class MapContainer extends React.Component<any, IState> {
           content: infoWindowContent
         });
         hollysMarker.addListener("click", function() {
+          console.log("idNumber", idNumber);
           infowindow.open(googleMap, hollysMarker);
           googleMap.panTo(spot);
+
           // window.location.href = `/cafe/${idNumber}`;
         });
         hollysMarker.addListener("mouseover", function() {

@@ -251,7 +251,7 @@ const CommentInput = styled.input`
 
   display: inline-block;
   left: 36px;
-  width: 80%;
+  width: 100%;
   height: 44px;
   font-size: 14px;
   ::placeholder {
