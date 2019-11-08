@@ -38,7 +38,6 @@ const KewordGroup = styled.div`
 const TextInput = styled.input`
   all: unset;
   box-sizing: border-box;
-  width: 100%;
   padding: 5px 40px 10px 110px;
   height: 48px;
   font-size: 16px;
