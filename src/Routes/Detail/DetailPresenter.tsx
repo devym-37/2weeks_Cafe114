@@ -661,14 +661,17 @@ const DetailPresenter: React.FC<IProps> = ({
                       value={newComment}
                     />
                     {showSendButton && (
-                      <ButtonContainer>
-                        <SmallSendButton
-                          width="50px"
-                          text={"Send"}
-                          onClick={handleCommentSubmit}
-                          disabled={newComment.length > 3}
-                        ></SmallSendButton>
-                      </ButtonContainer>
+                      <>
+                        {/* <input type="file" name="pic" accept="image/*" onChange={handleCommentInput}/> */}
+                        <ButtonContainer>
+                          <SmallSendButton
+                            width="50px"
+                            text={"Send"}
+                            onClick={handleCommentSubmit}
+                            disabled={newComment.length > 3}
+                          ></SmallSendButton>
+                        </ButtonContainer>
+                      </>
                     )}
                   </InputContainer>
                 </Form>
