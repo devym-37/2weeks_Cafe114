@@ -4,6 +4,12 @@ import { serverApi } from "../../Components/API";
 import { RouteComponentProps } from "react-router";
 import { Input, Form } from "../../Components/SearchInput";
 import Map from "../../Components/MapScreen";
+import io from "socket.io-client";
+const socket = io.connect("http://127.0.0.1:3000");
+
+socket.on("connect", () => {
+  console.log("connection server");
+});
 interface IInfo {
   name: string;
   address: string;
@@ -11,12 +17,23 @@ interface IInfo {
   smokingRoom: number;
   telephone: string;
   images: Array<string>;
+  userId: number | null;
 }
-
+interface IChat {
+  cafeId: number;
+  id: number;
+  comment: string;
+  image: null | string;
+  createdAt: string;
+  updatedAt: string;
+  userId: number;
+  user: { name: string; email: string };
+}
 interface IState {
   centerX: number;
   centerY: number;
   id: number;
+  userId: number | null;
   result: IInfo;
   error: string;
   loading: boolean;
@@ -25,6 +42,9 @@ interface IState {
   address: string;
   showLocation: boolean;
   showFilterModal: boolean;
+  newComment: string;
+  showSendButton: boolean;
+  comments: Array<IChat> | null;
 }
 interface IProps extends RouteComponentProps<any> {
   handleCafePosition: any;
@@ -40,6 +60,7 @@ export default class extends Component<IProps, IState> {
     } = props;
     this.state = {
       id: props.match.params.id,
+      userId: null,
       term: "",
       result: {
         images: [],
@@ -47,6 +68,7 @@ export default class extends Component<IProps, IState> {
         address: "",
         parkingLot: 0,
         smokingRoom: 0,
+        userId: null,
         telephone: ""
       },
       centerX: 0,
@@ -55,19 +77,30 @@ export default class extends Component<IProps, IState> {
       loading: false,
       navigatorBoolean: false,
       address: "",
+      newComment: "",
       showLocation: false,
-      showFilterModal: false
+      showFilterModal: false,
+      showSendButton: false,
+      comments: null
     };
   }
 
   async componentDidMount() {
     try {
       const { id } = this.state;
+      socket.emit("postCafeIdToGetComment", id);
+      socket.on("giveCommentsToClient", comments => {
+        console.log(comments);
+        this.setState({
+          comments: comments
+        });
+      });
       const {
         data: { data: result }
       } = await serverApi.getCafeInfobyId(id);
       this.props.handleCafePosition(Number(result.x));
       this.setState({
+        userId: result.userId ? result.userId : Math.random(),
         result,
         centerX: Number(result.x),
         centerY: Number(result.y)
@@ -78,10 +111,37 @@ export default class extends Component<IProps, IState> {
       this.setState({ loading: false });
     }
   }
+
+  handleCommentInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value }
+    } = event;
+    this.setState({ newComment: value });
+  };
+
+  handleCommentSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    const { newComment, id, result, userId } = this.state;
+
+    socket.emit("postCommentToSaveDB", {
+      userId: result.userId,
+      cafeId: id,
+      comment: newComment
+    });
+
+    socket.on("giveNewChatInfo", chat => {
+      console.log("너 뭐냐고", chat);
+      this.setState({
+        comments: chat
+      });
+    });
+
+    console.log(`newComment: `, newComment);
+  };
   handleSearchSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const { term } = this.state;
-    console.log(`term: `, term);
+    // console.log(`term: `, term);
   };
   updateTerm = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -100,8 +160,21 @@ export default class extends Component<IProps, IState> {
       showLocation: !this.state.showLocation
     });
   };
+
+  activateSendButton = () => {
+    this.setState({
+      showSendButton: true
+    });
+  };
+
+  deactivateSendButton = () => {
+    this.setState({
+      showSendButton: false
+    });
+  };
   render() {
     const {
+      userId,
       result,
       error,
       showLocation,
@@ -110,11 +183,13 @@ export default class extends Component<IProps, IState> {
       centerY,
       term,
       address,
-      navigatorBoolean
+      navigatorBoolean,
+      newComment,
+      showSendButton,
+      comments
     } = this.state;
-    console.log(`cafe info result: `, result);
-    // const {handleCafePosition} = this.props;
-    // console.log("result: ", result);
+    console.log(`comments: `, comments);
+    // console.log(`userId: `, userId);
     return (
       <>
         {" "}
@@ -132,7 +207,19 @@ export default class extends Component<IProps, IState> {
         <Form onSubmit={this.handleSearchSubmit}>
           <Input value={term} onChange={this.updateTerm} />
         </Form>{" "}
-        <DetailPresenter result={result} error={error} loading={loading} />
+        <DetailPresenter
+          userId={userId}
+          comments={comments}
+          newComment={newComment}
+          handleCommentSubmit={this.handleCommentSubmit}
+          handleCommentInput={this.handleCommentInput}
+          activateSendButton={this.activateSendButton}
+          deactivateSendButton={this.deactivateSendButton}
+          result={result}
+          error={error}
+          loading={loading}
+          showSendButton={showSendButton}
+        />
       </>
     );
   }

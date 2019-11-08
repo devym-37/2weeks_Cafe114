@@ -32,16 +32,23 @@ interface IProps {
   onClick: any;
   disabled: boolean;
   width?: string;
+  className?: string;
 }
 
 const ConfirmButton: React.SFC<IProps> = ({
+  className = "",
   disabled,
   text,
   onClick,
   width = "340px"
 }) => (
   <Link href="#">
-    <Linkbtn disabled={!disabled} onClick={onClick} width={width}>
+    <Linkbtn
+      className={className}
+      disabled={!disabled}
+      onClick={onClick}
+      width={width}
+    >
       {text}
     </Linkbtn>
   </Link>

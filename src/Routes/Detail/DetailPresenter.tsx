@@ -10,7 +10,11 @@ import noParkingImg2 from "../../assets/noParkingSymbol02.png";
 // import { Input } from "../../Components/SearchInput";
 import { SvgIcon } from "../../Components/ButtonMaker";
 import Gallery from "../../Components/ImageCarousel";
-
+import reset from "styled-reset";
+import SendButton from "../../Components/ConfirmButton";
+import user from "../../assets/profile-placeholder.png";
+import chat from "../../assets/chat.png";
+// import CommentInput from "../../Components/CommentInput";
 const Container = styled.div`
   overflow: hidden;
   position: absolute;
@@ -213,6 +217,194 @@ const PhoneText = styled.h2`
   color: #dedeea;
 `;
 
+
+const CommentInputContainer = styled.div`
+  position: relative;
+  display: block;
+  padding: 0 20px;
+`;
+
+const CommentInput = styled.input`
+  all: unset;
+  border: none;
+  position: relative;
+
+  display: inline-block;
+  left: 36px;
+  width: 80%;
+  height: 44px;
+  font-size: 14px;
+  ::placeholder {
+    color: ${props => props.theme.colors.lightGrey};
+    font-family: "Noto Sans KR thin", sans-serif;
+    text-align: left;
+  }
+`;
+const ButtonContainer = styled.div`
+  display: inline-block;
+  width: 50px;
+`;
+const SmallSendButton = styled(SendButton)`
+  width: 50px;
+  height: 32px;
+  position: relative;
+  left: 90px;
+  padding-top: 0;
+  text-align: top;
+  line-height: 1.5;
+  font-size: 13px;
+`;
+
+const CommentDivider = styled.div`
+  border-radius: 3px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: #00a6ff;
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 6px;
+  width: 4px;
+`;
+
+const User = styled.span`
+  width: 24px;
+  height: 24px;
+  background-image: url(${user});
+  background-position: center;
+  background-size: contain;
+`;
+const ChatImageStandAlone = styled.div`
+  width: 18px;
+  height: 18px;
+  font-size: 38px;
+  position: relative;
+  display: inline-block;
+  /* left: 136px; */
+  left: 37%;
+  top: 2px;
+  padding: 0;
+`;
+
+const ChatImageWrap = styled.div`
+  overflow: hidden;
+  background-image: url(${chat});
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  line-height: 1.2;
+`;
+
+const PropfileImageStandAlone = styled.div`
+  width: 24px;
+  height: 24px;
+  font-size: 38px;
+  position: absolute;
+  display: inline-block;
+  /* margin-top: 4px; */
+  padding: 0;
+`;
+const PropfileImageWrapCircle = styled.div`
+  border-radius: 25px;
+  overflow: hidden;
+  background-image: url(${user});
+  background-position: center;
+  background-size: contain;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  line-height: 1.2;
+  /* margin-bottom: 10px; */
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 70%;
+`;
+
+const CardTitleContainer = styled.div`
+  margin: 10px 0;
+  padding: 20px 4px;
+`;
+const CardTitle = styled.h2`
+  color: #666;
+  display: inline-block;
+  text-align: center;
+  position: relative;
+  left: 39%;
+  font-family: "Noto Sans KR regular", sans-serif;
+`;
+
+const CommentsContainer = styled.div`
+  position: relative;
+  display: block;
+  padding: 0 20px;
+  margin-bottom: 12px;
+`;
+
+const CommentInfoContainer = styled.div`
+  border: none;
+  position: relative;
+  /* align-items: center; */
+  display: inline-block;
+  left: 36px;
+  /* top: 0px; */
+  width: 100%;
+  height: 28px;
+  font-size: 14px;
+`;
+
+const CommentTextContainer = styled.div`
+  border: none;
+  position: relative;
+  /* align-items: center; */
+  display: block;
+  left: 36px;
+  width: 90%;
+  height: min-content;
+  font-size: 14px;
+`;
+
+const CommentText = styled.h4`
+  position: relative;
+  /* width: 85%; */
+  font-size: 13px;
+  line-break: auto;
+  line-height: 1.4;
+  /* line-height: 3px; */
+`;
+const UserName = styled.h3`
+  color: #000;
+  font-weight: normal;
+  position: relative;
+  top: 4px;
+  font-family: "Noto Sans KR regular", sans-serif;
+  left: 0px;
+`;
+
+const CreatedAt = styled.h4`
+  color: #999;
+  font-weight: normal;
+  position: relative;
+  top: -7px;
+  font-size: 11px;
+  font-family: "Noto Sans KR thin", sans-serif;
+  left: 45px;
+`;
+
+const CommentContainer = styled.div`
+  display: flex;
+  align-items: top;
+  width: 85%;
+`;
+
 const MarkerContainer = styled.div`
   display: flex;
   margin-left: 115px;
@@ -223,6 +415,7 @@ const MarkerText = styled.span`
   color: #dedeea;
 `;
 
+
 interface IInfo {
   name: string;
   address: string;
@@ -231,22 +424,45 @@ interface IInfo {
   images: Array<string>;
   telephone: string;
 }
+interface IChat {
+  cafeId: number;
+  id: number;
+  comment: string;
+  image: null | string;
+  createdAt: string;
+  updatedAt: string;
+  userId: number;
+  user: { name: string; email: string };
+}
 interface IProps {
+  userId: number | null;
+  comments: Array<IChat> | null;
   result: IInfo;
-
+  handleCommentInput: any;
+  handleCommentSubmit: any;
+  activateSendButton: any;
+  deactivateSendButton: any;
   error: string;
   loading: boolean;
+  newComment: string;
+  showSendButton: boolean;
 }
 
 const DetailPresenter: React.FC<IProps> = ({
   result,
-
+  handleCommentInput,
+  handleCommentSubmit,
   error,
-
+  newComment,
+  userId,
+  comments,
+  showSendButton,
+  activateSendButton,
+  deactivateSendButton,
   loading
 }) => {
   const { name, images, address, parkingLot, smokingRoom, telephone } = result;
-  console.log(images);
+  // console.log(images);
   return loading ? (
     <Loader />
   ) : (
@@ -324,13 +540,84 @@ const DetailPresenter: React.FC<IProps> = ({
           <Card>
             <Gallery urls={images} />
           </Card>
-          {/* <Card>{parkingLot === 0 ? "주차불가" : "주차가능"}</Card>
-          <Card>{smokingRoom === 0 ? "흡연불가" : "흡연가능"}</Card> */}
+          <Card>
+            <CardTitleContainer>
+              <ChatImageStandAlone>
+                <ChatImageWrap />
+              </ChatImageStandAlone>
+              <CardTitle>실시간 이야기</CardTitle>
+            </CardTitleContainer>
+            <div className="Chats">
+              {comments &&
+                comments.length > 0 &&
+                comments.map((comment, i) => (
+                  <CommentsContainer key={i}>
+                    <CommentContainer>
+                      {comment.userId === userId ||
+                      comment.userId === null ? null : (
+                        <CommentDivider />
+                      )}
+                      <PropfileImageStandAlone>
+                        <PropfileImageWrapCircle>
+                          <User />
+                        </PropfileImageWrapCircle>
+                      </PropfileImageStandAlone>
+
+                      <CommentInfoContainer>
+                        <UserName>
+                          {comment.user ? comment.user.name : "비회원"}
+                        </UserName>
+                        <CreatedAt>
+                          {comment.createdAt.substring(5, 7) +
+                            "월 " +
+                            comment.createdAt.substring(8, 10) +
+                            "일 " +
+                            comment.createdAt.substring(11, 16)}
+                        </CreatedAt>
+                      </CommentInfoContainer>
+                    </CommentContainer>
+                    <CommentTextContainer>
+                      <CommentText>{comment.comment}</CommentText>
+                    </CommentTextContainer>
+                  </CommentsContainer>
+                ))}
+
+              <CommentInputContainer>
+                <form onSubmit={handleCommentSubmit}>
+                  <InputContainer>
+                    <PropfileImageStandAlone>
+                      <PropfileImageWrapCircle>
+                        <User />
+                      </PropfileImageWrapCircle>
+                    </PropfileImageStandAlone>
+
+                    <CommentInput
+                      type="text"
+                      placeholder="실시간 카페 자리상황 이야기하기"
+                      onFocus={activateSendButton}
+                      // onPointerOver={deactivateSendButton}
+                      onChange={handleCommentInput}
+                      value={newComment}
+                    />
+                    {showSendButton && (
+                      <ButtonContainer>
+                        <SmallSendButton
+                          width="50px"
+                          text={"Send"}
+                          onClick={handleCommentSubmit}
+                          disabled={newComment.length > 3}
+                        ></SmallSendButton>
+                      </ButtonContainer>
+                    )}
+                  </InputContainer>
+                </form>
+              </CommentInputContainer>
+            </div>
+          </Card>
           <Helmet>
             <title>카페114 | {result.name ? result.name : "Detail"} </title>
           </Helmet>
         </Container>
-        {/* <Map /> */}
       </>
     )
   );
