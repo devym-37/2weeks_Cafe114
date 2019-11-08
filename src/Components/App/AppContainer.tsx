@@ -17,12 +17,15 @@ interface Istate {
   showSignupModal: boolean;
   showLocation: boolean;
   showMypageSlider: boolean;
+  showMypageLikeCafe: boolean;
   error: string;
   term: string;
   centerY: number;
   centerX: number;
   navigatorBoolean: boolean;
   address: string;
+  userName: string;
+  userEmail: string;
 }
 
 class AppContainer extends Component<{}, Istate> {
@@ -38,7 +41,10 @@ class AppContainer extends Component<{}, Istate> {
     centerY: 37.503444,
     centerX: 127.049833,
     navigatorBoolean: false,
-    address: ""
+    address: "",
+    showMypageLikeCafe: false,
+    userName: "",
+    userEmail: ""
   };
 
   handleCafePosition = (centerX: number, centerY: number) => {
@@ -65,9 +71,32 @@ class AppContainer extends Component<{}, Istate> {
     }
   };
 
-  toggleMypageSlider = () => {
+  toggleMypageSlider = async () => {
+    try {
+      const userInfo = await serverApi.getUserInfo();
+      if (userInfo.data.success) {
+        if (userInfo.data.data.name !== null) {
+          this.setState({
+            showMypageSlider: !this.state.showMypageSlider,
+            userName: userInfo.data.data.name,
+            userEmail: userInfo.data.data.email
+          });
+        } else {
+          this.setState({
+            showMypageSlider: !this.state.showMypageSlider,
+            userName: "카카오 고객",
+            userEmail: ""
+          });
+        }
+      }
+    } catch {
+      this.setState({ error: "로그인에 실패했습니다." });
+    }
+  };
+
+  handleLikeCafe = () => {
     this.setState({
-      showMypageSlider: !this.state.showMypageSlider
+      showMypageLikeCafe: !this.state.showMypageLikeCafe
     });
   };
 
@@ -128,9 +157,10 @@ class AppContainer extends Component<{}, Istate> {
       term,
       centerX,
       centerY,
-      navigatorBoolean
+      navigatorBoolean,
+      userName,
+      userEmail
     } = this.state;
-
 
     console.log(`포지션 변경 ceterX: `, centerX);
 
@@ -152,6 +182,9 @@ class AppContainer extends Component<{}, Istate> {
           <Mypage
             handleLogout={this.handleLogout}
             toggleMypageSlider={this.toggleMypageSlider}
+            handleLikeCafe={this.handleLikeCafe}
+            userName={userName}
+            userEmail={userEmail}
           />
         )}
         {showFilterModal && <Filter />}

@@ -38,7 +38,6 @@ const KakaoCustomLogin = styled(KakaoLogin)`
 `;
 
 const DimmedLayerCantainer = styled.div`
-  height: 993px;
   z-index: 999;
   position: absolute;
   top: 0;
@@ -62,7 +61,7 @@ const Container = styled.div`
   top: 0px;
   left: 0px;
   width: 100%;
-  height: 100%;
+  height: 100vh;
 `;
 
 const DimmedLayerSceneAuth = styled.div`
