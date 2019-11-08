@@ -133,7 +133,7 @@ class SignupContainer extends Component<IProps, IState> {
   };
 
   checkPassword = (password: string) => {
-    const checkPasswordReg = password.match(/^[a-zA-Z0-9]{6,15}$/);
+    const checkPasswordReg = password.match(/^[가-힣a-zA-Z0-9]{6,15}$/);
     if (!checkPasswordReg) {
       toast.error(
         "비밀번호는 숫자와 영문자 조합으로 6자리 이상 12자리 이하로 입력해주세요",
