@@ -4,6 +4,12 @@ import { serverApi } from "../../Components/API";
 import { RouteComponentProps } from "react-router";
 import { Input, Form } from "../../Components/SearchInput";
 import Map from "../../Components/MapScreen";
+import io from "socket.io-client";
+const socket = io.connect("http://127.0.0.1:3000");
+
+socket.on("connect", () => {
+  console.log("connection server");
+});
 interface IInfo {
   name: string;
   address: string;
@@ -27,6 +33,7 @@ interface IState {
   showFilterModal: boolean;
   newComment: string;
   showSendButton: boolean;
+  response: string;
 }
 interface IProps extends RouteComponentProps<any> {
   handleCafePosition: any;
@@ -60,13 +67,21 @@ export default class extends Component<IProps, IState> {
       newComment: "",
       showLocation: false,
       showFilterModal: false,
-      showSendButton: false
+      showSendButton: false,
+      response: ""
     };
   }
 
   async componentDidMount() {
     try {
       const { id } = this.state;
+      socket.emit("postCafeIdToGetComment", id);
+      socket.on("giveCommentsToClient", comments => {
+        console.log(comments);
+        this.setState({
+          response: comments
+        });
+      });
       const {
         data: { data: result }
       } = await serverApi.getCafeInfobyId(id);
@@ -91,7 +106,21 @@ export default class extends Component<IProps, IState> {
   };
   handleCommentSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const { newComment } = this.state;
+    const { newComment, id } = this.state;
+
+    socket.emit("postCommentToSaveDB", {
+      userId: 1,
+      cafeId: id,
+      comment: newComment
+    });
+
+    socket.on("giveNewChatInfo", chat => {
+      console.log("너 뭐냐고", chat);
+      this.setState({
+        response: chat
+      });
+    });
+
     console.log(`newComment: `, newComment);
   };
   handleSearchSubmit = (event: React.FormEvent) => {
@@ -140,9 +169,10 @@ export default class extends Component<IProps, IState> {
       address,
       navigatorBoolean,
       newComment,
-      showSendButton
+      showSendButton,
+      response
     } = this.state;
-    console.log(`comment: `, newComment);
+    console.log(`response: `, response);
 
     return (
       <>
