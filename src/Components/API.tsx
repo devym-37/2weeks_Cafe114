@@ -23,6 +23,6 @@ export const serverApi = {
     api.post("signup", { email, password, name, sex: gender }),
   signout: () => api.get("signout"),
   getUserInfo: () => api.get("user/mypage"),
-  loginkakao: (id: number, email: string, image: string, nickname) =>
+  loginkakao: (id: number, email: string, image: string, nickname: string) =>
     api.post("signin/kakao", { kakao: { id, email, image, nickname } })
 };
