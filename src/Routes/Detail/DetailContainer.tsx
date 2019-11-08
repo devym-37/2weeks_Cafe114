@@ -6,6 +6,7 @@ import { Input, Form } from "../../Components/SearchInput";
 import Map from "../../Components/MapScreen";
 import io from "socket.io-client";
 import { IconButton } from "../../Components/ButtonMaker";
+
 const socket = io.connect("http://13.209.4.48:3000");
 
 socket.on("connect", () => {
@@ -45,6 +46,7 @@ interface IState {
   showFilterModal: boolean;
   newComment: string;
   showSendButton: boolean;
+
   comments: Array<IChat> | null;
 }
 interface IProps extends RouteComponentProps<any> {
@@ -54,13 +56,15 @@ interface IProps extends RouteComponentProps<any> {
 export default class extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+    // this.childDiv = React.createRef();
     const {
       match: {
         params: { id }
       }
     } = props;
+
     this.state = {
-      id: props.match.params.id,
+      id: id,
       userId: null,
       term: "",
       result: {
@@ -89,13 +93,16 @@ export default class extends Component<IProps, IState> {
   async componentDidMount() {
     try {
       const { id } = this.state;
-      socket.emit("postCafeIdToGetComment", id);
-      socket.on("giveCommentsToClient", comments => {
-        console.log(comments);
-        this.setState({
-          comments: comments
+
+      setInterval(() => {
+        socket.emit("postCafeIdToGetComment", id);
+        socket.on("giveCommentsToClient", comments => {
+          this.setState({
+            comments: comments
+          });
         });
-      });
+      }, 5000);
+
       const {
         data: { data: result }
       } = await serverApi.getCafeInfobyId(id);
@@ -106,6 +113,11 @@ export default class extends Component<IProps, IState> {
         centerX: Number(result.x),
         centerY: Number(result.y)
       });
+      socket.on("giveNewChatInfo", chat => {
+        this.setState({
+          comments: chat
+        });
+      });
     } catch {
       this.setState({ error: "Can't render kakao map" });
     } finally {
@@ -113,20 +125,21 @@ export default class extends Component<IProps, IState> {
     }
   }
 
-  async componentDidUpdate(prevProps, prevState) {
-    try {
-      console.log(`prevState: ${JSON.stringify(prevState)}`);
-      socket.on("giveNewChatInfo", chat => {
-        if (prevState.comment && chat.length !== prevState.comments.length) {
-          this.setState({
-            comments: chat
-          });
-        }
-      });
-    } catch {
-    } finally {
-    }
-  }
+  // async componentDidUpdate(prevProps, prevState) {
+  //   try {
+  //     console.log(`prevState: ${JSON.stringify(prevState)}`);
+  //     socket.on("giveNewChatInfo", chat => {
+  //       if (prevState.comment && chat.length !== prevState.comments.length) {
+  //         this.setState({
+  //           comments: chat
+  //         });
+  //       }
+  //     });
+  //   } catch {
+  //   } finally {
+  //   }
+  // }
+
   handleCommentInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value }
@@ -135,7 +148,7 @@ export default class extends Component<IProps, IState> {
   };
 
   handleCommentSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
+    // event.preventDefault();
     const { newComment, id, result, userId } = this.state;
 
     socket.emit("postCommentToSaveDB", {
@@ -153,6 +166,7 @@ export default class extends Component<IProps, IState> {
 
     console.log(`newComment: `, newComment);
   };
+
   handleSearchSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const { term } = this.state;
@@ -203,7 +217,7 @@ export default class extends Component<IProps, IState> {
       showSendButton,
       comments
     } = this.state;
-    console.log(`comments: `, comments);
+    // console.log(`comments: `, comments);
     // console.log(`userId: `, userId);
     return (
       <>
@@ -223,6 +237,7 @@ export default class extends Component<IProps, IState> {
           <Input value={term} onChange={this.updateTerm} />
         </Form>{" "}
         <DetailPresenter
+          // myRef={this.myRef}
           userId={userId}
           comments={comments}
           newComment={newComment}
