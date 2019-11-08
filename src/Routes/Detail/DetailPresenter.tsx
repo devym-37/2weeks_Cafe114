@@ -2,10 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import Helmet from "react-helmet";
 import Loader from "../../Components/Loader";
-import { Input } from "../../Components/SearchInput";
 import { SvgIcon } from "../../Components/ButtonMaker";
 import Gallery from "../../Components/ImageCarousel";
-
+import reset from "styled-reset";
+import SendButton from "../../Components/ConfirmButton";
+import user from "../../assets/profile-placeholder.png";
+// import CommentInput from "../../Components/CommentInput";
 const Container = styled.div`
   overflow: hidden;
   position: absolute;
@@ -207,6 +209,80 @@ const PhoneText = styled.h2`
   color: #dedeea;
 `;
 
+const CommentInputContainer = styled.div`
+  position: relative;
+  display: block;
+  padding: 0 20px;
+`;
+
+const CommentInput = styled.input`
+  /* ${reset} */
+  all: unset;
+  border: none;
+  position: relative;
+  
+  display: inline-block;
+  left: 36px;
+  width:80%;
+  height: 44px;
+  font-size: 14px;
+  ::placeholder{
+    color: ${props => props.theme.colors.lightGrey};
+    text-align: left;
+  }
+`;
+const ButtonContainer = styled.div`
+  display: inline-block;
+  width: 50px;
+`;
+const SmallSendButton = styled(SendButton)`
+  width: 50px;
+  height: 32px;
+  position: relative;
+  left: 90px;
+  padding-top: 0;
+  text-align: top;
+  line-height: 1.5;
+  font-size: 13px;
+`;
+
+const User = styled.span`
+  width: 24px;
+  height: 24px;
+  background-image: url(${user});
+  background-position: center;
+  background-size: contain;
+`;
+
+const PropfileImageStandAlone = styled.div`
+  width: 24px;
+  height: 24px;
+  font-size: 38px;
+  position: absolute;
+  display: inline-block;
+  /* margin-top: 4px; */
+  padding: 0;
+`;
+const PropfileImageWrapCircle = styled.div`
+  border-radius: 25px;
+  overflow: hidden;
+  background-image: url(${user});
+  background-position: center;
+  background-size: contain;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  line-height: 1.2;
+  /* margin-bottom: 10px; */
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 70%;
+`;
+
 interface IInfo {
   name: string;
   address: string;
@@ -217,20 +293,29 @@ interface IInfo {
 }
 interface IProps {
   result: IInfo;
-
+  handleCommentInput: any;
+  handleCommentSubmit: any;
+  activateSendButton: any;
+  deactivateSendButton: any;
   error: string;
   loading: boolean;
+  newComment: string;
+  showSendButton: boolean;
 }
 
 const DetailPresenter: React.FC<IProps> = ({
   result,
-
+  handleCommentInput,
+  handleCommentSubmit,
   error,
-
+  newComment,
+  showSendButton,
+  activateSendButton,
+  deactivateSendButton,
   loading
 }) => {
   const { name, images, address, parkingLot, smokingRoom, telephone } = result;
-  console.log(images);
+  // console.log(images);
   return loading ? (
     <Loader />
   ) : (
@@ -286,13 +371,45 @@ const DetailPresenter: React.FC<IProps> = ({
           <Card>
             <Gallery urls={images} />
           </Card>
-          {/* <Card>{parkingLot === 0 ? "주차불가" : "주차가능"}</Card>
-          <Card>{smokingRoom === 0 ? "흡연불가" : "흡연가능"}</Card> */}
+          <Card>
+            실시간 채팅
+            <div>
+              <CommentInputContainer>
+                <form onSubmit={handleCommentSubmit}>
+                  <InputContainer>
+                    <PropfileImageStandAlone>
+                      <PropfileImageWrapCircle>
+                        <User />
+                      </PropfileImageWrapCircle>
+                    </PropfileImageStandAlone>
+
+                    <CommentInput
+                      type="text"
+                      placeholder="실시간 카페 자리상황 공유하기"
+                      onFocus={activateSendButton}
+                      // onPointerOver={deactivateSendButton}
+                      onChange={handleCommentInput}
+                      value={newComment}
+                    />
+                    {showSendButton && (
+                      <ButtonContainer>
+                        <SmallSendButton
+                          width="50px"
+                          text={"Send"}
+                          onClick={handleCommentSubmit}
+                          disabled={newComment.length > 0}
+                        ></SmallSendButton>
+                      </ButtonContainer>
+                    )}
+                  </InputContainer>
+                </form>
+              </CommentInputContainer>
+            </div>
+          </Card>
           <Helmet>
             <title>카페114 | {result.name ? result.name : "Detail"} </title>
           </Helmet>
         </Container>
-        {/* <Map /> */}
       </>
     )
   );

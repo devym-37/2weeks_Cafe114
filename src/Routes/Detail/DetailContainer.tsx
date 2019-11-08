@@ -25,6 +25,8 @@ interface IState {
   address: string;
   showLocation: boolean;
   showFilterModal: boolean;
+  newComment: string;
+  showSendButton: boolean;
 }
 interface IProps extends RouteComponentProps<any> {
   handleCafePosition: any;
@@ -55,8 +57,10 @@ export default class extends Component<IProps, IState> {
       loading: false,
       navigatorBoolean: false,
       address: "",
+      newComment: "",
       showLocation: false,
-      showFilterModal: false
+      showFilterModal: false,
+      showSendButton: false
     };
   }
 
@@ -78,10 +82,22 @@ export default class extends Component<IProps, IState> {
       this.setState({ loading: false });
     }
   }
+
+  handleCommentInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value }
+    } = event;
+    this.setState({ newComment: value });
+  };
+  handleCommentSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    const { newComment } = this.state;
+    console.log(`newComment: `, newComment);
+  };
   handleSearchSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const { term } = this.state;
-    console.log(`term: `, term);
+    // console.log(`term: `, term);
   };
   updateTerm = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -100,6 +116,18 @@ export default class extends Component<IProps, IState> {
       showLocation: !this.state.showLocation
     });
   };
+
+  activateSendButton = () => {
+    this.setState({
+      showSendButton: true
+    });
+  };
+
+  deactivateSendButton = () => {
+    this.setState({
+      showSendButton: false
+    });
+  };
   render() {
     const {
       result,
@@ -110,11 +138,12 @@ export default class extends Component<IProps, IState> {
       centerY,
       term,
       address,
-      navigatorBoolean
+      navigatorBoolean,
+      newComment,
+      showSendButton
     } = this.state;
-    console.log(`cafe info result: `, result);
-    // const {handleCafePosition} = this.props;
-    // console.log("result: ", result);
+    console.log(`comment: `, newComment);
+
     return (
       <>
         {" "}
@@ -132,7 +161,17 @@ export default class extends Component<IProps, IState> {
         <Form onSubmit={this.handleSearchSubmit}>
           <Input value={term} onChange={this.updateTerm} />
         </Form>{" "}
-        <DetailPresenter result={result} error={error} loading={loading} />
+        <DetailPresenter
+          newComment={newComment}
+          handleCommentSubmit={this.handleCommentSubmit}
+          handleCommentInput={this.handleCommentInput}
+          activateSendButton={this.activateSendButton}
+          deactivateSendButton={this.deactivateSendButton}
+          result={result}
+          error={error}
+          loading={loading}
+          showSendButton={showSendButton}
+        />
       </>
     );
   }

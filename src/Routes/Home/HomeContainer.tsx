@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import HomePresenter from "./HomePresenter";
+import { RouteComponentProps } from "react-router";
 
 interface IState {
   error: string;
@@ -16,7 +17,9 @@ interface IState {
   navigatorBoolean: boolean;
   address: string;
 }
-export default class extends Component<{}, IState> {
+
+interface IProps extends RouteComponentProps {}
+export default class extends Component<IProps, IState> {
   state = {
     error: "",
     loading: false,
@@ -29,7 +32,7 @@ export default class extends Component<{}, IState> {
     term: "",
     centerY: 37.503444,
     centerX: 127.049833,
-    navigatorBoolean: false,
+    navigatorBoolean: true,
     address: ""
   };
 
@@ -46,7 +49,7 @@ export default class extends Component<{}, IState> {
   handleSearchSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const { term } = this.state;
-    console.log(`term: `, term);
+    this.props.history.push(`/search?=${term}`);
   };
 
   updateTerm = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +58,7 @@ export default class extends Component<{}, IState> {
     } = event;
     this.setState({ term: value });
   };
+
   render() {
     const {
       error,
@@ -84,6 +88,7 @@ export default class extends Component<{}, IState> {
         handleSearchSubmit={this.handleSearchSubmit}
         term={term}
         updateTerm={this.updateTerm}
+        // refCallback={this.refCallback}
       />
     );
   }

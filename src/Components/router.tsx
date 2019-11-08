@@ -15,6 +15,7 @@ import Settings from "../Routes/Settings";
 import EditMessage from "../Routes/SendMessage";
 import Messages from "../Routes/Messages";
 import FindPassword from "../Routes/FindPassword";
+import Search from "../Routes/Search";
 
 interface IProps {
   handleCafePosition: any;
@@ -30,6 +31,11 @@ export const LoggedOutRoutes: React.SFC<IProps> = ({ handleCafePosition }) => {
           render={props => (
             <Detail {...props} handleCafePosition={handleCafePosition} />
           )}
+        />
+        <Route
+          path="/search"
+          Component={Search}
+          props={route => ({ query: route.query.q })}
         />
         <Route path="/auth/find" exact component={FindPassword} />
         <Route path="/social-login" exact component={SocialLogin} />
