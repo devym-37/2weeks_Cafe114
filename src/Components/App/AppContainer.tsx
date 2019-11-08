@@ -59,10 +59,10 @@ class AppContainer extends Component<{}, Istate> {
     centerX: 127.049833,
     navigatorBoolean: false,
     address: "",
-    showMypageLikeCafe: true,
+    showMypageLikeCafe: false,
     userName: "",
     userEmail: "",
-    favoriteCafe: {}
+    favoriteCafe: []
   };
 
   handleCafePosition = (centerX: number, centerY: number) => {
@@ -128,7 +128,7 @@ class AppContainer extends Component<{}, Istate> {
       } else {
         this.setState({
           showMypageLikeCafe: !this.state.showMypageLikeCafe,
-          favoriteCafe: {}
+          favoriteCafe: []
         });
       }
     } catch {
