@@ -5,16 +5,16 @@ import TextButton from "../../Components/TextButton";
 import SubTextButton from "../../Components/SubTextButton";
 import user from "../../assets/profile-placeholder.png";
 import CloseButton from "../../Components/CloseButton";
+import FavoriteCafe from "../../Components/FavoriteCafe";
 
 const AWrap = styled.div`
   position: fixed;
   top: 0px;
   right: 0px;
-  left: 0px;
   overflow: hidden;
-  min-width: 750px;
-  height: 100%;
-  width: 100%;
+  display: block;
+  height: 100vh;
+  width: 375px;
   z-index: 10;
 `;
 
@@ -269,11 +269,13 @@ interface IProps {
   handleLikeCafe: any;
   userName: string;
   userEmail: string;
+  showMypageLikeCafe: boolean;
 }
 const MypagePresenter: React.SFC<IProps> = ({
   toggleMypageSlider,
   handleLogout,
   handleLikeCafe,
+  showMypageLikeCafe,
   userName,
   userEmail
 }) => (
@@ -289,7 +291,6 @@ const MypagePresenter: React.SFC<IProps> = ({
               <Title>
                 <TitleLink href="#">내 메뉴</TitleLink>
               </Title>
-
               <CloseBtn onClick={toggleMypageSlider} color="#ffffff" />
             </InnerHeader>
             <PropfileContainer>
@@ -320,12 +321,12 @@ const MypagePresenter: React.SFC<IProps> = ({
                 <SubContainer>
                   <SubButton
                     text={"알림받는 내카페"}
-                    href="#"
                     onClick={handleLikeCafe}
                     color="#fff"
                   />
                 </SubContainer>
               </PropfileSubContainer>
+              {showMypageLikeCafe ? "" : <FavoriteCafe />}
             </PropfileContainer>
           </ExceptContent>
         </div>

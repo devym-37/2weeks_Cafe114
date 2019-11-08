@@ -9,6 +9,7 @@ interface IProps {
   handleLikeCafe: any;
   userName: string;
   userEmail: string;
+  showMypageLikeCafe: boolean;
 }
 interface IState {
   user: any;
@@ -37,7 +38,8 @@ class MypageContainer extends Component<IProps, IState> {
       handleLogout,
       handleLikeCafe,
       userName,
-      userEmail
+      userEmail,
+      showMypageLikeCafe
     } = this.props;
     console.log("user111", this.state.user);
     return (
@@ -45,6 +47,7 @@ class MypageContainer extends Component<IProps, IState> {
         handleLogout={handleLogout}
         toggleMypageSlider={toggleMypageSlider}
         handleLikeCafe={handleLikeCafe}
+        showMypageLikeCafe={showMypageLikeCafe}
         userName={userName}
         userEmail={userEmail}
       />

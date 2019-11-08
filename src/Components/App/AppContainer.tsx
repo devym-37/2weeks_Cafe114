@@ -35,7 +35,7 @@ class AppContainer extends Component<{}, Istate> {
     showFilterModal: false,
     showSignupModal: false,
     showLocation: false,
-    showMypageSlider: false,
+    showMypageSlider: true,
     error: "",
     term: "",
     centerY: 37.503444,
@@ -159,7 +159,8 @@ class AppContainer extends Component<{}, Istate> {
       centerY,
       navigatorBoolean,
       userName,
-      userEmail
+      userEmail,
+      showMypageLikeCafe
     } = this.state;
 
     console.log(`포지션 변경 ceterX: `, centerX);
@@ -183,6 +184,7 @@ class AppContainer extends Component<{}, Istate> {
             handleLogout={this.handleLogout}
             toggleMypageSlider={this.toggleMypageSlider}
             handleLikeCafe={this.handleLikeCafe}
+            showMypageLikeCafe={showMypageLikeCafe}
             userName={userName}
             userEmail={userEmail}
           />
