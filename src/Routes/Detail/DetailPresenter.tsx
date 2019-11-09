@@ -7,7 +7,6 @@ import smokingImg from "../../assets/smokingSymbol.png";
 import noSmokingImg2 from "../../assets/noSmokingSymbol02.png";
 import parkingImg from "../../assets/parkingSymbol.png";
 import noParkingImg2 from "../../assets/noParkingSymbol02.png";
-// import { Input } from "../../Components/SearchInput";
 import { SvgIcon } from "../../Components/ButtonMaker";
 import Gallery from "../../Components/ImageCarousel";
 import reset from "styled-reset";
@@ -16,8 +15,7 @@ import user from "../../assets/profile-placeholder.png";
 import chat from "../../assets/chat.png";
 import { css } from "glamor";
 import ScrollToBottom from "react-scroll-to-bottom";
-import { relative } from "path";
-// import CommentInput from "../../Components/CommentInput";
+
 const Container = styled.div`
   overflow: hidden;
   position: absolute;
@@ -28,7 +26,7 @@ const Container = styled.div`
   overflow: auto;
   overflow-x: hidden;
   background-color: #eaebed;
-  z-index: 2;
+  z-index: 20;
   overflow: hidden;
 `;
 const SearchGroupExceptContent = styled.fieldset`
@@ -41,30 +39,6 @@ const SearchGroupExceptContent = styled.fieldset`
   padding-top: 12px;
   z-index: 2;
 `;
-const Legend = styled.legend`
-  overflow: hidden;
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  font-size: 0;
-  line-height: 0;
-  white-space: nowrap;
-  margin: 0;
-  padding: 0;
-  display: block;
-  padding-inline-start: 2px;
-  padding-inline-end: 2px;
-  border-width: initial;
-  border-style: none;
-  border-color: initial;
-  border-image: initial;
-`;
-
-// const KewordGroup = styled.div`
-//   padding: 0;
-//   margin: 0;
-//   display: block;
-// `;
 
 const HeaderInfo = styled.div`
   position: relative;
@@ -89,11 +63,6 @@ const CafeTitle = styled.h1`
   line-height: 1.3;
   font-weight: 300;
   text-align: center;
-  /* position: relative;
-  height: 81px;
-  border-bottom: 1px solid #565eb6;
-  
-  padding: 0; */
 `;
 
 const TitleLink = styled.a`
@@ -177,7 +146,6 @@ const SubCard = styled.div`
 
 const List = styled.li`
   width: 25%;
-  /* border-right: 1px solid #565eb6; */
   display: table-cell;
   vertical-align: top;
   list-style: none;
@@ -185,20 +153,9 @@ const List = styled.li`
   padding: 0;
 `;
 
-// const CafeDetail = styled.div`
-//   position: relative;
-//   border-bottom: 5px solid #efefef;
-//   z-index: 3;
-//   margin-bottom: -4px;
-//   background-color: #fff;
-// `;
-
 const PhoneButton = styled.button`
   width: 100%;
   margin-left: 10px;
-  /* position: absolute;
-  top: 20px;
-  right: 21px; */
   padding-left: 12px;
   line-height: 47px;
   padding-left: 12px;
@@ -237,8 +194,7 @@ const PhoneText = styled.h2`
 
 const FixContainer = styled.div`
   border-top: 1px solid rgba(0, 0, 0, 0.06);
-  /* box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.075), -1px 1px 1px rgba(0, 0, 0, 0.03), */
-  /* 1px 1px 1px rgba(0, 0, 0, 0.03); */
+
   width: 385px;
   /* padding: 4px 0; */
   position: fixed;
