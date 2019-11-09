@@ -467,7 +467,7 @@ interface IChat {
   createdAt: string;
   updatedAt: string;
   userId: number;
-  user: { name: string; email: string };
+  user: { name: string; email: string; nickname: string };
 }
 interface IProps {
   userId: number | null;
@@ -586,7 +586,7 @@ const DetailPresenter: React.FC<IProps> = ({
             <ScrollToBottom className={ROOT_CSS}>
               {comments &&
                 comments.length > 0 &&
-                comments.map((comment, i) => (
+                comments.map((comment: IChat, i) => (
                   <CommentsContainer key={i}>
                     <CommentContainer>
                       {comment.userId === userId ||
@@ -599,7 +599,11 @@ const DetailPresenter: React.FC<IProps> = ({
 
                       <CommentInfoContainer>
                         <UserName>
-                          {comment.user ? comment.user.name : "비회원"}
+                          {comment.user
+                            ? comment.user.name
+                              ? comment.user.name
+                              : comment.user.nickname
+                            : "비회원"}
                         </UserName>
                         <CreatedAt>
                           {comment.createdAt.substring(5, 7) +

@@ -30,7 +30,7 @@ interface IChat {
   createdAt: string;
   updatedAt: string;
   userId: number;
-  user: { name: string; email: string };
+  user: { name: string; email: string; nickname: string };
 }
 interface IState {
   centerX: number;
