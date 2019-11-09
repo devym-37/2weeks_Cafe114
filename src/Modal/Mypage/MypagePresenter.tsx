@@ -161,10 +161,10 @@ const PropfileImageStandAlone = styled.div`
   margin: 0;
   padding: 0;
 `;
-const PropfileImageWrapCircle = styled.div`
+const PropfileImageWrapCircle = styled.div<{ url: string }>`
   border-radius: 25px;
   overflow: hidden;
-  background-image: url(${user});
+  background-image: url(${props => (props.url ? props.url : user)});
   background-position: center;
   background-size: contain;
   color: #fff;
@@ -271,6 +271,7 @@ interface IProps {
   userEmail: string;
   showMypageLikeCafe: boolean;
   favoriteCafe: any;
+  kakaoImg: string;
 }
 const MypagePresenter: React.SFC<IProps> = ({
   toggleMypageSlider,
@@ -279,7 +280,8 @@ const MypagePresenter: React.SFC<IProps> = ({
   showMypageLikeCafe,
   userName,
   userEmail,
-  favoriteCafe
+  favoriteCafe,
+  kakaoImg
 }) => (
   <AWrap>
     <Navigation role="navigation">
@@ -300,7 +302,7 @@ const MypagePresenter: React.SFC<IProps> = ({
                 <div>
                   <div>
                     <PropfileImageStandAlone>
-                      <PropfileImageWrapCircle>
+                      <PropfileImageWrapCircle url={kakaoImg}>
                         <User />
                       </PropfileImageWrapCircle>
                     </PropfileImageStandAlone>
