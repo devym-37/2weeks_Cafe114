@@ -6,7 +6,7 @@ import { Input, Form } from "../../Components/SearchInput";
 import Map from "../../Components/MapScreen";
 import io from "socket.io-client";
 import { IconButton } from "../../Components/ButtonMaker";
-import { identifier } from "@babel/types";
+
 const socket = io.connect("http://13.209.4.48:3000");
 
 socket.on("connect", () => {
