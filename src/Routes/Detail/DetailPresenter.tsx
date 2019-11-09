@@ -482,7 +482,7 @@ const Chats = styled.div`
   }
 `;
 const ROOT_CSS = css({
-  //여기가 문제인가?
+  // 여기가 문제??
   height: 510,
   width: 385
 });
