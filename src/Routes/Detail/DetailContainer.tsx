@@ -1,7 +1,7 @@
 import React, { Component, ChangeEvent } from "react";
 import DetailPresenter from "./DetailPresenter";
 import { serverApi } from "../../Components/API";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router";
 import { Input, Form } from "../../Components/SearchInput";
 import Map from "../../Components/MapScreen";
 import io from "socket.io-client";
@@ -49,25 +49,23 @@ interface IState {
   comments: Array<IChat> | null;
 }
 interface IProps extends RouteComponentProps<any> {
-  handleCafePosition: any;
+  handleCafePosition?: any;
+  cafeId: number;
 }
 
-export default class extends Component<IProps, IState> {
+class DetailContainer extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+    // this.props.history.push(`/cafe/${this.props.cafeId}`);
     socket.on("giveNewChatInfo", chat => {
       console.log("너 뭐냐고", chat);
       this.setState({
         comments: chat
       });
     });
-    const {
-      match: {
-        params: { id }
-      }
-    } = props;
+
     this.state = {
-      id: props.match.params.id,
+      id: props.cafeId,
       userId: null,
       term: "",
       result: {
@@ -91,12 +89,60 @@ export default class extends Component<IProps, IState> {
       showSendButton: false,
       comments: null
     };
-  }
 
+    serverApi.getCafeInfobyId(props.cafeId).then(data => {
+      const result = data.data;
+      // console.log(`data.data: ${JSON.stringify(data.data)}`);
+      // return this.setState({
+      //   userId: result.userId ? result.userId : Math.random(),
+      //   result,
+      //   centerX: Number(result.x),
+      //   centerY: Number(result.y)
+      // });
+    });
+  }
+  // async componentDidUpdate(prevProps, prevState) {
+  //   console.log(
+  //     `prevProps: ${JSON.stringify(prevProps)} this.props: ${JSON.stringify(
+  //       this.props
+  //     )}`
+  //   );
+  //   if (prevState.id !== this.state.id) {
+  //     try {
+  //       const { id } = this.state;
+  //       socket.emit("postCafeIdToGetComment", id);
+  //       socket.on("giveCommentsToClient", comments => {
+  //         this.setState({
+  //           comments: comments
+  //         });
+  //       });
+
+  //       const {
+  //         data: { data: result }
+  //       } = await serverApi.getCafeInfobyId(id);
+  //       // this.props.handleCafePosition(Number(result.x));
+  //       this.setState({
+  //         userId: result.userId ? result.userId : Math.random(),
+  //         result,
+  //         centerX: Number(result.x),
+  //         centerY: Number(result.y)
+  //       });
+
+  //       socket.on("giveNewChatInfo", chat => {
+  //         this.setState({
+  //           comments: chat
+  //         });
+  //       });
+  //     } catch {
+  //       this.setState({ error: "Can't render kakao map" });
+  //     } finally {
+  //       this.setState({ loading: false });
+  //     }
+  //   }
+  // }
   async componentDidMount() {
     try {
       const { id } = this.state;
-
       socket.emit("postCafeIdToGetComment", id);
       socket.on("giveCommentsToClient", comments => {
         this.setState({
@@ -107,7 +153,7 @@ export default class extends Component<IProps, IState> {
       const {
         data: { data: result }
       } = await serverApi.getCafeInfobyId(id);
-      this.props.handleCafePosition(Number(result.x));
+      // this.props.handleCafePosition(Number(result.x));
       this.setState({
         userId: result.userId ? result.userId : Math.random(),
         result,
@@ -203,24 +249,9 @@ export default class extends Component<IProps, IState> {
       showSendButton,
       comments
     } = this.state;
-    // console.log(`userId: `, userId);
+    console.log(`detail Cafeinfo: `, this.props);
     return (
       <>
-        {" "}
-        {centerX && centerY && (
-          <Map
-            toggleFilterModal={this.toggleFilterModal}
-            toggleLocation={this.toggleLocation}
-            showLocation={showLocation}
-            centerY={centerY}
-            centerX={centerX}
-            navigatorBoolean={navigatorBoolean}
-            address={term}
-          />
-        )}
-        <Form onSubmit={this.handleSearchSubmit}>
-          <Input value={term} onChange={this.updateTerm} />
-        </Form>{" "}
         <DetailPresenter
           userId={userId}
           comments={comments}
@@ -238,3 +269,5 @@ export default class extends Component<IProps, IState> {
     );
   }
 }
+
+export default withRouter(DetailContainer);

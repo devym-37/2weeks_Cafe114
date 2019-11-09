@@ -6,7 +6,6 @@ import {
   Redirect
 } from "react-router-dom";
 import Home from "../Routes/Home";
-import Detail from "../Routes/Detail";
 import AddCafe from "../Routes/AddCafe";
 import EditProfile from "../Routes/EditProfile";
 import SocialLogin from "../Routes/SocialLogin";
@@ -26,13 +25,6 @@ export const LoggedOutRoutes: React.SFC<IProps> = ({ handleCafePosition }) => {
       <Switch>
         <Route path="/" exact component={Home} />
         <Route
-          path="/cafe/:id"
-          exact
-          render={props => (
-            <Detail {...props} handleCafePosition={handleCafePosition} />
-          )}
-        />
-        <Route
           path="/search"
           Component={Search}
           props={route => ({ query: route.query.q })}
@@ -41,7 +33,7 @@ export const LoggedOutRoutes: React.SFC<IProps> = ({ handleCafePosition }) => {
         <Route path="/social-login" exact component={SocialLogin} />
         <Route path="/verify-phone" exact component={VerifyPhone} />
         <Route path="/messages" exact component={Messages} />
-        <Redirect from="*" to="/" />
+        {/* <Redirect from="*" to="/" /> */}
       </Switch>
     </Router>
   );
@@ -51,19 +43,12 @@ export const LoggedInRoutes: React.SFC<IProps> = handleCafePosition => (
   <Router>
     <Switch>
       <Route path="/" exact component={Home} />
-      <Route
-        path="/cafef/:id"
-        exact
-        render={props => (
-          <Detail {...props} handleCafePosition={handleCafePosition} />
-        )}
-      />
       <Route path="/cafe/:id/save" exact component={AddCafe} />
       <Route path="/messages" exact component={Messages} />
       <Route path="/messages/edit" exact component={EditMessage} />
       <Route path="/settings" exact component={Settings} />
       <Route path="/profile/edit" exact component={EditProfile} />
-      <Redirect from="*" to="/" />
+      {/* <Redirect from="*" to="/" /> */}
     </Switch>
   </Router>
 );

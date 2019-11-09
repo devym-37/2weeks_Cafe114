@@ -6,7 +6,7 @@ import Error from "../../Components/Error";
 import { Input, Form } from "../../Components/SearchInput";
 import Map from "../../Components/MapScreen/index";
 import { Link } from "react-router-dom";
-
+import Detail from "../../Routes/Detail";
 const Container = styled.div``;
 
 interface IProps {
@@ -22,6 +22,9 @@ interface IProps {
   address: string;
   handleSearchSubmit: any;
   updateTerm: any;
+  getCafeId: any;
+  cafeId: number;
+
   // refCallback: any;
 }
 
@@ -36,7 +39,9 @@ const HomePresenter: React.FC<IProps> = ({
   term,
   centerX,
   centerY,
-  navigatorBoolean
+  navigatorBoolean,
+  cafeId,
+  getCafeId
   // refCallback
 }) => {
   return loading ? (
@@ -59,6 +64,7 @@ const HomePresenter: React.FC<IProps> = ({
             <title>Home | 카페114</title>
           </Helmet>
           <Map
+            getCafeId={getCafeId}
             toggleFilterModal={toggleFilterModal}
             toggleLocation={toggleLocation}
             showLocation={showLocation}
@@ -67,7 +73,7 @@ const HomePresenter: React.FC<IProps> = ({
             navigatorBoolean={navigatorBoolean}
             address={term}
           />
-          {/* <Link to={`/search`}> */}
+          {cafeId && <Detail cafeId={cafeId} />}
           <Form onSubmit={handleSearchSubmit}>
             <Input value={term} onChange={updateTerm} />
           </Form>
