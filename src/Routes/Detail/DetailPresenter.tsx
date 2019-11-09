@@ -399,7 +399,7 @@ const Chats = styled.div`
   overflow: auto;
   scroll-margin: 0px;
   /* scroll-behavior: auto; */
-  height: 592px;
+  height: 500px;
   width: 385px;
   ::-webkit-scrollbar {
     width: 6px;
@@ -428,7 +428,7 @@ const Chats = styled.div`
   }
 `;
 const ROOT_CSS = css({
-  height: 592,
+  height: 500,
   width: 385
 });
 
@@ -567,7 +567,6 @@ const DetailPresenter: React.FC<IProps> = ({
               <CardTitle>실시간 이야기</CardTitle>
             </CardTitleContainer>
             <ScrollToBottom className={ROOT_CSS}>
-              {/* <Chats> */}
               {comments &&
                 comments.length > 0 &&
                 comments.map((comment, i) => (
@@ -599,7 +598,6 @@ const DetailPresenter: React.FC<IProps> = ({
                     </CommentTextContainer>
                   </CommentsContainer>
                 ))}
-              {/* </Chats> */}
             </ScrollToBottom>
             <FixContainer>
               <CommentInputContainer>

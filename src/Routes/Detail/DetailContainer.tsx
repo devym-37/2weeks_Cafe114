@@ -4,11 +4,12 @@ import { serverApi } from "../../Components/API";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Input, Form } from "../../Components/SearchInput";
 import Map from "../../Components/MapScreen";
-import io from "socket.io-client";
-import { IconButton } from "../../Components/ButtonMaker";
-const socket = io.connect("http://13.209.4.48:3000");
-// const socket = io.connect('http://127.0.0.1:3000');
 
+import { IconButton } from "../../Components/ButtonMaker";
+
+// const socket = io.connect('http://127.0.0.1:3000');
+import io from "socket.io-client";
+const socket = io.connect("http://13.209.4.48:3000");
 socket.on("connect", () => {
   console.log("connection server");
 });
