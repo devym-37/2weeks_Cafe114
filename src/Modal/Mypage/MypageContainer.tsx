@@ -10,6 +10,7 @@ interface IProps {
   userEmail: string;
   showMypageLikeCafe: boolean;
   favoriteCafe: any;
+  kakaoImg: string;
 }
 interface IState {
   user: any;
@@ -40,7 +41,8 @@ class MypageContainer extends Component<IProps, IState> {
       userName,
       userEmail,
       showMypageLikeCafe,
-      favoriteCafe
+      favoriteCafe,
+      kakaoImg
     } = this.props;
     console.log("MypageContainer:", favoriteCafe);
     return (
@@ -52,6 +54,7 @@ class MypageContainer extends Component<IProps, IState> {
         favoriteCafe={favoriteCafe}
         userName={userName}
         userEmail={userEmail}
+        kakaoImg={kakaoImg}
       />
     );
   }
