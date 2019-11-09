@@ -55,6 +55,12 @@ interface IProps extends RouteComponentProps<any> {
 export default class extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+    socket.on("giveNewChatInfo", chat => {
+      console.log("너 뭐냐고", chat);
+      this.setState({
+        comments: chat
+      });
+    });
     const {
       match: {
         params: { id }
@@ -91,14 +97,12 @@ export default class extends Component<IProps, IState> {
     try {
       const { id } = this.state;
 
-      setInterval(() => {
-        socket.emit("postCafeIdToGetComment", id);
-        socket.on("giveCommentsToClient", comments => {
-          this.setState({
-            comments: comments
-          });
+      socket.emit("postCafeIdToGetComment", id);
+      socket.on("giveCommentsToClient", comments => {
+        this.setState({
+          comments: comments
         });
-      }, 5000);
+      });
 
       const {
         data: { data: result }
@@ -135,7 +139,7 @@ export default class extends Component<IProps, IState> {
     event.preventDefault();
 
     const { newComment, id, result, userId } = this.state;
-
+    this.setState({ newComment: "" });
     socket.emit("postCommentToSaveDB", {
       userId: result.userId,
       cafeId: id,
