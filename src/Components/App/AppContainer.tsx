@@ -43,6 +43,7 @@ interface Istate {
   userName: string;
   userEmail: string;
   favoriteCafe: any;
+  kakaoImg: string;
 }
 
 class AppContainer extends Component<{}, Istate> {
@@ -62,7 +63,8 @@ class AppContainer extends Component<{}, Istate> {
     showMypageLikeCafe: false,
     userName: "",
     userEmail: "",
-    favoriteCafe: []
+    favoriteCafe: [],
+    kakaoImg: ""
   };
 
   handleCafePosition = (centerX: number, centerY: number) => {
@@ -92,6 +94,7 @@ class AppContainer extends Component<{}, Istate> {
   toggleMypageSlider = async () => {
     try {
       const userInfo = await serverApi.getUserInfo();
+      console.log("userInfo", userInfo);
       if (userInfo.data.success) {
         if (userInfo.data.data.name !== null) {
           this.setState({
@@ -99,11 +102,21 @@ class AppContainer extends Component<{}, Istate> {
             userName: userInfo.data.data.name,
             userEmail: userInfo.data.data.email
           });
-        } else {
+        } else if (
+          userInfo.data.data.name === null &&
+          userInfo.data.data.nickname !== null
+        ) {
           this.setState({
             showMypageSlider: !this.state.showMypageSlider,
-            userName: "카카오 고객",
-            userEmail: ""
+            userName: userInfo.data.data.nickname,
+            userEmail:
+              userInfo.data.data.email === undefined
+                ? ""
+                : userInfo.data.data.email,
+            kakaoImg:
+              userInfo.data.data.image === undefined
+                ? ""
+                : userInfo.data.data.image
           });
         }
       }
@@ -197,7 +210,8 @@ class AppContainer extends Component<{}, Istate> {
       userName,
       userEmail,
       showMypageLikeCafe,
-      favoriteCafe
+      favoriteCafe,
+      kakaoImg
     } = this.state;
 
     console.log("likecafe", favoriteCafe);
@@ -224,6 +238,7 @@ class AppContainer extends Component<{}, Istate> {
             userName={userName}
             userEmail={userEmail}
             favoriteCafe={favoriteCafe}
+            kakaoImg={kakaoImg}
           />
         )}
         {showFilterModal && <Filter />}
