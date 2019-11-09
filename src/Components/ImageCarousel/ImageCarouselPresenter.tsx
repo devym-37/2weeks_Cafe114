@@ -9,8 +9,8 @@ interface IContainer {
   url: string;
 }
 const ImageContainer = styled.div<IContainer>`
-  width: 180px;
-  height: 140px;
+  width: 300px;
+  height: 300px;
   background-image: url(${props => props.url});
   background-position: center;
   background-repeat: no-repeat;
@@ -29,7 +29,7 @@ export default class Resizable extends Component<IProps> {
       dots: false,
       infinite: true,
       speed: 500,
-      slidesToShow: 2,
+      slidesToShow: 1,
       slidesToScroll: 1
     };
     const { urls } = this.props;
