@@ -126,9 +126,22 @@ const SearchSelectGroup = styled.ul`
 const Card = styled.div`
   border-bottom: 1px solid #e2e3e5;
   background-color: #fff;
+  bottom: 0;
   padding: 0;
   overflow: hidden;
   user-select: none;
+  /* height: 60%; */
+`;
+
+const SubCard = styled.div`
+  position: relative;
+  border-bottom: 1px solid #e2e3e5;
+  background-color: #fff;
+  bottom: 0;
+  padding: 0;
+  overflow: hidden;
+  user-select: none;
+  height: 74%;
 `;
 
 const List = styled.li`
@@ -183,10 +196,9 @@ const FixContainer = styled.div`
   border-top: 1px solid rgba(0, 0, 0, 0.06);
 
   width: 385px;
-  padding: 4px 0;
+  /* padding: 4px 0; */
   position: fixed;
   bottom: 0px;
-
   background-color: white;
 `;
 const CommentInputContainer = styled.div`
@@ -196,7 +208,6 @@ const CommentInputContainer = styled.div`
   padding-top: 0px;
   border-bottom: 1px solid #e2e3e5;
   background-color: #fff;
-
   overflow: hidden;
   user-select: none;
 `;
@@ -205,7 +216,6 @@ const CommentInput = styled.input`
   all: unset;
   border: none;
   position: relative;
-
   display: inline-block;
   left: 36px;
   width: 100%;
@@ -428,9 +438,14 @@ const Chats = styled.div`
   }
 `;
 const ROOT_CSS = css({
-  height: 500,
+  height: 510,
   width: 385
 });
+
+const Test = styled.div`
+  height: 70%;
+  width: 375px;
+`;
 
 const Form = styled.form`
   width: 370px;
@@ -559,46 +574,48 @@ const DetailPresenter: React.FC<IProps> = ({
           <Card>
             <Gallery urls={images} />
           </Card>
-          <Card>
+          <SubCard>
             <CardTitleContainer>
               <ChatImageStandAlone>
                 <ChatImageWrap />
               </ChatImageStandAlone>
               <CardTitle>실시간 이야기</CardTitle>
             </CardTitleContainer>
-            <ScrollToBottom className={ROOT_CSS}>
-              {comments &&
-                comments.length > 0 &&
-                comments.map((comment, i) => (
-                  <CommentsContainer key={i}>
-                    <CommentContainer>
-                      {comment.userId === userId ||
-                      comment.userId === null ? null : (
-                        <CommentDivider />
-                      )}
-                      <PropfileImageStandAlone>
-                        <PropfileImageWrapCircle></PropfileImageWrapCircle>
-                      </PropfileImageStandAlone>
+            <Test>
+              <ScrollToBottom className={ROOT_CSS}>
+                {comments &&
+                  comments.length > 0 &&
+                  comments.map((comment, i) => (
+                    <CommentsContainer key={i}>
+                      <CommentContainer>
+                        {comment.userId === userId ||
+                        comment.userId === null ? null : (
+                          <CommentDivider />
+                        )}
+                        <PropfileImageStandAlone>
+                          <PropfileImageWrapCircle></PropfileImageWrapCircle>
+                        </PropfileImageStandAlone>
 
-                      <CommentInfoContainer>
-                        <UserName>
-                          {comment.user ? comment.user.name : "비회원"}
-                        </UserName>
-                        <CreatedAt>
-                          {comment.createdAt.substring(5, 7) +
-                            "월 " +
-                            comment.createdAt.substring(8, 10) +
-                            "일 " +
-                            comment.createdAt.substring(11, 16)}
-                        </CreatedAt>
-                      </CommentInfoContainer>
-                    </CommentContainer>
-                    <CommentTextContainer>
-                      <CommentText>{comment.comment}</CommentText>
-                    </CommentTextContainer>
-                  </CommentsContainer>
-                ))}
-            </ScrollToBottom>
+                        <CommentInfoContainer>
+                          <UserName>
+                            {comment.user ? comment.user.name : "비회원"}
+                          </UserName>
+                          <CreatedAt>
+                            {comment.createdAt.substring(5, 7) +
+                              "월 " +
+                              comment.createdAt.substring(8, 10) +
+                              "일 " +
+                              comment.createdAt.substring(11, 16)}
+                          </CreatedAt>
+                        </CommentInfoContainer>
+                      </CommentContainer>
+                      <CommentTextContainer>
+                        <CommentText>{comment.comment}</CommentText>
+                      </CommentTextContainer>
+                    </CommentsContainer>
+                  ))}
+              </ScrollToBottom>
+            </Test>
             <FixContainer>
               <CommentInputContainer>
                 <Form onSubmit={handleCommentSubmit}>
@@ -632,7 +649,7 @@ const DetailPresenter: React.FC<IProps> = ({
                 </Form>
               </CommentInputContainer>
             </FixContainer>
-          </Card>
+          </SubCard>
           <Helmet>
             <title>카페114 | {result.name ? result.name : "Detail"} </title>
           </Helmet>
