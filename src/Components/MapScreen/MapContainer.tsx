@@ -7,14 +7,9 @@ import codestates from "../../assets/marker/codestates.png";
 import currentLoca from "../../assets/marker/currentLoca.png";
 import { geoCode } from "../../mapHelpers";
 import { serverApi } from "../API";
-import io from "socket.io-client";
 import MapPresenter from "./MapPresenter";
 import ToolGroup from "../ToolGroup";
 import io from "socket.io-client";
-const socket = io.connect("http://13.209.4.48:3000");
-socket.on("connect", () => {
-  console.log("connection server");
-});
 
 const socket = io.connect("http://13.209.4.48:3000");
 

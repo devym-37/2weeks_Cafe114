@@ -12,6 +12,7 @@ interface IProps {
   favoriteCafe: any;
   kakaoImg: string;
 }
+
 interface IState {
   user: any;
   error: any;

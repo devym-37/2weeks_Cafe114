@@ -29,6 +29,7 @@ const Container = styled.div`
   z-index: 20;
   overflow: hidden;
 `;
+
 const SearchGroupExceptContent = styled.fieldset`
   position: absolute;
   top: 0;
