@@ -653,6 +653,7 @@ const DetailPresenter: React.FC<IProps> = ({
                     </PropfileImageStandAlone>
 
                     <CommentInput
+                      name="commentinput"
                       type="text"
                       placeholder="실시간 카페 자리상황 이야기하기"
                       onFocus={activateSendButton}
