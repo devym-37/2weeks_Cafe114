@@ -92,10 +92,12 @@ class DetailContainer extends Component<IProps, IState> {
   }
 
   async componentWillReceiveProps(nextProps) {
+    console.log(`nextProps: `, nextProps.cafeId);
+    console.log(`thisProps: `, this.props.cafeId);
     if (nextProps.cafeId !== this.props.cafeId) {
       try {
         const id = nextProps.cafeId;
-        socket.emit("postCafeIdToGetComment", id);
+        socket.emit("postCafeIdToGetComment", nextProps.cafeId);
         socket.on("giveCommentsToClient", comments => {
           this.setState({
             comments: comments
@@ -107,16 +109,11 @@ class DetailContainer extends Component<IProps, IState> {
         } = await serverApi.getCafeInfobyId(id);
 
         this.setState({
+          id: id,
           userId: result.userId ? result.userId : Math.random(),
           result,
           centerX: Number(result.x),
           centerY: Number(result.y)
-        });
-
-        socket.on("giveNewChatInfo", chat => {
-          this.setState({
-            comments: chat
-          });
         });
       } catch {
         this.setState({ error: "Can't render kakao map" });
@@ -125,42 +122,6 @@ class DetailContainer extends Component<IProps, IState> {
       }
     }
   }
-  // async componentDidUpdate(prevProps, prevState) {
-  //   console.log(`prevProps: ${JSON.stringify(prevProps.cafeId)}`);
-  //   console.log(`this.Props: ${JSON.stringify(this.props.cafeId)}`);
-  //   if (prevProps.cafeId !== this.props.cafeId) {
-  //     try {
-  //       const { id } = this.state;
-  //       socket.emit("postCafeIdToGetComment", id);
-  //       socket.on("giveCommentsToClient", comments => {
-  //         this.setState({
-  //           comments: comments
-  //         });
-  //       });
-
-  //       const {
-  //         data: { data: result }
-  //       } = await serverApi.getCafeInfobyId(id);
-  //       // this.props.handleCafePosition(Number(result.x));
-  //       this.setState({
-  //         userId: result.userId ? result.userId : Math.random(),
-  //         result,
-  //         centerX: Number(result.x),
-  //         centerY: Number(result.y)
-  //       });
-
-  //       socket.on("giveNewChatInfo", chat => {
-  //         this.setState({
-  //           comments: chat
-  //         });
-  //       });
-  //     } catch {
-  //       this.setState({ error: "Can't render kakao map" });
-  //     } finally {
-  //       this.setState({ loading: false });
-  //     }
-  //   }
-  // }
 
   async componentDidMount() {
     try {
