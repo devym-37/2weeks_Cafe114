@@ -625,41 +625,41 @@ const DetailPresenter: React.FC<IProps> = ({
               </ChatImageStandAlone>
               <CardTitle>실시간 이야기</CardTitle>
             </CardTitleContainer>
-            <Test>
-              <ScrollToBottom className={ROOT_CSS}>
-                {comments &&
-                  comments.length > 0 &&
-                  comments.map((comment, i) => (
-                    <CommentsContainer key={i}>
-                      <CommentContainer>
-                        {comment.userId === userId ||
-                        comment.userId === null ? null : (
-                          <CommentDivider />
-                        )}
-                        <PropfileImageStandAlone>
-                          <PropfileImageWrapCircle></PropfileImageWrapCircle>
-                        </PropfileImageStandAlone>
 
-                        <CommentInfoContainer>
-                          <UserName>
-                            {comment.user ? comment.user.name : "비회원"}
-                          </UserName>
-                          <CreatedAt>
-                            {comment.createdAt.substring(5, 7) +
-                              "월 " +
-                              comment.createdAt.substring(8, 10) +
-                              "일 " +
-                              comment.createdAt.substring(11, 16)}
-                          </CreatedAt>
-                        </CommentInfoContainer>
-                      </CommentContainer>
-                      <CommentTextContainer>
-                        <CommentText>{comment.comment}</CommentText>
-                      </CommentTextContainer>
-                    </CommentsContainer>
-                  ))}
-              </ScrollToBottom>
-            </Test>
+            <ScrollToBottom className={ROOT_CSS}>
+              {comments &&
+                comments.length > 0 &&
+                comments.map((comment, i) => (
+                  <CommentsContainer key={i}>
+                    <CommentContainer>
+                      {comment.userId === userId ||
+                      comment.userId === null ? null : (
+                        <CommentDivider />
+                      )}
+                      <PropfileImageStandAlone>
+                        <PropfileImageWrapCircle></PropfileImageWrapCircle>
+                      </PropfileImageStandAlone>
+
+                      <CommentInfoContainer>
+                        <UserName>
+                          {comment.user ? comment.user.name : "비회원"}
+                        </UserName>
+                        <CreatedAt>
+                          {comment.createdAt.substring(5, 7) +
+                            "월 " +
+                            comment.createdAt.substring(8, 10) +
+                            "일 " +
+                            comment.createdAt.substring(11, 16)}
+                        </CreatedAt>
+                      </CommentInfoContainer>
+                    </CommentContainer>
+                    <CommentTextContainer>
+                      <CommentText>{comment.comment}</CommentText>
+                    </CommentTextContainer>
+                  </CommentsContainer>
+                ))}
+            </ScrollToBottom>
+
             <FixContainer>
               <CommentInputContainer>
                 <Form onSubmit={handleCommentSubmit}>
