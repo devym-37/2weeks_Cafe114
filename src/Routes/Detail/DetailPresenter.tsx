@@ -471,7 +471,7 @@ const Chats = styled.div`
   }
 `;
 const ROOT_CSS = css({
-  height: 507,
+  height: 500,
   width: 385
 });
 

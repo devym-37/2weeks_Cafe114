@@ -9,6 +9,11 @@ import { geoCode } from "../../mapHelpers";
 import { serverApi } from "../API";
 import MapPresenter from "./MapPresenter";
 import ToolGroup from "../ToolGroup";
+import io from "socket.io-client";
+const socket = io.connect("http://13.209.4.48:3000");
+socket.on("connect", () => {
+  console.log("connection server");
+});
 
 interface Iinfo {
   id: number;
@@ -65,6 +70,10 @@ class MapContainer extends React.Component<any, IState> {
   constructor(props: any) {
     super(props);
     this.mapRef = React.createRef();
+    socket.on("giveCafeInfoServerToClient", cafeData => {
+      console.log("카페데이터주세요용오ㅗㄴㅁ옴ㄴ온온ㅁ오!", cafeData);
+      this.setState({});
+    });
   }
 
   async componentDidMount() {
