@@ -66,7 +66,7 @@ class DetailContainer extends Component<IProps, IState> {
     });
 
     this.state = {
-      id: props.cafeId,
+      id: this.props.cafeId,
       userId: null,
       term: "",
       result: {
@@ -90,25 +90,46 @@ class DetailContainer extends Component<IProps, IState> {
       showSendButton: false,
       comments: null
     };
+  }
 
-    serverApi.getCafeInfobyId(props.cafeId).then(data => {
-      const result = data.data;
-      // console.log(`data.data: ${JSON.stringify(data.data)}`);
-      // return this.setState({
-      //   userId: result.userId ? result.userId : Math.random(),
-      //   result,
-      //   centerX: Number(result.x),
-      //   centerY: Number(result.y)
-      // });
-    });
+  async componentWillReceiveProps(nextProps) {
+    if (nextProps.cafeId !== this.props.cafeId) {
+      try {
+        const id = nextProps.cafeId;
+        socket.emit("postCafeIdToGetComment", id);
+        socket.on("giveCommentsToClient", comments => {
+          this.setState({
+            comments: comments
+          });
+        });
+
+        const {
+          data: { data: result }
+        } = await serverApi.getCafeInfobyId(id);
+
+        this.setState({
+          userId: result.userId ? result.userId : Math.random(),
+          result,
+          centerX: Number(result.x),
+          centerY: Number(result.y)
+        });
+
+        socket.on("giveNewChatInfo", chat => {
+          this.setState({
+            comments: chat
+          });
+        });
+      } catch {
+        this.setState({ error: "Can't render kakao map" });
+      } finally {
+        this.setState({ loading: false });
+      }
+    }
   }
   // async componentDidUpdate(prevProps, prevState) {
-  //   console.log(
-  //     `prevProps: ${JSON.stringify(prevProps)} this.props: ${JSON.stringify(
-  //       this.props
-  //     )}`
-  //   );
-  //   if (prevState.id !== this.state.id) {
+  //   console.log(`prevProps: ${JSON.stringify(prevProps.cafeId)}`);
+  //   console.log(`this.Props: ${JSON.stringify(this.props.cafeId)}`);
+  //   if (prevProps.cafeId !== this.props.cafeId) {
   //     try {
   //       const { id } = this.state;
   //       socket.emit("postCafeIdToGetComment", id);
@@ -141,6 +162,7 @@ class DetailContainer extends Component<IProps, IState> {
   //     }
   //   }
   // }
+
   async componentDidMount() {
     try {
       const { id } = this.state;
