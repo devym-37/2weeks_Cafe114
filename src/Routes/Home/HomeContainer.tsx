@@ -16,12 +16,14 @@ interface IState {
   centerX: number;
   navigatorBoolean: boolean;
   address: string;
+  cafeId: number;
 }
 
 interface IProps extends RouteComponentProps {}
 export default class extends Component<IProps, IState> {
   state = {
     error: "",
+    cafeId: 0,
     loading: false,
     isLoggedIn: false,
     showLoginModal: false,
@@ -59,6 +61,10 @@ export default class extends Component<IProps, IState> {
     this.setState({ term: value });
   };
 
+  getCafeId = (id: number) => {
+    this.setState({ cafeId: id });
+  };
+
   render() {
     const {
       error,
@@ -72,11 +78,15 @@ export default class extends Component<IProps, IState> {
       term,
       centerX,
       centerY,
-      navigatorBoolean
+      navigatorBoolean,
+      cafeId
     } = this.state;
+    console.log(`cafeId: ${cafeId}`);
     return (
       <HomePresenter
         error={error}
+        getCafeId={this.getCafeId}
+        cafeId={cafeId}
         loading={loading}
         toggleFilterModal={this.toggleFilterModal}
         toggleLocation={this.toggleLocation}

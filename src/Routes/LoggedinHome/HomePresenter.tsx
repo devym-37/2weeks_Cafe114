@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Helmet from "react-helmet";
 import Loader from "../../Components/Loader";
 import Error from "../../Components/Error";
-import TestMap from "../../Routes/Map";
+
 const Container = styled.div``;
 
 interface IProps {
@@ -31,11 +31,7 @@ const HomePresenter: React.FC<IProps> = ({ error, loading }) => {
           <Helmet>
             <title>Home | 카페114</title>
           </Helmet>
-          {/* <TestMap /> */}
-          {/* <Map /> */}
-          {/* <Form onSubmit={handleSubmit}>
-            <Input value={term} onChange={updateTerm} />
-          </Form> */}
+          {}
         </Container>
       )}
     </>

@@ -7,6 +7,7 @@ import codestates from "../../assets/marker/codestates.png";
 import currentLoca from "../../assets/marker/currentLoca.png";
 import { geoCode } from "../../mapHelpers";
 import { serverApi } from "../API";
+import io from "socket.io-client";
 import MapPresenter from "./MapPresenter";
 import ToolGroup from "../ToolGroup";
 import io from "socket.io-client";
@@ -15,6 +16,11 @@ socket.on("connect", () => {
   console.log("connection server");
 });
 
+const socket = io.connect("http://13.209.4.48:3000");
+
+socket.on("connect", () => {
+  console.log("connection server");
+});
 interface Iinfo {
   id: number;
   name: string;
@@ -72,7 +78,6 @@ class MapContainer extends React.Component<any, IState> {
     this.mapRef = React.createRef();
     socket.on("giveCafeInfoServerToClient", cafeData => {
       console.log("카페데이터주세요용오ㅗㄴㅁ옴ㄴ온온ㅁ오!", cafeData);
-      this.setState({});
     });
   }
 
@@ -152,12 +157,13 @@ class MapContainer extends React.Component<any, IState> {
             </a>
           </div>
         );
-
+        const innerGetCafeId = this.props.getCafeId;
         const infowindow = new google.maps.InfoWindow({
           content: infoWindowContent
         });
         hollysMarker.addListener("click", function() {
-          console.log("idNumber", idNumber);
+          // console.log("idNumber", idNumber);
+          innerGetCafeId(idNumber);
           infowindow.open(googleMap, hollysMarker);
           googleMap.panTo(spot);
 
@@ -196,12 +202,17 @@ class MapContainer extends React.Component<any, IState> {
             </a>
           </div>
         );
+        const innerGetCafeId = this.props.getCafeId;
         const infowindow = new google.maps.InfoWindow({
           content: infoWindowContent
         });
+
         tomtomMarker.addListener("click", function() {
           infowindow.open(googleMap, tomtomMarker);
+          innerGetCafeId(idNumber);
+          // this.props.getCafeId(idNumber);
           googleMap.panTo(spot);
+
           // window.location.href = `/cafe/${idNumber}`;
         });
         tomtomMarker.addListener("mouseover", function() {
