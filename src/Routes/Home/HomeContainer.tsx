@@ -51,7 +51,7 @@ export default class extends Component<IProps, IState> {
   handleSearchSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const { term } = this.state;
-    this.props.history.push(`/search?=${term}`);
+    // this.props.history.push(`/search?=${term}`);
   };
 
   updateTerm = (event: React.ChangeEvent<HTMLInputElement>) => {

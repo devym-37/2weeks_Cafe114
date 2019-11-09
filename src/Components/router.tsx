@@ -24,11 +24,11 @@ export const LoggedOutRoutes: React.SFC<IProps> = ({ handleCafePosition }) => {
     <Router>
       <Switch>
         <Route path="/" exact component={Home} />
-        <Route
+        {/* <Route
           path="/search"
           Component={Search}
           props={route => ({ query: route.query.q })}
-        />
+        /> */}
         <Route path="/auth/find" exact component={FindPassword} />
         <Route path="/social-login" exact component={SocialLogin} />
         <Route path="/verify-phone" exact component={VerifyPhone} />

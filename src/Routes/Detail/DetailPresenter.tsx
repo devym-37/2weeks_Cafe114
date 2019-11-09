@@ -438,8 +438,9 @@ const Chats = styled.div`
   }
 `;
 const ROOT_CSS = css({
-  // 여기가 문제??
-  height: 510,
+
+  height: 370,
+
   width: 385
 });
 
@@ -619,6 +620,40 @@ const DetailPresenter: React.FC<IProps> = ({
                     </CommentTextContainer>
                   </CommentsContainer>
                 ))}
+
+
+              {!comments && (
+                <CommentsContainer>
+                  <CommentContainer>
+                    <CommentDivider />
+
+                    <PropfileImageStandAlone>
+                      <PropfileImageWrapCircle></PropfileImageWrapCircle>
+                    </PropfileImageStandAlone>
+
+                    <CommentInfoContainer>
+                      <UserName>"Cafe114"</UserName>
+                      <CreatedAt>
+                        {new Date().getMonth() +
+                          "월 " +
+                          new Date().getDate() +
+                          "일 " +
+                          new Date().getHours +
+                          ":" +
+                          new Date().getMinutes()}
+                      </CreatedAt>
+                    </CommentInfoContainer>
+                  </CommentContainer>
+                  <CommentTextContainer>
+                    <CommentText>
+                      "현재 카페에 자리가 있는지 실시간으로 이야기를
+                      남겨주세요!"
+                    </CommentText>
+                  </CommentTextContainer>
+                </CommentsContainer>
+              )}
+
+
             </ScrollToBottom>
 
             <FixContainer>
