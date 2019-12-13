@@ -8,8 +8,7 @@ import currentLoca from "../../assets/marker/currentLoca.png";
 import { geoCode } from "../../mapHelpers";
 import { serverApi } from "../API";
 import MapPresenter from "./MapPresenter";
-import { async } from "q";
-// import "../../Components/Map.css";
+import ToolGroup from "../ToolGroup";
 
 interface Iinfo {
   id: number;
@@ -30,7 +29,7 @@ interface Iinfo {
 interface IState {
   lat: number;
   lng: number;
-  address: string;
+  address?: string;
   result: Array<Iinfo>;
   loading: boolean;
   error: string;
@@ -42,16 +41,11 @@ interface IState {
   map: any;
 }
 
-const mapStyles = {
-  width: "100%",
-  height: "100%"
-};
-
 class MapContainer extends React.Component<any, IState> {
   public mapRef: any;
   public state = {
-    map: this.props.google.maps.Map,
-    address: "",
+    map: this.props.google.maps,
+    address: this.props.address,
     lat: 0,
     lng: 0,
     result: [],
@@ -78,7 +72,7 @@ class MapContainer extends React.Component<any, IState> {
     const maps = google.maps;
     const mapNode = ReactDOM.findDOMNode(this.mapRef.current);
     const mapConfig: google.maps.MapOptions = {
-      center: { lat: this.state.centerY, lng: this.state.centerX },
+      center: { lat: this.props.centerY, lng: this.props.centerX },
       minZoom: 9,
       zoom: 15,
       zoomControl: true,
@@ -155,7 +149,7 @@ class MapContainer extends React.Component<any, IState> {
         hollysMarker.addListener("click", function() {
           infowindow.open(googleMap, hollysMarker);
           googleMap.panTo(spot);
-          // window.location.href = `/cafe/${idNumber}`;
+          window.location.href = `/cafe/${idNumber}`;
         });
         hollysMarker.addListener("mouseover", function() {
           infowindow.open(googleMap, hollysMarker);
@@ -190,13 +184,13 @@ class MapContainer extends React.Component<any, IState> {
             </a>
           </div>
         );
-        var infowindow = new google.maps.InfoWindow({
+        const infowindow = new google.maps.InfoWindow({
           content: infoWindowContent
         });
         tomtomMarker.addListener("click", function() {
           infowindow.open(googleMap, tomtomMarker);
           googleMap.panTo(spot);
-          // window.location.href = `/cafe/${idNumber}`;
+          window.location.href = `/cafe/${idNumber}`;
         });
         tomtomMarker.addListener("mouseover", function() {
           infowindow.open(googleMap, tomtomMarker);
@@ -281,13 +275,13 @@ class MapContainer extends React.Component<any, IState> {
 
     this.codeStatesMarker(googleMap); // codestates marker
 
-    function toggleBounce(marker: any) {
-      if (marker.getAnimation() !== null) {
-        marker.setAnimation(null);
-      } else {
-        marker.setAnimation(google.maps.Animation.BOUNCE);
-      }
-    }
+    // function toggleBounce(marker: any) {
+    //   if (marker.getAnimation() !== null) {
+    //     marker.setAnimation(null);
+    //   } else {
+    //     marker.setAnimation(google.maps.Animation.BOUNCE);
+    //   }
+    // }
   }
 
   public codeStatesMarker(map: any) {
@@ -337,9 +331,9 @@ class MapContainer extends React.Component<any, IState> {
     this.setState({ [name]: value } as any);
   };
 
-  public onSubmit = async () => {
+  public onSubmit = async (input: any) => {
     console.log("input");
-    const { address } = this.state;
+    const address = input;
     const result = await geoCode(address);
     if (result !== false) {
       const { lat, lng, formatted_address: formatedAddress } = result;
@@ -351,38 +345,17 @@ class MapContainer extends React.Component<any, IState> {
     }
   };
 
-  public handleGeoSucces = (positon: Position) => {
-    const {
-      coords: { latitude, longitude }
-    } = positon;
-    this.setState({
-      lat: latitude,
-      lng: longitude
-    });
-  };
-
-  public handleGeoError = () => {
-    console.log("Cant access geo location");
-  };
-
   public render() {
-    console.log("this.props", this.props);
+    console.log("this.props", this.props.google.maps);
     console.log("this.state.map : ", this.state.map);
     const { address } = this.state;
     return (
-      // <Map
-      //   google={this.props.google}
-      //   zoom={16}
-      //   initialCenter={{ lat: 37.503444, lng: 127.049833 }}
-      //   mapTypeControl={false}
-      // >
       <MapPresenter
         mapRef={this.mapRef}
         address={address}
         onInputChange={this.onInputChange}
         onSubmit={this.onSubmit}
       />
-      // </Map>
     );
   }
 }

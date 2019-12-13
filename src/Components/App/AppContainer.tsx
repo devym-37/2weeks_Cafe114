@@ -8,6 +8,7 @@ import Filter from "../../Modal/Filter";
 import { Input, Form } from "../../Components/SearchInput";
 import Mypage from "../../Modal/Mypage";
 import { serverApi } from "../API";
+import { geoCode } from "../../mapHelpers";
 
 interface Istate {
   isLoggedIn: boolean;
@@ -21,6 +22,7 @@ interface Istate {
   centerY: number;
   centerX: number;
   navigatorBoolean: boolean;
+  address: string;
 }
 
 class AppContainer extends Component<{}, Istate> {
@@ -35,7 +37,15 @@ class AppContainer extends Component<{}, Istate> {
     term: "",
     centerY: 37.503444,
     centerX: 127.049833,
-    navigatorBoolean: false
+    navigatorBoolean: false,
+    address: ""
+  };
+
+  handleCafePosition = (centerX: number, centerY: number) => {
+    this.setState({
+      centerX,
+      centerY
+    });
   };
 
   toggleLoginModal = () => {
@@ -58,11 +68,6 @@ class AppContainer extends Component<{}, Istate> {
   toggleMypageSlider = () => {
     this.setState({
       showMypageSlider: !this.state.showMypageSlider
-    });
-  };
-  toggleFilterModal = () => {
-    this.setState({
-      showFilterModal: !this.state.showFilterModal
     });
   };
 
@@ -91,12 +96,27 @@ class AppContainer extends Component<{}, Istate> {
     } = event;
     this.setState({ term: value });
   };
+  toggleFilterModal = () => {
+    this.setState({
+      showFilterModal: !this.state.showFilterModal
+    });
+  };
 
-  handleSearchSubmit = (event: React.FormEvent) => {
+  public handleSearchSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const { term } = this.state;
     console.log(`term: `, term);
+    const result = await geoCode(term);
+    if (result !== false) {
+      const { lat, lng, formatted_address: formatedAddress } = result;
+      this.setState({
+        address: formatedAddress,
+        centerY: lat,
+        centerX: lng
+      });
+    }
   };
+
   render() {
     const {
       isLoggedIn,
@@ -110,22 +130,14 @@ class AppContainer extends Component<{}, Istate> {
       centerY,
       navigatorBoolean
     } = this.state;
-    console.log("toggleLocation : ", term);
+
+
+    console.log(`포지션 변경 ceterX: `, centerX);
+
     return (
       <div className="App">
-        <Map
-          toggleFilterModal={this.toggleFilterModal}
-          toggleLocation={this.toggleLocation}
-          showLocation={showLocation}
-          centerY={centerY}
-          centerX={centerX}
-          navigatorBoolean={navigatorBoolean}
-        />
-        <Form onSubmit={this.handleSearchSubmit}>
-          <Input value={term} onChange={this.updateTerm} />
-        </Form>
-
         <AppPresenter
+          handleCafePosition={this.handleCafePosition}
           toggleMypageSlider={this.toggleMypageSlider}
           toggleLoggedIn={this.toggleLoggedIn}
           toggleLoginModal={this.toggleLoginModal}
