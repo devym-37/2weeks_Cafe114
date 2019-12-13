@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
       font-family: 'Noto Sans KR thin', sans-serif;
     }
     h1,h4,span, div,a{
-      font-family: 'Noto Sans KR regular', sans-serif;
+      font-family: 'Noto Sans KR thin', sans-serif;
       color: "#000000";
     }
     input,
@@ -40,7 +40,9 @@ const GlobalStyle = createGlobalStyle`
         text-align: center;
         align-items: flex-start;
     }
-
+span{
+  font-family: 'Noto Sans KR thin';
+}
     input {
     
     text-rendering: auto;

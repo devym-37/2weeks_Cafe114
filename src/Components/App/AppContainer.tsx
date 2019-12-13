@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import ToolGroup from "../ToolGroup";
 import Filter from "../../Modal/Filter";
 import { Input, Form } from "../../Components/SearchInput";
+import Mypage from "../../Modal/Mypage";
+import { serverApi } from "../API";
 
 interface Istate {
   isLoggedIn: boolean;
@@ -13,7 +15,12 @@ interface Istate {
   showFilterModal: boolean;
   showSignupModal: boolean;
   showLocation: boolean;
+  showMypageSlider: boolean;
+  error: string;
   term: string;
+  centerY: number;
+  centerX: number;
+  navigatorBoolean: boolean;
 }
 
 class AppContainer extends Component<{}, Istate> {
@@ -23,7 +30,12 @@ class AppContainer extends Component<{}, Istate> {
     showFilterModal: false,
     showSignupModal: false,
     showLocation: false,
-    term: ""
+    showMypageSlider: false,
+    error: "",
+    term: "",
+    centerY: 37.503444,
+    centerX: 127.049833,
+    navigatorBoolean: false
   };
 
   toggleLoginModal = () => {
@@ -32,6 +44,22 @@ class AppContainer extends Component<{}, Istate> {
     });
   };
 
+  handleLogout = async () => {
+    try {
+      const logout = await serverApi.signout();
+      if (logout.data.success) {
+        this.setState({ isLoggedIn: false, showLoginModal: false });
+      }
+    } catch {
+      this.setState({ error: "로그아웃에 실패했습니다." });
+    }
+  };
+
+  toggleMypageSlider = () => {
+    this.setState({
+      showMypageSlider: !this.state.showMypageSlider
+    });
+  };
   toggleFilterModal = () => {
     this.setState({
       showFilterModal: !this.state.showFilterModal
@@ -76,7 +104,11 @@ class AppContainer extends Component<{}, Istate> {
       showFilterModal,
       showSignupModal,
       showLocation,
-      term
+      showMypageSlider,
+      term,
+      centerX,
+      centerY,
+      navigatorBoolean
     } = this.state;
     console.log("toggleLocation : ", term);
     return (
@@ -85,23 +117,31 @@ class AppContainer extends Component<{}, Istate> {
           toggleFilterModal={this.toggleFilterModal}
           toggleLocation={this.toggleLocation}
           showLocation={showLocation}
+          centerY={centerY}
+          centerX={centerX}
+          navigatorBoolean={navigatorBoolean}
         />
         <Form onSubmit={this.handleSearchSubmit}>
           <Input value={term} onChange={this.updateTerm} />
         </Form>
-        <ToolGroup
-          toggleLoginModal={this.toggleLoginModal}
-          toggleFilterModal={this.toggleFilterModal}
-          toggleLocation={this.toggleLocation}
-        />
+
         <AppPresenter
+          toggleMypageSlider={this.toggleMypageSlider}
           toggleLoggedIn={this.toggleLoggedIn}
           toggleLoginModal={this.toggleLoginModal}
           toggleSignupModal={this.toggleSignupModal}
+          toggleFilterModal={this.toggleFilterModal}
+          toggleLocation={this.toggleLocation}
           showSignupModal={showSignupModal}
           showLoginModal={showLoginModal}
           isLoggedIn={isLoggedIn}
         />
+        {showMypageSlider && (
+          <Mypage
+            handleLogout={this.handleLogout}
+            toggleMypageSlider={this.toggleMypageSlider}
+          />
+        )}
         {showFilterModal && <Filter />}
         <ToastContainer draggable={true} position={"top-center"} />
       </div>

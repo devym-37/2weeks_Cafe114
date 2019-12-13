@@ -1,11 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  Update,
-  CurrentLocation,
-  Filter
-} from "../../Components/ToolGroup/MapControl";
-import { Mypage } from "../../Components/ToolGroup/Mypage";
+import { Update, CurrentLocation, Filter } from "../ToolGroup/MapControl";
+import { Mypage } from "../LoggedToolGroup/LoggedMypage";
 
 // const Container = styled.div`
 //   display: block;
@@ -24,19 +20,19 @@ const ToolGroupContainer = styled.div`
 `;
 
 interface IProps {
-  toggleLoginModal?: any;
   toggleFilterModal: any;
   toggleLocation: any;
+  toggleMypageSlider: any;
 }
 
 const ToolGroup: React.SFC<IProps> = ({
-  toggleLoginModal,
   toggleFilterModal,
-  toggleLocation
+  toggleLocation,
+  toggleMypageSlider
 }) => (
   // <Container>
   <ToolGroupContainer>
-    <Mypage toggleLoginModal={toggleLoginModal} />
+    <Mypage toggleMypageSlider={toggleMypageSlider} />
     <CurrentLocation toggleLocation={toggleLocation} />
     <Update />
     <Filter toggleFilterModal={toggleFilterModal} />
