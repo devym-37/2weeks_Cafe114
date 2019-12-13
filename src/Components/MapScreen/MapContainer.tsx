@@ -1,64 +1,291 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import ReactDOMServer from "react-dom/server";
+import hollys from "../../assets/marker/hollys-logo.png";
+import tomtom from "../../assets/marker/tomtom-logo.png";
+import codestates from "../../assets/marker/codestates.png";
+import currentLoca from "../assets/marker/currentLoca.png";
 import { geoCode } from "../../mapHelpers";
+import { serverApi } from "../API";
 import MapPresenter from "./MapPresenter";
+import { async } from "q";
+// import "../../Components/Map.css";
+
+interface Iinfo {
+  id: number;
+  name: string;
+  address: string;
+  subAddress: string;
+  x: string;
+  y: string;
+  telephone: string;
+  category: string;
+  detailCategory: string;
+  parkingLot: number;
+  smokingRoom: number;
+  createdAt: string;
+  updatedAt: string;
+}
 
 interface IState {
   lat: number;
   lng: number;
   address: string;
+  result: Array<Iinfo>;
+  loading: boolean;
+  error: string;
+  subAddress: Array<string>;
+  x: Array<Iinfo>;
+  y: Array<Iinfo>;
+  category: Array<Iinfo>;
+  name: Array<Iinfo>;
+  map: any;
 }
+
+const mapStyles = {
+  width: "100%",
+  height: "100%"
+};
 
 class MapContainer extends React.Component<any, IState> {
   public mapRef: any;
-  public map: google.maps.Map | null;
   public state = {
+    map: this.props.google.maps.Map,
     address: "",
     lat: 0,
-    lng: 0
+    lng: 0,
+    result: [],
+    subAddress: [],
+    loading: true,
+    error: "",
+    x: [],
+    y: [],
+    category: [],
+    name: [],
+    centerY: 37.503444,
+    centerX: 127.049833,
+    level: 16
   };
+
   constructor(props: any) {
     super(props);
     this.mapRef = React.createRef();
-    this.map = null;
   }
 
-  public componentDidMount() {
-    const defaultY = 37.503444;
-    const defaultX = 127.049833;
-    if (true) {
-      this.loadMap(defaultY, defaultX);
-      console.log(this.loadMap);
-    } else {
-      navigator.geolocation.getCurrentPosition(
-        this.handleGeoSucces,
-        this.handleGeoError
-      );
-    }
-  }
-
-  public loadMap = (lat: any, lng: any) => {
+  async componentDidMount() {
     const { google } = this.props;
     const maps = google.maps;
     const mapNode = ReactDOM.findDOMNode(this.mapRef.current);
     const mapConfig: google.maps.MapOptions = {
-      center: { lat, lng },
+      center: { lat: this.state.centerY, lng: this.state.centerX },
+      minZoom: 9,
       zoom: 15,
       zoomControl: true,
+      zoomControlOptions: {
+        position: google.maps.ControlPosition.RIGHT_CENTER
+      },
       mapTypeControl: false,
       mapTypeControlOptions: {
         position: google.maps.ControlPosition.TOP_RIGHT
       },
       scaleControl: true,
       streetViewControl: true,
+      streetViewControlOptions: {
+        position: google.maps.ControlPosition.RIGHT_CENTER
+      },
       fullscreenControl: true,
       fullscreenControlOptions: {
         position: google.maps.ControlPosition.TOP_RIGHT
       }
     };
+    const googleMap = new google.maps.Map(mapNode, mapConfig); // 지도생성
+    this.setState({
+      map: this.props.google
+    });
+    try {
+      const {
+        data: {
+          data: { result: result }
+        }
+      } = await serverApi.getAllCafes();
+      console.log(`new result: `, result[0]);
 
-    this.map = new google.maps.Map(mapNode, mapConfig);
-  };
+      const subAddress = result.map((cafe: Iinfo) => cafe.subAddress);
+      const x = result.map((cafe: Iinfo) => cafe.x);
+      const y = result.map((cafe: Iinfo) => cafe.y);
+      const category = result.map((cafe: Iinfo) => cafe.category);
+      const name = result.map((cafe: Iinfo) => cafe.name);
+      this.setState({ result, subAddress, x, y, category, name });
+    } catch {
+      this.setState({ error: "Can't load kakaoMap" });
+    } finally {
+      this.setState({ loading: false });
+    }
+
+    for (let i = 0; i < this.state.category.length; i++) {
+      if (this.state.category[i] === "hollys") {
+        const { google } = this.props;
+        const hollysSrc = hollys;
+        const spot = new google.maps.LatLng(this.state.y[i], this.state.x[i]);
+        const imageSize = new google.maps.Size(60, 60);
+        const hollysMarkerImage = new google.maps.MarkerImage(
+          hollysSrc,
+          imageSize,
+          null,
+          null,
+          imageSize
+        );
+        const hollysMarker = new google.maps.Marker({
+          position: spot,
+          title: "Hollys Cafe",
+          icon: hollysMarkerImage
+        });
+        hollysMarker.setMap(googleMap);
+        const hollysName = this.state.name[i];
+        console.log("hollysName", hollysName);
+        const idNumber = i + 1;
+        const infoWindowContent = await ReactDOMServer.renderToString(
+          <div className="customoverlay">
+            <a>
+              <span className="title">Hollys {hollysName}</span>
+            </a>
+          </div>
+        );
+
+        const infowindow = new google.maps.InfoWindow({
+          content: infoWindowContent
+        });
+        hollysMarker.addListener("click", function() {
+          console.log("click2222");
+          infowindow.open(googleMap, hollysMarker);
+          googleMap.panTo(spot);
+          // window.location.href = `/cafe/${idNumber}`;
+        });
+        hollysMarker.addListener("mouseover", function() {
+          console.log("over2222");
+          infowindow.open(googleMap, hollysMarker);
+        });
+        hollysMarker.addListener("mouseout", function() {
+          infowindow.close();
+        });
+      } else {
+        const { google } = this.props;
+        const tomtomSrc = tomtom;
+        const spot = new google.maps.LatLng(this.state.y[i], this.state.x[i]);
+        const imageSize = new google.maps.Size(60, 60);
+        const tomtomMarkerImage = new google.maps.MarkerImage(
+          tomtomSrc,
+          imageSize,
+          null,
+          null,
+          imageSize
+        );
+        const tomtomMarker = new google.maps.Marker({
+          position: spot,
+          title: "TOMnTOMs Cafe",
+          icon: tomtomMarkerImage
+        });
+        tomtomMarker.setMap(googleMap);
+        const tomtomNames = this.state.name[i];
+        const idNumber = i + 1;
+        const infoWindowContent = await ReactDOMServer.renderToString(
+          <div className="customoverlay">
+            <a>
+              <span className="title">TOMNTOMS {tomtomNames}</span>
+            </a>
+          </div>
+        );
+        var infowindow = new google.maps.InfoWindow({
+          content: infoWindowContent
+        });
+        tomtomMarker.addListener("click", function() {
+          console.log("click");
+          infowindow.open(googleMap, tomtomMarker);
+          googleMap.panTo(spot);
+          // window.location.href = `/cafe/${idNumber}`;
+        });
+        tomtomMarker.addListener("mouseover", function() {
+          console.log("over");
+          infowindow.open(googleMap, tomtomMarker);
+        });
+        tomtomMarker.addListener("mouseout", function() {
+          infowindow.close();
+        });
+      }
+    }
+
+    this.codeStatesMarker(googleMap); // codestates marker
+
+    // function createPopupClass() {
+    //   function Popup(position: any, content: any) {}
+    // }
+
+    function toggleBounce(marker: any) {
+      if (marker.getAnimation() !== null) {
+        marker.setAnimation(null);
+      } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+      }
+    }
+
+    // googleMap.addListener("dragend", this.handleDragEnd);
+  }
+  // public handleDragEnd = () => {
+  //   const newCenter = this.map.getCenter();
+  //   const lat = newCenter.lat();
+  //   const lng = newCenter.lng();
+  //   this.setState({
+  //     lat,
+  //     lng
+  //   });
+  // };
+
+  shouldComponentUpdate(nextProps: any) {
+    return false;
+  }
+
+  public onPickPlace(pathname: string) {
+    const { address, lat, lng } = this.state;
+    const { history } = this.props;
+    history.push({ pathname: pathname, state: { address, lat, lng } });
+  }
+
+  public codeStatesMarker(map: any) {
+    const codeStatesSrc = codestates;
+    const { google } = this.props;
+    const imageSize = new google.maps.Size(60, 60);
+    const codeMarkerImage = new google.maps.MarkerImage(
+      codeStatesSrc,
+      imageSize,
+      null,
+      null,
+      imageSize
+    );
+    const codeMarker = new google.maps.Marker({
+      position: { lat: 37.503444, lng: 127.049833 },
+      title: "CODE STATES",
+      icon: codeMarkerImage
+    });
+    const infoWindowContent = ReactDOMServer.renderToString(
+      <div className="customoverlay">
+        <a>
+          <span className="title">CODE STATES</span>
+        </a>
+      </div>
+    );
+    var infowindow = new google.maps.InfoWindow({
+      content: infoWindowContent
+    });
+    codeMarker.setMap(map);
+    codeMarker.addListener("click", function() {
+      infowindow.open(map, codeMarker);
+      // window.location.href = `/cafe/${idNumber}`;
+      map.panTo({ lat: 37.503444, lng: 127.049833 });
+    });
+    codeMarker.addListener("mouseover", function() {
+      infowindow.open(map, codeMarker);
+    });
+  }
 
   public onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -90,22 +317,30 @@ class MapContainer extends React.Component<any, IState> {
       lat: latitude,
       lng: longitude
     });
-    this.loadMap(latitude, longitude);
   };
+
   public handleGeoError = () => {
     console.log("Cant access geo location");
   };
 
   public render() {
     console.log("this.props", this.props);
+    console.log("this.state.map : ", this.state.map);
     const { address } = this.state;
     return (
+      // <Map
+      //   google={this.props.google}
+      //   zoom={16}
+      //   initialCenter={{ lat: 37.503444, lng: 127.049833 }}
+      //   mapTypeControl={false}
+      // >
       <MapPresenter
         mapRef={this.mapRef}
         address={address}
         onInputChange={this.onInputChange}
         onSubmit={this.onSubmit}
       />
+      // </Map>
     );
   }
 }
