@@ -5,7 +5,8 @@ import Loader from "../../Components/Loader";
 import Error from "../../Components/Error";
 import { Input, Form } from "../../Components/SearchInput";
 import Map from "../../Components/MapScreen/index";
-import TestMap from "../../Routes/Map";
+import { Link } from "react-router-dom";
+
 const Container = styled.div``;
 
 interface IProps {
@@ -21,6 +22,7 @@ interface IProps {
   address: string;
   handleSearchSubmit: any;
   updateTerm: any;
+  // refCallback: any;
 }
 
 const HomePresenter: React.FC<IProps> = ({
@@ -35,6 +37,7 @@ const HomePresenter: React.FC<IProps> = ({
   centerX,
   centerY,
   navigatorBoolean
+  // refCallback
 }) => {
   return loading ? (
     <Container>
@@ -64,9 +67,11 @@ const HomePresenter: React.FC<IProps> = ({
             navigatorBoolean={navigatorBoolean}
             address={term}
           />
+          {/* <Link to={`/search`}> */}
           <Form onSubmit={handleSearchSubmit}>
             <Input value={term} onChange={updateTerm} />
           </Form>
+          {/* </Link> */}
         </Container>
       )}
     </>

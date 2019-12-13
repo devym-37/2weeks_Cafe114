@@ -46,17 +46,19 @@ const ButtonGroup = styled.div`
   letter-spacing: 0;
 `;
 
-const SelectButton = styled.button`
+const SelectButton = styled.button<{ selected: boolean }>`
   position: relative;
   box-sizing: border-box;
   display: inline-block;
   margin: 5px 0 0;
   padding: 10px 22px;
   width: 70px;
-  border: 1px solid #e7e7e7;
+  border:  1px solid ;
+  border-color: ${props =>
+    props.selected ? props.theme.colors.main : "#e7e7e7"};
   height: 44px;
   font-size: 15px;
-  color: #717485;
+  color: ${props => (props.selected ? props.theme.colors.main : "#999999")};
   -webkit-appearance: button;
   cursor: pointer;
   background: transparent;
@@ -65,6 +67,7 @@ const SelectButton = styled.button`
   font-weight: normal;
   letter-spacing: 0;
   border-radius: 3px;
+  
   &:focus {
     border: 1px solid ${props => props.theme.colors.main};
     outline: none;
@@ -207,12 +210,60 @@ const SignupPresenter: React.SFC<IProps> = ({
         년생<Highlight>(선택)</Highlight>
       </Label>
       <ButtonGroup>
-        <SelectButton value="0" onClick={handleSelectGender}>
-          남자
-        </SelectButton>
-        <SelectButton value="1" onClick={handleSelectGender}>
-          여자
-        </SelectButton>
+        {gender === "0" && (
+          <>
+            <SelectButton
+              value="0"
+              onClick={handleSelectGender}
+              selected={true}
+            >
+              남자
+            </SelectButton>
+            <SelectButton
+              value="1"
+              onClick={handleSelectGender}
+              selected={false}
+            >
+              여자
+            </SelectButton>
+          </>
+        )}
+        {gender === "1" && (
+          <>
+            <SelectButton
+              value="0"
+              onClick={handleSelectGender}
+              selected={false}
+            >
+              남자
+            </SelectButton>
+            <SelectButton
+              value="1"
+              onClick={handleSelectGender}
+              selected={true}
+            >
+              여자
+            </SelectButton>
+          </>
+        )}
+        {gender === "" && (
+          <>
+            <SelectButton
+              value="0"
+              onClick={handleSelectGender}
+              selected={false}
+            >
+              남자
+            </SelectButton>
+            <SelectButton
+              value="1"
+              onClick={handleSelectGender}
+              selected={false}
+            >
+              여자
+            </SelectButton>
+          </>
+        )}
       </ButtonGroup>
     </LabelContainer>
     <Agreement>

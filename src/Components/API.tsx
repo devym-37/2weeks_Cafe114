@@ -2,6 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://13.209.4.48:3000/",
+  // baseURL: "http://127.0.0.1:3000/",
   headers: {
     "content-type": "application/json"
   },
@@ -22,5 +23,6 @@ export const serverApi = {
     api.post("signup", { email, password, name, sex: gender }),
   signout: () => api.get("signout"),
   getUserInfo: () => api.get("user/mypage"),
-  loginkakao: (id: number) => api.post("signin/kakao", { kakao: { id } })
+  loginkakao: (id: number, email: string, nickname: string, image: string) =>
+    api.post("signin/kakao", { kakao: { id, email, nickname, image } })
 };

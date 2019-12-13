@@ -33,14 +33,35 @@ class LoginContainer extends Component<IProps, IState> {
       const KakaoRequest = await Kakao.API.request({
         url: "/v2/user/me",
         success: function(res: any) {
+          // console.log("kakao res: ", res);
+          // return res;
           const { id } = res;
           return id;
         }
       });
       if (KakaoRequest.id !== undefined) {
-        const { id } = KakaoRequest;
+        console.log(`KakaoRequest: `, KakaoRequest);
 
-        const ServerRequest = await serverApi.loginkakao(id);
+        // const email = KakaoRequest.kakao_account.email;
+        // const nickname = KakoRequest.n
+        const {
+          id,
+          kakao_account: { email },
+          properties: { nickname: nickname, thumbnail_image: image }
+        } = KakaoRequest;
+        console.log(
+          `id:${id}, email:${email}, nickname:${nickname}, image:${image}`
+        );
+        const ServerRequest = await serverApi.loginkakao(
+          id,
+          email,
+          nickname,
+          image
+        );
+        console.log(
+          `id:${id}, email:${email}, nickname:${nickname}, image:${image}`
+        );
+        console.log(`server: `, ServerRequest);
         if (ServerRequest) {
           this.props.toggleLoggedIn();
 

@@ -10,6 +10,22 @@ import Mypage from "../../Modal/Mypage";
 import { serverApi } from "../API";
 import { geoCode } from "../../mapHelpers";
 
+interface Iinfo {
+  id: number;
+  name: string;
+  address: string;
+  subAddress: string;
+  x: string;
+  y: string;
+  telephone: string;
+  category: string;
+  detailCategory: string;
+  parkingLot: number;
+  smokingRoom: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface Istate {
   isLoggedIn: boolean;
   showLoginModal: boolean;
@@ -17,12 +33,17 @@ interface Istate {
   showSignupModal: boolean;
   showLocation: boolean;
   showMypageSlider: boolean;
+  showMypageLikeCafe: boolean;
   error: string;
   term: string;
   centerY: number;
   centerX: number;
   navigatorBoolean: boolean;
   address: string;
+  userName: string;
+  userEmail: string;
+  favoriteCafe: any;
+  kakaoImg: string;
 }
 
 class AppContainer extends Component<{}, Istate> {
@@ -38,7 +59,12 @@ class AppContainer extends Component<{}, Istate> {
     centerY: 37.503444,
     centerX: 127.049833,
     navigatorBoolean: false,
-    address: ""
+    address: "",
+    showMypageLikeCafe: false,
+    userName: "",
+    userEmail: "",
+    favoriteCafe: [],
+    kakaoImg: ""
   };
 
   handleCafePosition = (centerX: number, centerY: number) => {
@@ -65,10 +91,62 @@ class AppContainer extends Component<{}, Istate> {
     }
   };
 
-  toggleMypageSlider = () => {
-    this.setState({
-      showMypageSlider: !this.state.showMypageSlider
-    });
+  toggleMypageSlider = async () => {
+    try {
+      const userInfo = await serverApi.getUserInfo();
+      console.log("userInfo", userInfo);
+      if (userInfo.data.success) {
+        if (userInfo.data.data.name !== null) {
+          this.setState({
+            showMypageSlider: !this.state.showMypageSlider,
+            userName: userInfo.data.data.name,
+            userEmail: userInfo.data.data.email
+          });
+        } else if (
+          userInfo.data.data.name === null &&
+          userInfo.data.data.nickname !== null
+        ) {
+          this.setState({
+            showMypageSlider: !this.state.showMypageSlider,
+            userName: userInfo.data.data.nickname,
+            userEmail:
+              userInfo.data.data.email === undefined
+                ? ""
+                : userInfo.data.data.email,
+            kakaoImg:
+              userInfo.data.data.image === undefined
+                ? ""
+                : userInfo.data.data.image
+          });
+        }
+      }
+    } catch {
+      this.setState({ error: "로그인에 실패했습니다." });
+    }
+  };
+
+  handleLikeCafe = async () => {
+    try {
+      const {
+        data: {
+          data: { favoriteCafe: userInfoCafe }
+        }
+      } = await serverApi.getUserInfo();
+      console.log("userInfo", userInfoCafe);
+      if (userInfoCafe.length !== 0) {
+        this.setState({
+          showMypageLikeCafe: !this.state.showMypageLikeCafe,
+          favoriteCafe: [...userInfoCafe]
+        });
+      } else {
+        this.setState({
+          showMypageLikeCafe: !this.state.showMypageLikeCafe,
+          favoriteCafe: []
+        });
+      }
+    } catch {
+      this.setState({ error: "로그인에 실패했습니다." });
+    }
   };
 
   toggleSignupModal = () => {
@@ -128,12 +206,15 @@ class AppContainer extends Component<{}, Istate> {
       term,
       centerX,
       centerY,
-      navigatorBoolean
+      navigatorBoolean,
+      userName,
+      userEmail,
+      showMypageLikeCafe,
+      favoriteCafe,
+      kakaoImg
     } = this.state;
 
-
-    console.log(`포지션 변경 ceterX: `, centerX);
-
+    console.log("likecafe", favoriteCafe);
     return (
       <div className="App">
         <AppPresenter
@@ -152,6 +233,12 @@ class AppContainer extends Component<{}, Istate> {
           <Mypage
             handleLogout={this.handleLogout}
             toggleMypageSlider={this.toggleMypageSlider}
+            handleLikeCafe={this.handleLikeCafe}
+            showMypageLikeCafe={showMypageLikeCafe}
+            userName={userName}
+            userEmail={userEmail}
+            favoriteCafe={favoriteCafe}
+            kakaoImg={kakaoImg}
           />
         )}
         {showFilterModal && <Filter />}

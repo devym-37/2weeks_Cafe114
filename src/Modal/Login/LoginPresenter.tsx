@@ -38,7 +38,6 @@ const KakaoCustomLogin = styled(KakaoLogin)`
 `;
 
 const DimmedLayerCantainer = styled.div`
-  height: 993px;
   z-index: 999;
   position: absolute;
   top: 0;
@@ -62,7 +61,7 @@ const Container = styled.div`
   top: 0px;
   left: 0px;
   width: 100%;
-  height: 100%;
+  height: 100vh;
 `;
 
 const DimmedLayerSceneAuth = styled.div`
@@ -156,25 +155,27 @@ const LoginPresenter: React.SFC<IProps> = ({
           </LoginGroup>
           <Seperator color="lightGrey" text="직접 로그인하기" />
           <Cafe114Login>
-            <Input
-              placeholder={"이메일 아이디"}
-              name="email"
-              value={email}
-              onChange={handleInputChange}
-            />
-            <Input
-              type="password"
-              placeholder={"비밀번호"}
-              name="password"
-              value={password}
-              onChange={handleInputChange}
-            />
-            <MainButton
-              onClick={handleSubmit}
-              icon={Cafe114Logo}
-              href="/"
-              text="카페114 로그인"
-            />
+            <form onSubmit={handleSubmit}>
+              <Input
+                placeholder={"이메일 아이디"}
+                name="email"
+                value={email}
+                onChange={handleInputChange}
+              />
+              <Input
+                type="password"
+                placeholder={"비밀번호"}
+                name="password"
+                value={password}
+                onChange={handleInputChange}
+              />
+              <MainButton
+                onClick={handleSubmit}
+                icon={Cafe114Logo}
+                href="/"
+                text="카페114 로그인"
+              />
+            </form>
             <TextButton href="/auth/find" text="비밀번호 찾기" />
             <Seperator color="ligtGrey" text="카페114가 처음이세요?" />
             <GhostButton

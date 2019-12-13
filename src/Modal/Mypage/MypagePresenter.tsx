@@ -2,18 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import setting from "../../assets/setting.png";
 import TextButton from "../../Components/TextButton";
+import SubTextButton from "../../Components/SubTextButton";
 import user from "../../assets/profile-placeholder.png";
 import CloseButton from "../../Components/CloseButton";
+import FavoriteCafe from "../../Components/FavoriteCafe/index";
 
 const AWrap = styled.div`
   position: fixed;
   top: 0px;
   right: 0px;
-  left: 0px;
   overflow: hidden;
-  min-width: 750px;
-  height: 100%;
-  width: 100%;
+  display: block;
+  height: 100vh;
+  width: 375px;
   z-index: 10;
 `;
 
@@ -45,7 +46,7 @@ const Sidebar = styled.div`
 `;
 
 const ExceptContent = styled.fieldset`
-  margin: 0;
+  margin: -5px;
   padding: 0;
   display: block;
 `;
@@ -129,6 +130,7 @@ const CloseBtn = styled(CloseButton)`
 const PropfileContainer = styled.div`
   position: relative;
   background-color: ${props => props.theme.colors.main};
+  height: 100px;
   margin: 0;
   padding: 0;
   font-size: 14px;
@@ -136,6 +138,21 @@ const PropfileContainer = styled.div`
 const Container = styled.div`
   padding: 10px 20px;
 `;
+
+const PropfileSubContainer = styled.div`
+  position: relative;
+  background-color: ${props => props.theme.colors.main};
+  height: 50px;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+`;
+const SubContainer = styled.div`
+  margin-top: 10px;
+  padding-top: 20px;
+  padding-left: 20px;
+`;
+
 const PropfileImageStandAlone = styled.div`
   width: 50px;
   height: 50px;
@@ -144,10 +161,10 @@ const PropfileImageStandAlone = styled.div`
   margin: 0;
   padding: 0;
 `;
-const PropfileImageWrapCircle = styled.div`
+const PropfileImageWrapCircle = styled.div<{ url: string }>`
   border-radius: 25px;
   overflow: hidden;
-  background-image: url(${user});
+  background-image: url(${props => (props.url ? props.url : user)});
   background-position: center;
   background-size: contain;
   color: #fff;
@@ -198,6 +215,20 @@ const Sir = styled.span`
   color: #fff;
 `;
 
+const SubText = styled.span`
+  padding-left: 22px;
+  font-size: 16px;
+  vertical-align: middle;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+  letter-spacing: 0;
+  text-indent: 0;
+  color: #fff;
+`;
+
 const UserEmail = styled.span`
   display: block;
   font-weight: thin;
@@ -217,13 +248,40 @@ const ThinTextButton = styled(TextButton)`
   cursor: pointer;
 `;
 
+const SubButton = styled(SubTextButton)`
+  padding-left: 22px;
+  font-size: 16px;
+  vertical-align: middle;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+  letter-spacing: 0;
+  text-indent: 0;
+  color: #fff;
+  cursor: pointer;
+`;
+
 interface IProps {
   toggleMypageSlider: any;
   handleLogout: any;
+  handleLikeCafe: any;
+  userName: string;
+  userEmail: string;
+  showMypageLikeCafe: boolean;
+  favoriteCafe: any;
+  kakaoImg: string;
 }
 const MypagePresenter: React.SFC<IProps> = ({
   toggleMypageSlider,
-  handleLogout
+  handleLogout,
+  handleLikeCafe,
+  showMypageLikeCafe,
+  userName,
+  userEmail,
+  favoriteCafe,
+  kakaoImg
 }) => (
   <AWrap>
     <Navigation role="navigation">
@@ -237,7 +295,6 @@ const MypagePresenter: React.SFC<IProps> = ({
               <Title>
                 <TitleLink href="#">내 메뉴</TitleLink>
               </Title>
-
               <CloseBtn onClick={toggleMypageSlider} color="#ffffff" />
             </InnerHeader>
             <PropfileContainer>
@@ -245,7 +302,7 @@ const MypagePresenter: React.SFC<IProps> = ({
                 <div>
                   <div>
                     <PropfileImageStandAlone>
-                      <PropfileImageWrapCircle>
+                      <PropfileImageWrapCircle url={kakaoImg}>
                         <User />
                       </PropfileImageWrapCircle>
                     </PropfileImageStandAlone>
@@ -253,9 +310,9 @@ const MypagePresenter: React.SFC<IProps> = ({
                 </div>
                 <NameWrap>
                   <UserName>
-                    김조은 <Sir> 님</Sir>
+                    {userName} <Sir> 님</Sir>
                   </UserName>
-                  <UserEmail> kimgood91@gmail.com</UserEmail>
+                  <UserEmail> {userEmail}</UserEmail>
                 </NameWrap>
                 <ThinTextButton
                   text={"로그아웃"}
@@ -264,6 +321,24 @@ const MypagePresenter: React.SFC<IProps> = ({
                   color="#fff"
                 />
               </Container>
+              <PropfileSubContainer>
+                <SubContainer>
+                  <SubButton
+                    text={"알림받는 내카페"}
+                    onClick={handleLikeCafe}
+                    color="#fff"
+                  />
+                </SubContainer>
+              </PropfileSubContainer>
+              {showMypageLikeCafe
+                ? ""
+                : favoriteCafe.length === 0
+                ? ""
+                : favoriteCafe.map(cafename => (
+                    <FavoriteCafe
+                      cafeName={`${cafename.category}  ${cafename.name}`}
+                    />
+                  ))}
             </PropfileContainer>
           </ExceptContent>
         </div>
